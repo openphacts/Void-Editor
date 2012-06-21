@@ -95,6 +95,7 @@ function validateInput(){
 	var dsPublisherURI = $("#dsPublisherURI").val();
 	var dsSourceURI = $("#dsSourceURI").val();
 	var dsLicenseURI = $("#dsLicenseURI").val();
+	var dsVersion = $("#dsVersion").val();
 	//Other stuff
 	var dsExampleURIList = new Array();
 	var dsTopicURIList = new Array();
@@ -131,17 +132,19 @@ function validateInput(){
 	}
 	else data.dsDescription = escape(dsDescription);
 
-	if(dsLicenseURI == "" || (dsHomeURI.substring(0,7) != "http://")) {
-		alert("You have to provide a license for the dataset. The license must be a URI starting with 'http://'.");
-		return false;
-	}
-	else data.dsLicenseURI = escape(dsLicenseURI);
+//	if(dsLicenseURI == "" || (dsHomeURI.substring(0,7) != "http://")) {
+//		alert("You have to provide a license for the dataset. The license must be a URI starting with 'http://'.");
+//		return false;
+//	}
+//	else data.dsLicenseURI = escape(dsLicenseURI);
+	data.dsLicenseURI = dsLicenseURI;
+	data.dsVersion = dsVersion;
 	
 	// provenance and licensing
 	if (!$("#doMinimal").is(':checked')) { // don't take into account for minimal voiD file
 		data.dsPublisherURI = dsPublisherURI;
 		data.dsSourceURI = dsSourceURI;
-		data.dsLicenseURI = dsLicenseURI;
+//		data.dsLicenseURI = dsLicenseURI;
 	}
 	
 	$(".dsExampleURI input").each(function (i) {

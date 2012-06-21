@@ -38,6 +38,7 @@ $NAMESPACES = array(
 );
 
 $SELF_DS = ":myDS";
+$LICENSE_URI = "<http://creativecommons.org/licenses/by-sa/3.0/>";
 
 $BASE_TTL = "
 @prefix dcterms: <http://purl.org/dc/terms/> .
@@ -143,6 +144,7 @@ function createVoiDTTL($dsParams){
 	global $NAMESPACES;
 	global $SELF_DS;
 	global $BASE_TTL;
+	global $LICENSE_URI;
 	$retVal = $BASE_TTL;
 	//Basic metadata
 	$dsURI = $dsParams["dsURI"];
@@ -153,6 +155,7 @@ function createVoiDTTL($dsParams){
 	$dsPublisherURI = $dsParams["dsPublisherURI"];
 	$dsSourceURI = $dsParams["dsSourceURI"];
 	$dsLicenseURI = $dsParams["dsLicenseURI"];
+	$dsVersion = $dsParams["dsVersion"];
 	//
 	$dsExampleURIList = $dsParams["dsExampleURIList"];
 	$dsTopicURIList = $dsParams["dsTopicURIList"];
@@ -175,6 +178,11 @@ function createVoiDTTL($dsParams){
 	$retVal .= "    dcterms:description \"$dsDescription\" ;\n";
 	if($dsLicenseURI){
 		$retVal .= "    pav:license <$dsLicenseURI> ;\n";
+	} else {
+		$retVal .= "    pav:license $LICENSE_URI ;\n";
+	}
+	if($dsVersion){
+		$retVal .= "    pav:version \"$dsVersion\" ;\n";
 	}
 	if($dsPublisherURI){
 		$retVal .= "    pav:authoredBy <$dsPublisherURI> ;\n";
