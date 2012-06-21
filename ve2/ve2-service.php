@@ -45,6 +45,7 @@ $BASE_TTL = "
 @prefix pav: <http://purl.org/pav/2.0/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix : <#> .
 
@@ -58,6 +59,7 @@ $BASE_TTL = "
 
 if(isset($_POST['dsParams'])){ // generate voiD in Turtle
 // 	var_dump(json_decode(stripslashes($_POST['dsParams']), true));
+	//NOTE: magic_quotes is a depricated feature. Required to get running on my laptop
 	if(get_magic_quotes_gpc()) {
 		$dsParams = json_decode(stripslashes($_POST['dsParams']), true);
 	} else {
@@ -168,38 +170,38 @@ function createVoiDTTL($dsParams){
 	else {
 		$retVal .= "$SELF_DS rdf:type void:Dataset ;\n";
 	}
-	$retVal .= " foaf:homepage <$dsHomeURI> ;\n";
-	$retVal .= " dcterms:title \"$dsName\" ;\n";
-	$retVal .= " dcterms:description \"$dsDescription\" ;\n";
+	$retVal .= "    foaf:homepage <$dsHomeURI> ;\n";
+	$retVal .= "    dcterms:title \"$dsName\" ;\n";
+	$retVal .= "    dcterms:description \"$dsDescription\" ;\n";
 	if($dsLicenseURI){
-		$retVal .= " pav:license <$dsLicenseURI> ;\n";
+		$retVal .= "    pav:license <$dsLicenseURI> ;\n";
 	}
 	if($dsPublisherURI){
-		$retVal .= " pav:authoredBy <$dsPublisherURI> ;\n";
+		$retVal .= "    pav:authoredBy <$dsPublisherURI> ;\n";
 	}
 	if($dsSourceURI){
-		$retVal .= " dcterms:source <$dsSourceURI> ;\n";
+		$retVal .= "    dcterms:source <$dsSourceURI> ;\n";
 	}
 	if($dsSPARQLEndpointURI){
-		$retVal .= " void:sparqlEndpoint <$dsSPARQLEndpointURI> ;\n";
+		$retVal .= "    void:sparqlEndpoint <$dsSPARQLEndpointURI> ;\n";
 	}
 	if($dsLookupURI){
-		$retVal .= " void:uriLookupEndpoint <$dsLookupURI> ;\n";
+		$retVal .= "    void:uriLookupEndpoint <$dsLookupURI> ;\n";
 	}
 	if($dsDumpURI){
-		$retVal .= " void:dataDump <$dsDumpURI> ;\n";
+		$retVal .= "    void:dataDump <$dsDumpURI> ;\n";
 	}
 	if($dsVocURIList){
 		$i = 1;
 		foreach ($dsVocURIList as $dsVocURI) {
-			$retVal .= " void:vocabulary <$dsVocURI> ;\n";
+			$retVal .= "    void:vocabulary <$dsVocURI> ;\n";
 			$i++;
 		}
 	}	
 	if($dsExampleURIList){
 		$i = 1;
 		foreach ($dsExampleURIList as $dsExampleURI) {
-			$retVal .= " void:exampleResource <$dsExampleURI>";
+			$retVal .= "    void:exampleResource <$dsExampleURI>";
 			if(count($dsTopicURIList) == 0 && count($tdsList) == 0) {
 				if($i < count($dsExampleURIList)) $retVal .= " ;\n";
 				else $retVal .= " .\n";
@@ -211,7 +213,7 @@ function createVoiDTTL($dsParams){
 	if($dsTopicURIList){
 		$i = 1;
 		foreach ($dsTopicURIList as $dsTopicURI) {
-			$retVal .= " dcterms:subject <$dsTopicURI>";
+			$retVal .= "    dcterms:subject <$dsTopicURI>";
 			if(count($tdsList) == 0) {
 				if($i < count($dsTopicURIList)) $retVal .= " ;\n";
 				else $retVal .= " .\n";
@@ -223,7 +225,7 @@ function createVoiDTTL($dsParams){
 	if($tdsList){
 		$i = 1;
 		foreach ($tdsList as $tdsListItem) {
-			$retVal .= " void:subset " . $SELF_DS ."-DS$i";
+			$retVal .= "    void:subset " . $SELF_DS ."-DS$i";
 			if($i < count($tdsList)) $retVal .= " ;\n";
 			else $retVal .= " .\n";
 			$i++;

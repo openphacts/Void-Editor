@@ -8,7 +8,7 @@ var  topicLookUpMinLength = 2; // min. length for a keyword to trigger live look
 var  maxNumOfTopicsProposed = 4; // max. numbers of topics shown in the result of the live look-up in DBPedia
 
 // working vars - don't touch
-var dsExampleURICounter = 1;
+var dsExampleURICounter = 0;
 var dsVocURICounter = 0;
 var voiDURIsList = new Array();
 

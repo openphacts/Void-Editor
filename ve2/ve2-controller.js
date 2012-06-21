@@ -82,19 +82,23 @@ function announceVoiDURI(){
 function validateInput(){
 	var data = {
 		dsHomeURI : "http://example.org/",
-		dsName : "Example Dataset"
+		dsName : "Example Dataset",
+		dsLicenseURI : "http://creativecommons.org/licenses/by-sa/3.0/",
 	}
 
+	//General metadata
 	var dsURI = $("#dsURI").val();	
 	var dsHomeURI = $("#dsHomeURI").val();
 	var dsName = $("#dsName").val();
 	var dsDescription = $("#dsDescription").val();
-	var dsExampleURIList = new Array();
-	var dsTopicURIList = new Array();
-	var tdsList = new Array();
+	//License and provenance
 	var dsPublisherURI = $("#dsPublisherURI").val();
 	var dsSourceURI = $("#dsSourceURI").val();
 	var dsLicenseURI = $("#dsLicenseURI").val();
+	//Other stuff
+	var dsExampleURIList = new Array();
+	var dsTopicURIList = new Array();
+	var tdsList = new Array();
 	var dsVocURIList = new Array();
 	var dsSPARQLEndpointURI = $("#dsSPARQLEndpointURI").val();
 	var dsLookupURI = $("#dsLookupURI").val();
@@ -126,6 +130,19 @@ function validateInput(){
 		return false;
 	}
 	else data.dsDescription = escape(dsDescription);
+
+	if(dsLicenseURI == "" || (dsHomeURI.substring(0,7) != "http://")) {
+		alert("You have to provide a license for the dataset. The license must be a URI starting with 'http://'.");
+		return false;
+	}
+	else data.dsLicenseURI = escape(dsLicenseURI);
+	
+	// provenance and licensing
+	if (!$("#doMinimal").is(':checked')) { // don't take into account for minimal voiD file
+		data.dsPublisherURI = dsPublisherURI;
+		data.dsSourceURI = dsSourceURI;
+		data.dsLicenseURI = dsLicenseURI;
+	}
 	
 	$(".dsExampleURI input").each(function (i) {
 		dsExampleURIList.push($(this).val());
@@ -150,13 +167,6 @@ function validateInput(){
 		tdsList.push(target);
 	});
 	data.tdsList = tdsList;
-	
-	// provenance and licensing
-	if (!$("#doMinimal").is(':checked')) { // don't take into account for minimal voiD file
-		data.dsPublisherURI = dsPublisherURI;
-		data.dsSourceURI = dsSourceURI;
-		data.dsLicenseURI = dsLicenseURI;
-	}
 	// vocabularies
 	$(".dsVocURI input").each(function (i) {
 		dsVocURIList.push($(this).val());

@@ -107,37 +107,61 @@
 	</div>
 	
 	<div id="main">	
+	<div id="status">Ready</div>
 	<div id="dsForm">
 		<div class="secHead">Input: dataset characteristics</div>
 		<div id="dsItemSelection">
 			<div>
-				<h3><a class="nav" href="#">Define general dataset metadata</a></h3>
+				<h3><a class="nav" href="#">General dataset metadata</a></h3>
 				<div>
 					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain to me what I can do here ..." id="help1"></span></div>
 					<p class="note" id="help1content">Define general metadata about the dataset. For more information see the VoID guide, section '<a href="ref1" target="_new">General Dataset Metadata</a>'.</p>
 					<div>
 						<div class="flabel">Dataset URI</div>
-						<input type="text" size="40" id="dsURI" value="" />
+						<input type="text" size="50" id="dsURI" value="" />
 						<p class="fyi">You can define a URI for your dataset. If you leave it blank, a default  will be used - if the VoID file is deployed at <code>http://example.org/void.ttl</code> the dataset URI is <code>http://example.org/void.ttl#myDS</code>.</p>
 					</div>
 					<div>
 						<div class="flabel">Dataset Homepage URI</div>
-						<input type="text" size="30" id="dsHomeURI" value="http://example.org/" />
+						<input type="text" size="50" id="dsHomeURI" value="http://example.org/" />
 						<p class="fyi">Define your dataset by specifying its homepage. The <em>homepage of the dataset</em> is a dedicated document that talks about the dataset.</p>
 					</div>
 					<div>
 						<div class="flabel">Dataset Name</div>
-						<input type="text" size="15" id="dsName" value="Example Dataset" />
+						<input type="text" size="50" id="dsName" value="Example Dataset" />
 					</div>
 					<div>
 						<div class="flabel">Dataset Description</div>
-						<input type="text" size="45" id="dsDescription" value="A simple dataset in RDF." />
+						<textarea rows="3" cols="50" id="dsDescription">A simple dataset in RDF.</textarea>
 					</div>
-					<div>						
+<!-- 					<div>						
 						<div class="flabel"><span id="doAddDSExampleURI" class="ibtn" title="Add another example resource">+</span> Example Resource</div>
 						<div id="dsExampleURIs">
 							<div class="dsExampleURI" id="dsExampleURI0"><input type="text" size="35" value="http://example.org/resource/ex" /> <span class="btn">validate</span></div>
 						</div>
+					</div>
+ -->
+ 				</div>
+			</div>
+			<div>
+				<h3><a class="nav" href="#">Tell about provenance and licensing</a></h3>
+				<div>
+					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain me what I can do here ..." id="help5"></span></div>
+					<p class="note" id="help5content">State who publishes the data and what the usage conditions are.  If you don't want to provide any of this information, just leave it empty - it's optional, but it is advised to provide it. For more information see the VoID guide, section '<a href="ref1" target="_new">General Dataset Metadata</a>' and '<a href="ref4" target="_new">Announcing the license of a dataset</a>'.</p>
+					<div>
+						<div class="flabel">Publisher</div>
+						<input type="text" size="25" id="dsPublisherURI" value="" />
+						<p class="fyi">Provide a URI (<a href="http://esw.w3.org/topic/WebID" target="_new">Web ID</a>) identifying the person or organisation that actually provides the dataset in RDF (for example: http://example.org/me)</p>
+					</div>
+					<div>
+						<div class="flabel">Source</div>
+						<input type="text" size="40" id="dsSourceURI" value="" />
+						<p class="fyi">The source is the URI of the original data source, such as an XML document, a database, a Web service, etc. (like: http://example.org/source.xml).</p>
+					</div>
+					<div>
+						<div class="flabel">Dataset License</div>
+						<input type="text" size="50" id="dsLicenseURI" value="http://creativecommons.org/licenses/by-sa/3.0/" />
+						<p class="fyi">The license must be specified via an URI representing the license under which the dataset can be used, for example <a href="http://creativecommons.org/licenses/by-sa/3.0/">http://creativecommons.org/licenses/by-sa/3.0/</a> or <a href="http://www.opendatacommons.org/licenses/pddl/1.0/" target="_new">http://www.opendatacommons.org/licenses/pddl/1.0/</a>. By default CC-BY-SA will be used.</p>
 					</div>
 				</div>
 			</div>
@@ -199,28 +223,6 @@
 				</div>
 			</div>
 			<div>
-				<h3><a class="nav" href="#">Tell about provenance and licensing</a></h3>
-				<div>
-					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain me what I can do here ..." id="help5"></span></div>
-					<p class="note" id="help5content">State who publishes the data and what the usage conditions are.  If you don't want to provide any of this information, just leave it empty - it's optional, but it is advised to provide it. For more information see the VoID guide, section '<a href="ref1" target="_new">General Dataset Metadata</a>' and '<a href="ref4" target="_new">Announcing the license of a dataset</a>'.</p>
-					<div>
-						<div class="flabel">Publisher</div>
-						<input type="text" size="25" id="dsPublisherURI" value="" />
-						<p class="fyi">Provide a URI (<a href="http://esw.w3.org/topic/WebID" target="_new">Web ID</a>) identifying the person or organisation that actually provides the dataset in RDF (for example: http://example.org/me)</p>
-					</div>
-					<div>
-						<div class="flabel">Source</div>
-						<input type="text" size="40" id="dsSourceURI" value="" />
-						<p class="fyi">The source is the URI of the original data source, such as an XML document, a database, a Web service, etc. (like: http://example.org/source.xml).</p>
-					</div>
-					<div>
-						<div class="flabel">License</div>
-						<input type="text" size="50" id="dsLicenseURI" value="" />
-						<p class="fyi">The license should be specified via an URI representing the license under which the dataset can be used, for example <a href="http://www.opendatacommons.org/licenses/pddl/1.0/" target="_new">http://www.opendatacommons.org/licenses/pddl/1.0/</a>.</p>
-					</div>
-				</div>
-			</div>
-			<div>
 				<h3><a class="nav" href="#">Specify access methods (SPARQL endpoint, etc.)</a></h3>
 				<div>
 					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain me what I can do here ..." id="help6"></span></div>
@@ -246,28 +248,30 @@
 	</div>
 	
 	<div id="vdForm">
-		<h3  class="secHead">Output: VoID Description</h3>
-			<textarea id="vdOutput" cols="80" rows="30">
+		<h3  class="secHead">Output: VoID Dataset Description</h3>
+			<textarea id="vdOutput" cols="80" rows="40">
+@prefix dcterms: &lt;http://purl.org/dc/terms/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix pav: &lt;http://purl.org/pav/2.0/&gt; .
 @prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
-@prefix dcterms: &lt;http://purl.org/dc/terms/&gt; .
+@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
 @prefix void: &lt;http://rdfs.org/ns/void#&gt; .
 @prefix : &lt;#&gt; .
 
 ## your dataset
 :myDS rdf:type void:Dataset ;
- foaf:homepage &lt;http://example.org/&gt; ;
- dcterms:title "Example Dataset" ;
- dcterms:description "A simple dataset in RDF." ;
- void:exampleResource &lt;http://example.org/resource/ex&gt; . 
+    foaf:homepage &lt;http://example.org/&gt; ;
+    dcterms:title "Example Dataset" ;
+    dcterms:description "A simple dataset in RDF." ;
+    pav:license &lt;http://creativecommons.org/licenses/by-sa/3.0/&gt; ;
+. 
 </textarea>
-			<div id="inspector" title="Inspect generated VoID document">Please go to <a href="http://sindice.com/developers/inspector" target="_new">http://sindice.com/developers/inspector</a> and paste the VoID file manually. This feature will be available soon!</div>
 	</div>
 
-	<div id="status">Ready</div>
 	</div>
-	<div id="footer">(c) <a href="http://linkeddata.deri.ie/">Linked Data Research Centre</a>, DERI, NUI Galway, 2009 - 2010.</div>
+	
+	<div id="footer">(c) <a href="http://openphacts.com/">Open PHACTS</a>, 2012.<br/> Based on <a href="http://lab.linkeddata.deri.ie/ve2/">ve2 editor</a> from <a href="http://linkeddata.deri.ie/">Linked Data Research Centre</a>, DERI, NUI Galway.</div>
 	</body>
 </html>
 
