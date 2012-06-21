@@ -18,29 +18,33 @@ $BASE_RKB_BROWSE_URI =  "http://void.rkbexplorer.com/browse/?";
 
 
 $NAMESPACES = array(
-	'xsd' => 'http://www.w3.org/2001/XMLSchema#',
+  	'dcterms' => 'http://purl.org/dc/terms/',
+  	'foaf' => 'http://xmlns.com/foaf/0.1/',
+	'owl' => 'http://www.w3.org/2002/07/owl#',
+	'pav' => 'http://purl.org/pav/2.0/',
   	'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
   	'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
-	'owl' => 'http://www.w3.org/2002/07/owl#',
-  	'foaf' => 'http://xmlns.com/foaf/0.1/',
-  	'dc' => 'http://purl.org/dc/elements/1.1/', 
-  	'dcterms' => 'http://purl.org/dc/terms/',
   	'skos' => 'http://www.w3.org/2004/02/skos/core#',
-  	'sioc' => 'http://rdfs.org/sioc/ns#',
-  	'sioct' => 'http://rdfs.org/sioc/types#',
-  	'xfn' => 'http://gmpg.org/xfn/11#',
-  	'twitter' => 'http://twitter.com/',
+  	'void' => 'http://vocab.dowhatimean.net/neologism/void-tmp#',   	
+	'xsd' => 'http://www.w3.org/2001/XMLSchema#',
+	//Below namespaces are not used
   	'dbpres' => 'http://dbpedia.org/resource/',
   	'dbpprop' => 'http://dbpedia.org/property/',
-  	'void' => 'http://vocab.dowhatimean.net/neologism/void-tmp#'   	
+  	'dc' => 'http://purl.org/dc/elements/1.1/', 
+	'sioc' => 'http://rdfs.org/sioc/ns#',
+  	'sioct' => 'http://rdfs.org/sioc/types#',
+  	'xfn' => 'http://gmpg.org/xfn/11#',
+  	'twitter' => 'http://twitter.com/'
 );
 
 $SELF_DS = ":myDS";
 
-$BASE_TTL = "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+$BASE_TTL = "
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix pav: <http://purl.org/pav/2.0/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix : <#> .
 
@@ -53,23 +57,28 @@ $BASE_TTL = "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 //// POST interface
 
 if(isset($_POST['dsParams'])){ // generate voiD in Turtle
-	$dsParams = json_decode($_POST['dsParams'], true);
+// 	var_dump(json_decode(stripslashes($_POST['dsParams']), true));
+	if(get_magic_quotes_gpc()) {
+		$dsParams = json_decode(stripslashes($_POST['dsParams']), true);
+	} else {
+		$dsParams = json_decode($_POST['dsParams'], true);
+	}
 	echo createVoiDTTL($dsParams);
 }
 
-if(isset($_POST['inspect'])){ // inspect voiD in Turtle
-	echo inspectVoiD($_POST['inspect']); // saves voiD in tmp/ and calls then Web inspector via GET
-	//echo inspectVoiDLive($_POST['inspect']); // direct POST of voiD content to Web inspector
-}
+// if(isset($_POST['inspect'])){ // inspect voiD in Turtle
+// 	echo inspectVoiD($_POST['inspect']); // saves voiD in tmp/ and calls then Web inspector via GET
+// 	//echo inspectVoiDLive($_POST['inspect']); // direct POST of voiD content to Web inspector
+// }
 
-if(isset($_POST['announce'])){ // announce a voiD URI
-	$result = "<p>Result of announce process:</p>";
-	$result .= pingback("Sindice", "http://sindice.com/xmlrpc/api", "voiD file", $_POST['announce']);
-	$result .= ping("RKB voiD store", "http://void.rkbexplorer.com/submit/?action=uri", "uri", $_POST['announce']);
-	$result .= ping("Talis voiD store", "http://kwijibo.talis.com/voiD/submit", "url", $_POST['announce']);
-	$result .= ping("PingtheSemanticWeb.com", "http://pingthesemanticweb.com/rest/", "url", $_POST['announce']);
-	echo $result;
-}
+// if(isset($_POST['announce'])){ // announce a voiD URI
+// 	$result = "<p>Result of announce process:</p>";
+// 	$result .= pingback("Sindice", "http://sindice.com/xmlrpc/api", "voiD file", $_POST['announce']);
+// 	$result .= ping("RKB voiD store", "http://void.rkbexplorer.com/submit/?action=uri", "uri", $_POST['announce']);
+// 	$result .= ping("Talis voiD store", "http://kwijibo.talis.com/voiD/submit", "url", $_POST['announce']);
+// 	$result .= ping("PingtheSemanticWeb.com", "http://pingthesemanticweb.com/rest/", "url", $_POST['announce']);
+// 	echo $result;
+// }
 
 //// GET interface
 
@@ -133,16 +142,19 @@ function createVoiDTTL($dsParams){
 	global $SELF_DS;
 	global $BASE_TTL;
 	$retVal = $BASE_TTL;
+	//Basic metadata
 	$dsURI = $dsParams["dsURI"];
 	$dsHomeURI = $dsParams["dsHomeURI"];
 	$dsName = $dsParams["dsName"];
 	$dsDescription = $dsParams["dsDescription"];
-	$dsExampleURIList = $dsParams["dsExampleURIList"];
-	$dsTopicURIList = $dsParams["dsTopicURIList"];
-	$tdsList = $dsParams["tdsList"];
+	//Provenance and licensing
 	$dsPublisherURI = $dsParams["dsPublisherURI"];
 	$dsSourceURI = $dsParams["dsSourceURI"];
 	$dsLicenseURI = $dsParams["dsLicenseURI"];
+	//
+	$dsExampleURIList = $dsParams["dsExampleURIList"];
+	$dsTopicURIList = $dsParams["dsTopicURIList"];
+	$tdsList = $dsParams["tdsList"];
 	$dsVocURIList = $dsParams["dsVocURIList"];
 	$dsSPARQLEndpointURI = $dsParams["dsSPARQLEndpointURI"];
 	$dsLookupURI = $dsParams["dsLookupURI"];
@@ -159,14 +171,14 @@ function createVoiDTTL($dsParams){
 	$retVal .= " foaf:homepage <$dsHomeURI> ;\n";
 	$retVal .= " dcterms:title \"$dsName\" ;\n";
 	$retVal .= " dcterms:description \"$dsDescription\" ;\n";
+	if($dsLicenseURI){
+		$retVal .= " pav:license <$dsLicenseURI> ;\n";
+	}
 	if($dsPublisherURI){
-		$retVal .= " dcterms:publisher <$dsPublisherURI> ;\n";
+		$retVal .= " pav:authoredBy <$dsPublisherURI> ;\n";
 	}
 	if($dsSourceURI){
 		$retVal .= " dcterms:source <$dsSourceURI> ;\n";
-	}
-	if($dsLicenseURI){
-		$retVal .= " dcterms:license <$dsLicenseURI> ;\n";
 	}
 	if($dsSPARQLEndpointURI){
 		$retVal .= " void:sparqlEndpoint <$dsSPARQLEndpointURI> ;\n";
