@@ -6,3 +6,7 @@ var vgREFAnnouncing_the_license_of = "#sec_1_3_Announcing_the_license_of";
 var vgREFVocabularies_used = "#sec_1_7_Vocabularies_used";
 var vgREFSPARQL_endpoint_and_Examp = "#sec_1_6_SPARQL_endpoint_and_Examp";
 
+//Newly added references
+var voidSpecBase = "http://www.w3.org/TR/void/";
+var  voidSpecREFVoID_Metadata = "#void-file";
+

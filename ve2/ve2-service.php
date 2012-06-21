@@ -37,6 +37,7 @@ $NAMESPACES = array(
   	'twitter' => 'http://twitter.com/'
 );
 
+$TAB_INDENT = "    ";
 $SELF_DS = ":myDS";
 $LICENSE_URI = "<http://creativecommons.org/licenses/by-sa/3.0/>";
 
@@ -50,7 +51,7 @@ $BASE_TTL = "
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix : <#> .
 
-## your dataset\n";
+## your VoID description \n";
 
 
 /* ve2 INTERFACE */
@@ -145,7 +146,11 @@ function createVoiDTTL($dsParams){
 	global $SELF_DS;
 	global $BASE_TTL;
 	global $LICENSE_URI;
+	global $TAB_INDENT;
 	$retVal = $BASE_TTL;
+	//VoID metadata
+	$voidCreator = $dsParams["voidCreator"];
+	$voidCreated = $dsParams["voidCreated"];
 	//Basic metadata
 	$dsURI = $dsParams["dsURI"];
 	$dsHomeURI = $dsParams["dsHomeURI"];
@@ -165,51 +170,58 @@ function createVoiDTTL($dsParams){
 	$dsLookupURI = $dsParams["dsLookupURI"];
 	$dsDumpURI = $dsParams["dsDumpURI"];
 	
-	
+	//VoID description
+	$retVal .= "<> rdf:type void:DatasetDescription ;\n";
+	$retVal .= "$TAB_INDENT pav:createdBy <$voidCreator> ;\n";
+	$retVal .= "$TAB_INDENT pav:createdOn \"$voidCreated\"^^xsd:date ;\n";
 	// the dataset
 	if($dsURI){
+		$retVal .= "$TAB_INDENT foaf:primaryTopic <$dsURI> .\n\n";
+		$retVal .= "## your VoID description \n";
 		$retVal .= "<$dsURI> rdf:type void:Dataset ;\n";
 	}
 	else {
+		$retVal .= "$TAB_INDENT foaf:primaryTopic $SELF_DS .\n\n";
+		$retVal .= "## your VoID description \n";
 		$retVal .= "$SELF_DS rdf:type void:Dataset ;\n";
 	}
-	$retVal .= "    foaf:homepage <$dsHomeURI> ;\n";
-	$retVal .= "    dcterms:title \"$dsName\" ;\n";
-	$retVal .= "    dcterms:description \"$dsDescription\" ;\n";
+	$retVal .= "$TAB_INDENT foaf:homepage <$dsHomeURI> ;\n";
+	$retVal .= "$TAB_INDENT dcterms:title \"$dsName\" ;\n";
+	$retVal .= "$TAB_INDENT dcterms:description \"$dsDescription\" ;\n";
 	if($dsLicenseURI){
-		$retVal .= "    pav:license <$dsLicenseURI> ;\n";
+		$retVal .= "$TAB_INDENT pav:license <$dsLicenseURI> ;\n";
 	} else {
-		$retVal .= "    pav:license $LICENSE_URI ;\n";
+		$retVal .= "$TAB_INDENT pav:license $LICENSE_URI ;\n";
 	}
 	if($dsVersion){
-		$retVal .= "    pav:version \"$dsVersion\" ;\n";
+		$retVal .= "$TAB_INDENT pav:version \"$dsVersion\" ;\n";
 	}
 	if($dsPublisherURI){
-		$retVal .= "    pav:authoredBy <$dsPublisherURI> ;\n";
+		$retVal .= "$TAB_INDENT pav:authoredBy <$dsPublisherURI> ;\n";
 	}
 	if($dsSourceURI){
-		$retVal .= "    dcterms:source <$dsSourceURI> ;\n";
+		$retVal .= "$TAB_INDENT dcterms:source <$dsSourceURI> ;\n";
 	}
 	if($dsSPARQLEndpointURI){
-		$retVal .= "    void:sparqlEndpoint <$dsSPARQLEndpointURI> ;\n";
+		$retVal .= "$TAB_INDENT void:sparqlEndpoint <$dsSPARQLEndpointURI> ;\n";
 	}
 	if($dsLookupURI){
-		$retVal .= "    void:uriLookupEndpoint <$dsLookupURI> ;\n";
+		$retVal .= "$TAB_INDENT void:uriLookupEndpoint <$dsLookupURI> ;\n";
 	}
 	if($dsDumpURI){
-		$retVal .= "    void:dataDump <$dsDumpURI> ;\n";
+		$retVal .= "$TAB_INDENT void:dataDump <$dsDumpURI> ;\n";
 	}
 	if($dsVocURIList){
 		$i = 1;
 		foreach ($dsVocURIList as $dsVocURI) {
-			$retVal .= "    void:vocabulary <$dsVocURI> ;\n";
+			$retVal .= "$TAB_INDENT void:vocabulary <$dsVocURI> ;\n";
 			$i++;
 		}
 	}	
 	if($dsExampleURIList){
 		$i = 1;
 		foreach ($dsExampleURIList as $dsExampleURI) {
-			$retVal .= "    void:exampleResource <$dsExampleURI>";
+			$retVal .= "$TAB_INDENT void:exampleResource <$dsExampleURI>";
 			if(count($dsTopicURIList) == 0 && count($tdsList) == 0) {
 				if($i < count($dsExampleURIList)) $retVal .= " ;\n";
 				else $retVal .= " .\n";
@@ -221,7 +233,7 @@ function createVoiDTTL($dsParams){
 	if($dsTopicURIList){
 		$i = 1;
 		foreach ($dsTopicURIList as $dsTopicURI) {
-			$retVal .= "    dcterms:subject <$dsTopicURI>";
+			$retVal .= "$TAB_INDENT dcterms:subject <$dsTopicURI>";
 			if(count($tdsList) == 0) {
 				if($i < count($dsTopicURIList)) $retVal .= " ;\n";
 				else $retVal .= " .\n";
@@ -233,7 +245,7 @@ function createVoiDTTL($dsParams){
 	if($tdsList){
 		$i = 1;
 		foreach ($tdsList as $tdsListItem) {
-			$retVal .= "    void:subset " . $SELF_DS ."-DS$i";
+			$retVal .= "$TAB_INDENT void:subset " . $SELF_DS ."-DS$i";
 			if($i < count($tdsList)) $retVal .= " ;\n";
 			else $retVal .= " .\n";
 			$i++;

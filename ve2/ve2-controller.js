@@ -86,6 +86,9 @@ function validateInput(){
 		dsLicenseURI : "http://creativecommons.org/licenses/by-sa/3.0/",
 	}
 
+	//VoID metadata
+	var voidCreator = $("#voidCreator").val();
+	var voidCreatedDate = $("#voidCreatedDate").val();
 	//General metadata
 	var dsURI = $("#dsURI").val();	
 	var dsHomeURI = $("#dsHomeURI").val();
@@ -105,9 +108,11 @@ function validateInput(){
 	var dsLookupURI = $("#dsLookupURI").val();
 	var dsDumpURI = $("#dsDumpURI").val();
 	
-	
+	// VoID metadata
+	data.voidCreator = voidCreator;
+	data.voidCreated = voidCreatedDate;
 		
-	// general metadata
+	// general dataset metadata
 	if(dsURI != "" && (dsURI.substring(0,7) != "http://")) {
 		alert("If you provide a dataset URI, it must be a URI starting with 'http://'.");
 		return false;

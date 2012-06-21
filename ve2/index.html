@@ -112,6 +112,23 @@
 		<div class="secHead">Input: dataset characteristics</div>
 		<div id="dsItemSelection">
 			<div>
+				<h3><a class="nav" href="#">VoID Metadata</a></h3>
+				<div>
+					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain to me what I can do here ..." id="help1"></span></div>
+					<p class="note" id="help0content">Define metadata about the VoID description itself. For more information see the VoID guide, section '<a href="ref7" target="_new">VoID Description Metadata</a>'.</p>
+					<div>
+						<div class="flabel">VoID Creator</div>
+						<input type="text" size="50" id="voidCreator" value="" />
+						<p class="fyi">Provide a URI (<a href="http://esw.w3.org/topic/WebID" target="_new">Web ID</a>) identifying the person or organisation that actually provides the dataset in RDF (for example: http://example.org/me).</p>
+					</div>
+					<div>
+						<div class="flabel">VoID Created Date</div>
+						<input type="text" id="voidCreatedDate" />
+						<p class="fyi">Enter the date when the VoID description was created.</p>
+					</div>
+				</div>
+			</div>
+			<div>
 				<h3><a class="nav" href="#">General dataset metadata</a></h3>
 				<div>
 					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain to me what I can do here ..." id="help1"></span></div>
@@ -254,24 +271,7 @@
 	
 	<div id="vdForm">
 		<h3  class="secHead">Output: VoID Dataset Description</h3>
-			<textarea id="vdOutput" cols="80" rows="40">
-@prefix dcterms: &lt;http://purl.org/dc/terms/&gt; .
-@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
-@prefix pav: &lt;http://purl.org/pav/2.0/&gt; .
-@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
-@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
-@prefix void: &lt;http://rdfs.org/ns/void#&gt; .
-@prefix : &lt;#&gt; .
-
-## your dataset
-:myDS rdf:type void:Dataset ;
-    foaf:homepage &lt;http://example.org/&gt; ;
-    dcterms:title "Example Dataset" ;
-    dcterms:description "A simple dataset in RDF." ;
-    pav:license &lt;http://creativecommons.org/licenses/by-sa/3.0/&gt; ;
-. 
-</textarea>
+			<textarea id="vdOutput" cols="80" rows="40" />
 	</div>
 
 	</div>
