@@ -84,9 +84,11 @@ function validateInput(){
 		dsHomeURI : "http://example.org/",
 		dsName : "Example Dataset",
 		dsLicenseURI : "http://creativecommons.org/licenses/by-sa/3.0/",
-	}
+	};
 
 	//VoID metadata
+	var voidTitle = $("#voidTitle").val();
+	var voidDescription = $("#voidDescription").val();
 	var voidCreator = $("#voidCreator").val();
 	var voidCreatedDate = $("#voidCreatedDate").val();
 	//General metadata
@@ -109,6 +111,8 @@ function validateInput(){
 	var dsDumpURI = $("#dsDumpURI").val();
 	
 	// VoID metadata
+	data.voidTitle = voidTitle;
+	data.voidDescription = voidDescription;
 	data.voidCreator = voidCreator;
 	data.voidCreated = voidCreatedDate;
 		

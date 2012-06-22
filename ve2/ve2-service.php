@@ -149,6 +149,8 @@ function createVoiDTTL($dsParams){
 	global $TAB_INDENT;
 	$retVal = $BASE_TTL;
 	//VoID metadata
+	$voidTitle = $dsParams["voidTitle"];
+	$voidDescription = $dsParams["voidDescription"];
 	$voidCreator = $dsParams["voidCreator"];
 	$voidCreated = $dsParams["voidCreated"];
 	//Basic metadata
@@ -172,6 +174,8 @@ function createVoiDTTL($dsParams){
 	
 	//VoID description
 	$retVal .= "<> rdf:type void:DatasetDescription ;\n";
+	$retVal .= "$TAB_INDENT dcterms:title \"$voidTitle\"^^xsd:string ;\n";
+	$retVal .= "$TAB_INDENT dcterms:description \"\"\"$voidDescription\"\"\"^^xsd:string ;\n";
 	$retVal .= "$TAB_INDENT pav:createdBy <$voidCreator> ;\n";
 	$retVal .= "$TAB_INDENT pav:createdOn \"$voidCreated\"^^xsd:date ;\n";
 	// the dataset
@@ -186,8 +190,8 @@ function createVoiDTTL($dsParams){
 		$retVal .= "$SELF_DS rdf:type void:Dataset ;\n";
 	}
 	$retVal .= "$TAB_INDENT foaf:homepage <$dsHomeURI> ;\n";
-	$retVal .= "$TAB_INDENT dcterms:title \"$dsName\" ;\n";
-	$retVal .= "$TAB_INDENT dcterms:description \"$dsDescription\" ;\n";
+	$retVal .= "$TAB_INDENT dcterms:title \"$dsName\"^^xsd:string ;\n";
+	$retVal .= "$TAB_INDENT dcterms:description \"\"\"$dsDescription\"\"\"^^xsd:string ;\n";
 	if($dsLicenseURI){
 		$retVal .= "$TAB_INDENT pav:license <$dsLicenseURI> ;\n";
 	} else {
