@@ -4,22 +4,23 @@
 
 function createVoiD(){
 
-	var data = validateInput(); 
-	
-	setStatus("Submitting data ...");
-	$.ajax({
-		type: "POST",
-		url: ve2ServiceURI,
-		data: "dsParams="+ $.toJSON(data),
-		success: function(data){
-			$("#vdOutput").val(data);
-			setStatus("Ready");
-		},
-		error:  function(msg){
-			alert(data);
-			setStatus("Error creating voiD description.");
-		} 
-	});
+	var data = extractData(); 
+	if (validateData(data)) {
+		setStatus("Submitting data ...");
+		$.ajax({
+			type: "POST",
+			url: ve2ServiceURI,
+			data: "dsParams="+ $.toJSON(data),
+			success: function(data){
+				$("#vdOutput").val(data);
+				setStatus("Ready");
+			},
+			error:  function(msg){
+				alert(data);
+				setStatus("Error creating voiD description.");
+			} 
+		});
+	}
 }
 
 function inspectVoiD(){
@@ -79,7 +80,7 @@ function announceVoiDURI(){
 	});	
 }
 
-function validateInput(){
+function extractData(){
 	var data = {
 		dsHomeURI : "http://example.org/",
 		dsName : "Example Dataset",
@@ -87,113 +88,137 @@ function validateInput(){
 	};
 
 	//VoID metadata
-	var voidTitle = $("#voidTitle").val();
-	var voidDescription = $("#voidDescription").val();
-	var voidCreator = $("#voidCreator").val();
-	var voidCreatedDate = $("#voidCreatedDate").val();
+	data.voidTitle = $("#voidTitle").val();
+	data.voidDescription = $("#voidDescription").val();
+	data.voidCreator = $("#voidCreator").val();
+	data.voidCreatedDate = $("#voidCreatedDate").val();
 	//General metadata
-	var dsURI = $("#dsURI").val();	
-	var dsHomeURI = $("#dsHomeURI").val();
-	var dsName = $("#dsName").val();
-	var dsDescription = $("#dsDescription").val();
-	//License and provenance
-	var dsPublisherURI = $("#dsPublisherURI").val();
-	var dsSourceURI = $("#dsSourceURI").val();
-	var dsLicenseURI = $("#dsLicenseURI").val();
-	var dsVersion = $("#dsVersion").val();
-	//Other stuff
-	var dsExampleURIList = new Array();
-	var dsTopicURIList = new Array();
-	var tdsList = new Array();
-	var dsVocURIList = new Array();
-	var dsSPARQLEndpointURI = $("#dsSPARQLEndpointURI").val();
-	var dsLookupURI = $("#dsLookupURI").val();
-	var dsDumpURI = $("#dsDumpURI").val();
-	
-	// VoID metadata
-	data.voidTitle = voidTitle;
-	data.voidDescription = voidDescription;
-	data.voidCreator = voidCreator;
-	data.voidCreated = voidCreatedDate;
-		
-	// general dataset metadata
-	if(dsURI != "" && (dsURI.substring(0,7) != "http://")) {
-		alert("If you provide a dataset URI, it must be a URI starting with 'http://'.");
-		return false;
-	}
-	else data.dsURI = dsURI;
-
-	if(dsHomeURI == "" || (dsHomeURI.substring(0,7) != "http://")) {
-		alert("You have to provide a dataset homepage. This must be a URI starting with 'http://'.");
-		return false;
-	}
-	else data.dsHomeURI = dsHomeURI;
-	
-	if(dsName == "") {
-		alert("You have to provide a name for the dataset.");
-		return false;
-	}
-	else data.dsName = escape(dsName);
-	
-	if(dsDescription == "") {
-		alert("You have to provide a description for the dataset.");
-		return false;
-	}
-	else data.dsDescription = escape(dsDescription);
-
-//	if(dsLicenseURI == "" || (dsHomeURI.substring(0,7) != "http://")) {
-//		alert("You have to provide a license for the dataset. The license must be a URI starting with 'http://'.");
-//		return false;
-//	}
-//	else data.dsLicenseURI = escape(dsLicenseURI);
-	data.dsLicenseURI = dsLicenseURI;
-	data.dsVersion = dsVersion;
-	
-	// provenance and licensing
-	if (!$("#doMinimal").is(':checked')) { // don't take into account for minimal voiD file
-		data.dsPublisherURI = dsPublisherURI;
-		data.dsSourceURI = dsSourceURI;
-//		data.dsLicenseURI = dsLicenseURI;
-	}
-	
-	$(".dsExampleURI input").each(function (i) {
-		dsExampleURIList.push($(this).val());
-	});
-	data.dsExampleURIList = dsExampleURIList;
-	
-	// topics
-	$("#dsSelectedTopics div span").each(function (i) {
-		dsTopicURIList.push($(this).attr("resource"));
-	});
-	data.dsTopicURIList = dsTopicURIList;
-	
-	// interlinking
-	$("#tdsAddedTargets > div").each(function (i) {
-		var target = {
-			tdsHomeURI : $(this).find("a").attr("href"),
-			tdsLinkType : $(this).find("div span.tlinktype").text(),
-			tdsName : $(this).find("a").text(),
-			tdsDescription : $(this).find("a").attr("title"),
-			tdsExampleURI : $(this).find("div span.texample").text()
-		}
-		tdsList.push(target);
-	});
-	data.tdsList = tdsList;
-	// vocabularies
-	$(".dsVocURI input").each(function (i) {
-		dsVocURIList.push($(this).val());
-	});
-	data.dsVocURIList = dsVocURIList;
-	
-	// access methods
-	if (!$("#doMinimal").is(':checked')) { // don't take into account for minimal voiD file
-		data.dsSPARQLEndpointURI = dsSPARQLEndpointURI;
-		data.dsLookupURI = dsLookupURI;
-		data.dsDumpURI = dsDumpURI;
-	}
-	
+	data.dsURI = $("#dsURI").val();	
+	data.dsHomeURI = $("#dsHomeURI").val();
+	data.dsName = $("#dsName").val();
+	data.dsDescription = $("#dsDescription").val();
+	data.dsUriNs = $("#dsUriNs").val();
+//	//License and provenance
+	data.dsPublisherURI = $("#dsPublisherURI").val();
+	data.dsSourceURI = $("#dsSourceURI").val();
+	data.dsLicenseURI = $("#dsLicenseURI").val();
+	data.dsVersion = $("#dsVersion").val();
+//	//Other stuff
+//	var dsExampleURIList = new Array();
+//	var dsTopicURIList = new Array();
+//	var tdsList = new Array();
+//	var dsVocURIList = new Array();
+//	var dsSPARQLEndpointURI = $("#dsSPARQLEndpointURI").val();
+//	var dsLookupURI = $("#dsLookupURI").val();
+//	var dsDumpURI = $("#dsDumpURI").val();
 	return data;
 }
+
+function validateData(data) {
+	
+	// VoID metadata
+	if (data.voidTitle == "") {
+		alert("Please provide a title for your VoID document.");
+		$("#voidTitle").focus();
+		return false;
+	}
+//	data.voidDescription = voidDescription;
+//	data.voidCreator = voidCreator;
+//	data.voidCreated = voidCreatedDate;
+//		
+//	// general dataset metadata
+//	if(dsURI != "" && (dsURI.substring(0,7) != "http://")) {
+//		alert("If you provide a dataset URI, it must be a URI starting with 'http://'.");
+//		return false;
+//	}
+//	else data.dsURI = dsURI;
+//
+//	if(dsHomeURI != "" && (dsHomeURI.substring(0,7) != "http://")) {
+//		alert("If you provide a dataset URI, it must be a URI starting with 'http://'.");
+//		return false;
+//	}
+//	else data.dsHomeURI = dsHomeURI;
+//	
+////	if(validateUriValue(dsHomeURI, "dataset homepage")) data.dsHomeURI = dsHomeURI;
+//	if(validateValue(dsName, "name for the dataset")) {
+//		data.dsName = escape(dsName);
+//	}	
+//	if(validateValue(dsDescription, "description for the dataset")) {
+//		data.dsDescription = escape(dsDescription);
+//	}	
+//	if(validateUriValue(dsUriNs, "URI namespace")){
+//		data.dsUriNs = escape(dsUriNs);
+//	}
+//
+////	if(dsLicenseURI == "" || (dsHomeURI.substring(0,7) != "http://")) {
+////		alert("You have to provide a license for the dataset. The license must be a URI starting with 'http://'.");
+////		return false;
+////	}
+////	else data.dsLicenseURI = escape(dsLicenseURI);
+//	data.dsLicenseURI = dsLicenseURI;
+//	data.dsVersion = dsVersion;
+//	
+//	// provenance and licensing
+//	if (!$("#doMinimal").is(':checked')) { // don't take into account for minimal voiD file
+//		data.dsPublisherURI = dsPublisherURI;
+//		data.dsSourceURI = dsSourceURI;
+////		data.dsLicenseURI = dsLicenseURI;
+//	}
+//	
+//	$(".dsExampleURI input").each(function (i) {
+//		dsExampleURIList.push($(this).val());
+//	});
+//	data.dsExampleURIList = dsExampleURIList;
+//	
+//	// topics
+//	$("#dsSelectedTopics div span").each(function (i) {
+//		dsTopicURIList.push($(this).attr("resource"));
+//	});
+//	data.dsTopicURIList = dsTopicURIList;
+//	
+//	// interlinking
+//	$("#tdsAddedTargets > div").each(function (i) {
+//		var target = {
+//			tdsHomeURI : $(this).find("a").attr("href"),
+//			tdsLinkType : $(this).find("div span.tlinktype").text(),
+//			tdsName : $(this).find("a").text(),
+//			tdsDescription : $(this).find("a").attr("title"),
+//			tdsExampleURI : $(this).find("div span.texample").text()
+//		}
+//		tdsList.push(target);
+//	});
+//	data.tdsList = tdsList;
+//	// vocabularies
+//	$(".dsVocURI input").each(function (i) {
+//		dsVocURIList.push($(this).val());
+//	});
+//	data.dsVocURIList = dsVocURIList;
+//	
+//	// access methods
+//	if (!$("#doMinimal").is(':checked')) { // don't take into account for minimal voiD file
+//		data.dsSPARQLEndpointURI = dsSPARQLEndpointURI;
+//		data.dsLookupURI = dsLookupURI;
+//		data.dsDumpURI = dsDumpURI;
+		return true;
+	}
+//	
+//function validateValue(value, errorString){
+//	if(value == "") {
+//		alert("You have to provide a " + errorString + ".");
+//		return false;
+//	} else {
+//		return true;
+//	}
+//}
+//
+//function validateUriValue(URI, errorString){
+//	if(URI == "" || (URI.substring(0,7) != "http://")) {
+//		alert("You have to provide a " + errorString + ". This must be a URI starting with 'http://'.");
+//		return false;
+//	} else {
+//		return true;
+//	}
+//}
 
 function validateURI(URI){
 	setStatus("Validating " + URI);

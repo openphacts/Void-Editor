@@ -103,7 +103,7 @@ $(function(){
 	});
 		
 	// auto-update on focus change
-	$("input").focus(function () {
+	$("input").change(function () {
 		autocompletes();
 		createVoiD();
 	});
