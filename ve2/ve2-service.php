@@ -49,6 +49,7 @@ $BASE_TTL = "
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix void: <http://rdfs.org/ns/void#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix : <#> .
 
 ## your VoID description \n";
@@ -151,13 +152,14 @@ function createVoiDTTL($dsParams){
 	//VoID metadata
 	$voidTitle = $dsParams["voidTitle"];
 	$voidDescription = $dsParams["voidDescription"];
-	$voidCreator = $dsParams["voidCreator"];
-	$voidCreated = $dsParams["voidCreated"];
+	$voidCreatedBy = $dsParams["voidCreatedBy"];
+	$voidCreatedOn = $dsParams["voidCreatedOn"];
 	//Basic metadata
 	$dsURI = $dsParams["dsURI"];
 	$dsHomeURI = $dsParams["dsHomeURI"];
 	$dsName = $dsParams["dsName"];
 	$dsDescription = $dsParams["dsDescription"];
+	$dsUriNs = $dsParams["dsUriNs"];
 	//Provenance and licensing
 	$dsPublisherURI = $dsParams["dsPublisherURI"];
 	$dsSourceURI = $dsParams["dsSourceURI"];
@@ -176,8 +178,8 @@ function createVoiDTTL($dsParams){
 	$retVal .= "<> rdf:type void:DatasetDescription ;\n";
 	$retVal .= "$TAB_INDENT dcterms:title \"$voidTitle\"^^xsd:string ;\n";
 	$retVal .= "$TAB_INDENT dcterms:description \"\"\"$voidDescription\"\"\"^^xsd:string ;\n";
-	$retVal .= "$TAB_INDENT pav:createdBy <$voidCreator> ;\n";
-	$retVal .= "$TAB_INDENT pav:createdOn \"$voidCreated\"^^xsd:date ;\n";
+	$retVal .= "$TAB_INDENT pav:createdBy <$voidCreatedBy> ;\n";
+	$retVal .= "$TAB_INDENT pav:createdOn \"$voidCreatedOn\"^^xsd:date ;\n";
 	// the dataset
 	if($dsURI){
 		$retVal .= "$TAB_INDENT foaf:primaryTopic <$dsURI> .\n\n";
@@ -192,6 +194,7 @@ function createVoiDTTL($dsParams){
 	$retVal .= "$TAB_INDENT foaf:homepage <$dsHomeURI> ;\n";
 	$retVal .= "$TAB_INDENT dcterms:title \"$dsName\"^^xsd:string ;\n";
 	$retVal .= "$TAB_INDENT dcterms:description \"\"\"$dsDescription\"\"\"^^xsd:string ;\n";
+	$retVal .= "$TAB_INDENT void:uriSpace \"$dsUriNs\"^^xsd:string ;\n";
 	if($dsLicenseURI){
 		$retVal .= "$TAB_INDENT pav:license <$dsLicenseURI> ;\n";
 	} else {
@@ -255,6 +258,7 @@ function createVoiDTTL($dsParams){
 			$i++;
 		}
 	}
+	$retVal .= ".";
 
 	// linksets 
 	if($tdsList){

@@ -2,6 +2,24 @@
 /* ve2 data-controller and service conmmunicate code  */
 /******************************************************/
 
+function createSkeletonVoiD() {
+	var data = extractData(); 
+	setStatus("Submitting data ...");
+	$.ajax({
+		type: "POST",
+		url: ve2ServiceURI,
+		data: "dsParams="+ $.toJSON(data),
+		success: function(data){
+			$("#vdOutput").val(data);
+			setStatus("Ready");
+		},
+		error:  function(msg){
+			alert(data);
+			setStatus("Error creating voiD description.");
+		} 
+	});	
+}
+
 function createVoiD(){
 
 	var data = extractData(); 
@@ -90,8 +108,8 @@ function extractData(){
 	//VoID metadata
 	data.voidTitle = $("#voidTitle").val();
 	data.voidDescription = $("#voidDescription").val();
-	data.voidCreator = $("#voidCreator").val();
-	data.voidCreatedDate = $("#voidCreatedDate").val();
+	data.voidCreatedBy = $("#voidCreatedBy").val();
+	data.voidCreatedOn = $("#voidCreatedOn").val();
 	//General metadata
 	data.dsURI = $("#dsURI").val();	
 	data.dsHomeURI = $("#dsHomeURI").val();
@@ -122,8 +140,16 @@ function validateData(data) {
 		$("#voidTitle").focus();
 		return false;
 	}
-//	data.voidDescription = voidDescription;
-//	data.voidCreator = voidCreator;
+	if (data.voidDescription == "") {
+		alert("Please provide a description for your VoID document.");
+		$("#voidDescription").focus();
+		return false;
+	}
+	if (data.voidCreatedBy == "" || (data.voidCreatedBy.substring(0,7) != "http://")) {
+		alert("Please provide a URI for your identity.");
+		$("#voidCreatedBy").focus();
+		return false;
+	}
 //	data.voidCreated = voidCreatedDate;
 //		
 //	// general dataset metadata

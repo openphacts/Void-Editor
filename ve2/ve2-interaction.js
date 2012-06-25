@@ -23,13 +23,10 @@ function initUI(){
 	$("a[href='ref5']").attr("href", vgBase + vgREFVocabularies_used);
 	$("a[href='ref6']").attr("href", vgBase + vgREFSPARQL_endpoint_and_Examp);
 	$("a[href='ref7']").attr("href", voidSpecBase + voidSpecREFVoID_Metadata);	
-	$("#voidCreatedDate").datepicker({
-		dateFormat: "yy-mm-dd",
-		onSelect: function( selectedDate ) {createVoiD();}
-	});
 	
-	$("#voidCreatedDate").datepicker("setDate", new Date());
-	createVoiD();
+	$("#voidCreatedOn").datepicker("setDate", new Date());
+	
+	createSkeletonVoiD();
 }
 
 function clearTopics(){
@@ -60,7 +57,12 @@ function setStatus(status){
 
 // jQuery main interaction code
 $(function(){
-	
+
+	$("#voidCreatedOn").datepicker({
+		dateFormat: "yy-mm-dd",
+		onSelect: function( selectedDate ) { createVoiD(); },
+	});	
+
 	initUI(); // reset all values to defaults
 	
 	// set up left-hand main navigational structure
@@ -107,10 +109,6 @@ $(function(){
 		autocompletes();
 		createVoiD();
 	});
-
-	$("#doMinimal").click(function () {
-		createVoiD();
-	});	
 		
 	//////////////////////
 	// handle example URIs
