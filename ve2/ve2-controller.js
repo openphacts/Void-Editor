@@ -20,10 +20,10 @@ function createSkeletonVoiD() {
 	});	
 }
 
-function createVoiD(){
+function createVoiD(section){
 
 	var data = extractData(); 
-	if (validateData(data)) {
+	if (validateData(data, section)) {
 		setStatus("Submitting data ...");
 		$.ajax({
 			type: "POST",
@@ -41,70 +41,8 @@ function createVoiD(){
 	}
 }
 
-function inspectVoiD(){
-	var voiDInTTL = $("#vdOutput").val();
-	$.ajax({
-		type: "POST",
-		url: ve2ServiceURI,
-		data: "inspect="+ voiDInTTL,
-		success: function(data){
-			window.open(
-				data,
-				'sindiceInspectorWindow',
-				'left=100,top=100,width=800,height=600,toolbar=0,resizable=1'
-			);
-			 
-			return false;
-			/*
-			$('#inspector').dialog({
-								width: 800,
-								height: 600
-							});
-			$("#inspector").html("<div>Inspect your voiD file via Sindice's Web Inspector: <a href='" + data +"' target='_new'>start ...</a>.</div>");
-			$("#inspector").dialog("open");
-			*/
-			setStatus("Ready");
-		},
-		error:  function(msg){
-			alert(data);
-		} 
-	});
-}
-
-function announceVoiDURI(){
-	var voiDURI = $("#vdAnnounceURI").val();
-	
-	if(voiDURI == "" || (voiDURI.substring(0,7) != "http://")) {
-		alert("You have to provide an HTTP URI for the voiD file!");
-		return false;
-	}
-	
-	setStatus("Announcing voiD file");
-	$("#vdAnnounceResultOut").html("");
-	$("#busy").show("normal");	
-	$("#vdAnnounceResult").show("normal");
-	$.ajax({
-		type: "POST",
-		url: ve2ServiceURI,
-		data: "announce="+ escape(voiDURI),
-		success: function(data){
-			$("#busy").hide("fast");
-			$("#vdAnnounceResultOut").html(data);
-			setStatus("Ready");
-		},
-		error:  function(msg){
-			alert(data);
-		} 
-	});	
-}
-
 function extractData(){
-	var data = {
-		dsHomeURI : "http://example.org/",
-		dsName : "Example Dataset",
-		dsLicenseURI : "http://creativecommons.org/licenses/by-sa/3.0/",
-	};
-
+	var data = {};
 	//VoID metadata
 	data.voidTitle = $("#voidTitle").val();
 	data.voidDescription = $("#voidDescription").val();
@@ -115,11 +53,11 @@ function extractData(){
 	data.dsHomeURI = $("#dsHomeURI").val();
 	data.dsName = $("#dsName").val();
 	data.dsDescription = $("#dsDescription").val();
+	data.dsLicenseURI = $("#dsLicenseURI").val();
 	data.dsUriNs = $("#dsUriNs").val();
 //	//License and provenance
 	data.dsPublisherURI = $("#dsPublisherURI").val();
 	data.dsSourceURI = $("#dsSourceURI").val();
-	data.dsLicenseURI = $("#dsLicenseURI").val();
 	data.dsVersion = $("#dsVersion").val();
 //	//Other stuff
 //	var dsExampleURIList = new Array();
@@ -132,49 +70,92 @@ function extractData(){
 	return data;
 }
 
-function validateData(data) {
-	
+function validateData(data, section) {
+	switch (section)
+	{
+		case "void-metadata":
+			return validateVoidMetadata(data);
+			break;
+		case "ds-metadata":
+			return validateDSMetadata(data);
+			break;
+		default:
+			if (!validateVoidMetadata(data)) return false;
+			if (!validateDSMetadata(data)) return false;
+			return true;
+			break;
+	}
+	return false;
+}
+
+function validateVoidMetadata(data) {
 	// VoID metadata
 	if (data.voidTitle == "") {
 		alert("Please provide a title for your VoID document.");
+		$("#dsItemSelection").accordion('activate', 0 );
 		$("#voidTitle").focus();
 		return false;
 	}
 	if (data.voidDescription == "") {
 		alert("Please provide a description for your VoID document.");
+		$("#dsItemSelection").accordion('activate', 0 );
 		$("#voidDescription").focus();
 		return false;
 	}
 	if (data.voidCreatedBy == "" || (data.voidCreatedBy.substring(0,7) != "http://")) {
+//		alert($("#dsItemsSelection").accordion( "option", "active" ));
 		alert("Please provide a URI for your identity.");
+		$("#dsItemSelection").accordion('activate', 0 );
 		$("#voidCreatedBy").focus();
 		return false;
 	}
-//	data.voidCreated = voidCreatedDate;
-//		
-//	// general dataset metadata
-//	if(dsURI != "" && (dsURI.substring(0,7) != "http://")) {
-//		alert("If you provide a dataset URI, it must be a URI starting with 'http://'.");
-//		return false;
-//	}
-//	else data.dsURI = dsURI;
-//
-//	if(dsHomeURI != "" && (dsHomeURI.substring(0,7) != "http://")) {
-//		alert("If you provide a dataset URI, it must be a URI starting with 'http://'.");
-//		return false;
-//	}
-//	else data.dsHomeURI = dsHomeURI;
-//	
-////	if(validateUriValue(dsHomeURI, "dataset homepage")) data.dsHomeURI = dsHomeURI;
-//	if(validateValue(dsName, "name for the dataset")) {
-//		data.dsName = escape(dsName);
-//	}	
-//	if(validateValue(dsDescription, "description for the dataset")) {
-//		data.dsDescription = escape(dsDescription);
-//	}	
-//	if(validateUriValue(dsUriNs, "URI namespace")){
-//		data.dsUriNs = escape(dsUriNs);
-//	}
+	return true;
+}
+
+function validateDSMetadata(data) {
+	// general dataset metadata
+	if(data.dsURI != "" && 
+			!((data.dsURI.substring(0,7) == "http://") || (data.dsURI.substring(0,1) == ":"))) {
+		alert("If you provide a dataset URI, it must be a URI starting with 'http://' or a relative URI starting with ':'.");
+		$("#dsItemSelection").accordion('activate', 1 );
+		$("#dsURI").focus();
+		return false;
+	}
+	if(data.dsHomeURI == "" || (data.dsHomeURI.substring(0,7) != "http://")) {
+		alert("You must provide dataset homepage. This must be a URI starting with 'http://'.");
+		$("#dsItemSelection").accordion('activate', 1 );
+		$("#dsHomeURI").focus();
+		return false;
+	}
+	if(data.dsName == "") {
+		alert("Please provide a name for your dataset.");
+		$("#dsItemSelection").accordion('activate', 1 );
+		$("#dsName").focus();
+		return false;
+	}	
+	if(data.dsDescription == "") {
+		alert("Please provide a name for your dataset.");
+		$("#dsItemSelection").accordion('activate', 1 );
+		$("#dsDescription").focus();
+		return false;
+	}
+	if (data.dsLicenseURI == "other") {
+		data.dsLicenseURI = $("#dsLicenseURIOther").val();
+		if (data.dsLicenseURI == "" || (data.dsUriNs.substring(0,7) != "http://")) {
+			alert("You have chosen to supply your own license. Please provide the URI for the license.");
+			$("#dsItemSelection").accordion('activate', 1 );
+			$("#dsLicenseURIOther").focus();
+			return false;
+		}
+	}
+	if(data.dsUriNs == "" || (data.dsUriNs.substring(0,7) != "http://")){
+		alert("Please provide the URI namespace for the dataset.");
+		$("#dsItemSelection").accordion('activate', 1 );
+		$("#dsUriNs").focus();
+		return false;
+	}
+	return true;
+}
 //
 ////	if(dsLicenseURI == "" || (dsHomeURI.substring(0,7) != "http://")) {
 ////		alert("You have to provide a license for the dataset. The license must be a URI starting with 'http://'.");
@@ -225,8 +206,8 @@ function validateData(data) {
 //		data.dsSPARQLEndpointURI = dsSPARQLEndpointURI;
 //		data.dsLookupURI = dsLookupURI;
 //		data.dsDumpURI = dsDumpURI;
-		return true;
-	}
+//		return true;
+//	}
 //	
 //function validateValue(value, errorString){
 //	if(value == "") {

@@ -70,7 +70,7 @@ $(function(){
 		header: "h3",
 		autoHeight: false,
 		change: function(event, ui) {
-			createVoiD(); 
+			createVoiD(ui.newHeader[0].id);
 		}
 	 });
 	

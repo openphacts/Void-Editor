@@ -174,32 +174,32 @@ function createVoiDTTL($dsParams){
 	$dsLookupURI = $dsParams["dsLookupURI"];
 	$dsDumpURI = $dsParams["dsDumpURI"];
 	
+	if(!$dsURI) {
+		$dsURI = $SELF_DS;
+	} elseif (substr($dsURI, 0, 7) == "http://") {
+		$dsURI = "<$dsURI>"; 
+	}
+	
 	//VoID description
 	$retVal .= "<> rdf:type void:DatasetDescription ;\n";
 	$retVal .= "$TAB_INDENT dcterms:title \"$voidTitle\"^^xsd:string ;\n";
 	$retVal .= "$TAB_INDENT dcterms:description \"\"\"$voidDescription\"\"\"^^xsd:string ;\n";
 	$retVal .= "$TAB_INDENT pav:createdBy <$voidCreatedBy> ;\n";
 	$retVal .= "$TAB_INDENT pav:createdOn \"$voidCreatedOn\"^^xsd:date ;\n";
+	$retVal .= "$TAB_INDENT foaf:primaryTopic $dsURI .\n\n";
 	// the dataset
-	if($dsURI){
-		$retVal .= "$TAB_INDENT foaf:primaryTopic <$dsURI> .\n\n";
-		$retVal .= "## your VoID description \n";
-		$retVal .= "<$dsURI> rdf:type void:Dataset ;\n";
-	}
-	else {
-		$retVal .= "$TAB_INDENT foaf:primaryTopic $SELF_DS .\n\n";
-		$retVal .= "## your VoID description \n";
-		$retVal .= "$SELF_DS rdf:type void:Dataset ;\n";
-	}
+	$retVal .= "## your VoID description \n";
+	$retVal .= "$dsURI rdf:type void:Dataset ;\n";
 	$retVal .= "$TAB_INDENT foaf:homepage <$dsHomeURI> ;\n";
 	$retVal .= "$TAB_INDENT dcterms:title \"$dsName\"^^xsd:string ;\n";
 	$retVal .= "$TAB_INDENT dcterms:description \"\"\"$dsDescription\"\"\"^^xsd:string ;\n";
-	$retVal .= "$TAB_INDENT void:uriSpace \"$dsUriNs\"^^xsd:string ;\n";
 	if($dsLicenseURI){
 		$retVal .= "$TAB_INDENT pav:license <$dsLicenseURI> ;\n";
 	} else {
 		$retVal .= "$TAB_INDENT pav:license $LICENSE_URI ;\n";
 	}
+	$retVal .= "$TAB_INDENT void:uriSpace \"$dsUriNs\"^^xsd:string ;\n";
+	//Provenance and versions
 	if($dsVersion){
 		$retVal .= "$TAB_INDENT pav:version \"$dsVersion\" ;\n";
 	}
