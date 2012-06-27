@@ -55,10 +55,34 @@ function extractData(){
 	data.dsDescription = $("#dsDescription").val();
 	data.dsLicenseURI = $("#dsLicenseURI").val();
 	data.dsUriNs = $("#dsUriNs").val();
-//	//License and provenance
-	data.dsPublisherURI = $("#dsPublisherURI").val();
-	data.dsSourceURI = $("#dsSourceURI").val();
-	data.dsVersion = $("#dsVersion").val();
+	//Provenance
+	data.origin = $("input[name=data-origin]:checked").val();
+	switch (data.origin) {
+	case "original":
+		data.provAccessedFrom = $("#provAccessedFrom").val();
+		data.provAccessedOn = $("#provAccessedOn").val();
+		data.provPublishedOn = $("#provPublishedOn").val();
+		data.provModifiedOn = $("#provModifiedOn").val();
+		data.provAccessedBy = $("#provAccessedBy").val();	
+		break;
+	case "retrieved":
+		data.provRetrievedFrom = $("#provRetrievedFrom").val();
+		data.provRetrievedOn = $("#provRetrievedOn").val();
+		data.provRetrievedBy = $("#provRetrievedBy").val();	
+		break;
+	case "imported":
+		data.provImportedFrom = $("#provImportedFrom").val();
+		data.provImportedOn = $("#provImportedOn").val();
+		data.provImportedBy = $("#provImportedBy").val();	
+		break;
+	case "derived":
+		data.provDerivedFrom = $("#provDerivedFrom").val();
+		data.provDerivedOn = $("#provDerivedOn").val();
+		data.provDerivedBy = $("#provDerivedBy").val();	
+		break;
+	default:
+		break;
+	}
 //	//Other stuff
 //	var dsExampleURIList = new Array();
 //	var dsTopicURIList = new Array();
@@ -79,9 +103,13 @@ function validateData(data, section) {
 		case "ds-metadata":
 			return validateDSMetadata(data);
 			break;
+		case "ds-provenance":
+			return validateProvMetadata(data);
+			break;
 		default:
 			if (!validateVoidMetadata(data)) return false;
 			if (!validateDSMetadata(data)) return false;
+			if (!validateProvMetadata(data)) return false;
 			return true;
 			break;
 	}
@@ -157,12 +185,87 @@ function validateDSMetadata(data) {
 	return true;
 }
 //
-////	if(dsLicenseURI == "" || (dsHomeURI.substring(0,7) != "http://")) {
-////		alert("You have to provide a license for the dataset. The license must be a URI starting with 'http://'.");
-////		return false;
-////	}
-////	else data.dsLicenseURI = escape(dsLicenseURI);
-//	data.dsLicenseURI = dsLicenseURI;
+function validateProvMetadata(data) {
+	switch (data.origin) {
+	case "original":
+		if(data.provAccessedFrom == "" || (data.provAccessedFrom.substring(0,7) != "http://")) {
+			alert("Please provide the URI for the dataset on the web.");
+			$("#dsItemSelection").accordion('activate', 2);
+			$("#provAccessedFrom").focus();
+			return false;
+		}
+		if(data.provAccessedBy == "" || (data.provAccessedBy.substring(0,7) != "http://")) {
+			alert("Please provide a URI for the person/organisation who accessed the dataset.");
+			$("#dsItemSelection").accordion('activate', 2);
+			$("#provAccessedBy").focus();
+			return false;
+		}
+		break;
+	case "retrieved":
+		if(data.provRetrievedFrom == "" || (data.provRetrievedFrom.substring(0,7) != "http://")) {
+			alert("Please provide the URI where the dataset was retrieved from.");
+			$("#dsItemSelection").accordion('activate', 2);
+			$("#provRetrievedFrom").focus();
+			return false;
+		}
+		if(data.provRetrievedOn == "") {
+			alert("Please select the date when the data was retrieved.");
+			$("#dsItemSelection").accordion('activate', 2);
+			$("#provRetrievedOn").focus();
+			return false;
+		}
+		if(data.provRetrievedBy == "" || (data.provRetrievedBy.substring(0,7) != "http://")) {
+			alert("Please provide a URI for the person/organisation who retrieved the dataset.");
+			$("#dsItemSelection").accordion('activate', 2);
+			$("#provRetrievedBy").focus();
+			return false;
+		}
+		break;
+	case "imported":
+		if(data.provImportedFrom == "" || (data.provImportedFrom.substring(0,7) != "http://")) {
+			alert("Please provide the URI where the original dataset was retrieved from.");
+			$("#dsItemSelection").accordion('activate', 2);
+			$("#provImportedFrom").focus();
+			return false;
+		}
+		if(data.provImportedOn == "") {
+			alert("Please select the date when the data was converted.");
+			$("#dsItemSelection").accordion('activate', 2);
+			$("#provImportedOn").focus();
+			return false;
+		}
+		if(data.provImportedBy == "" || (data.provImportedBy.substring(0,7) != "http://")) {
+			alert("Please provide a URI for the person/organisation who converted the dataset.");
+			$("#dsItemSelection").accordion('activate', 2);
+			$("#provImportedBy").focus();
+			return false;
+		}
+		break;
+	case "derived":
+		if(data.provDerivedFrom == "" || (data.provDerivedFrom.substring(0,7) != "http://")) {
+			alert("Please provide the URI where the original dataset was retrieved from.");
+			$("#dsItemSelection").accordion('activate', 2);
+			$("#provDerivedFrom").focus();
+			return false;
+		}
+		if(data.provDerivedOn == "") {
+			alert("Please select the date when the data was processed.");
+			$("#dsItemSelection").accordion('activate', 2);
+			$("#provDerivedOn").focus();
+			return false;
+		}
+		if(data.provDerivedBy == "" || (data.provDerivedBy.substring(0,7) != "http://")) {
+			alert("Please provide a URI for the person/organisation who processed the dataset.");
+			$("#dsItemSelection").accordion('activate', 2);
+			$("#provDerivedBy").focus();
+			return false;
+		}
+		break;
+	default:
+		break;
+	}
+	return true;
+}
 //	data.dsVersion = dsVersion;
 //	
 //	// provenance and licensing

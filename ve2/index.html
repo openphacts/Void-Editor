@@ -218,26 +218,123 @@
 				<div>
 					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain to me what I can do here ..." id="help5"></span></div>
 					<p class="note" id="help5content">
-						State who publishes the data and how it has been derived. 
-						For more information see the VoID guide, section 
+						Please provide details of how the RDF version of the dataset was generated and 
+						published, section 
 						'<a href="ref1" target="_new">General Dataset Metadata</a>'.
 					</p>
-					<div>
-						<div class="flabel">Publisher</div>
-						<input type="text" size="25" id="dsPublisherURI" value="" />
-						<p class="fyi">Provide a URI (<a href="http://esw.w3.org/topic/WebID" target="_new">Web ID</a>) identifying the person or organisation that actually provides the dataset in RDF (for example: http://example.org/me)</p>
+					<div class="flabel">Please select the origin of the data from the following options
+					and then complete the resulting form.</div>
+					<div class="flabel">
+						<input type="radio" id="doProvOriginalSelect" name="data-origin" value="original"/>					<!-- </span> --> 
+					 	Using Original Data Location
+					</div>
+					<div class="flabel">
+						<input type="radio" id="doProvRetrievedSelect" name="data-origin" value="retrieved"/> 
+						Downloaded a copy of the original data
+					</div>
+					<div class="flabel">
+						<input type="radio" id="doProvImportedSelect" name="data-origin" value="imported"/>
+						Data format conversion, e.g. RDBMS -> RDF
+					</div>
+					<div class="flabel">
+						<input type="radio" id="doProvDerivedSelect" name="data-origin" value="derived"/>
+						Data derived from another source
+					</div>
+					<div id="provOriginalPane">
+						<div>
+							<div class="flabel">Published at</div>
+							<input type="text" size="25" id="provAccessedFrom" value="" />
+							<p class="fyi">Provide a URI for the location where the data originate.</p>
+						</div>
+						<div>
+							<div class="flabel">Date accessed</div>
+							<input type="text" id="provAccessedOn" />
+							<p class="fyi">Enter the date when the data was accessed.</p>
+						</div>
+						<div>
+							<div class="flabel">Date published</div>
+							<input type="text" id="provPublishedOn" />
+							<p class="fyi">Enter the date when the data was published.</p>
+						</div>
+						<div>
+							<div class="flabel">Date modified</div>
+							<input type="text" id="provModifiedOn" />
+							<p class="fyi">Enter the date when the data was last modified.</p>
+						</div>
+						<div>
+							<div class="flabel">Accessed by</div>
+							<input type="text" id="provAccessedBy" />
+							<p class="fyi">Enter an identifier for the person or organisation who accessed the data.</p>
+						</div>
+					</div>
+					<div id="provRetrievedPane">
+						<div>
+							<div class="flabel">Downloaded from</div>
+							<input type="text" size="25" id="provRetrievedFrom" value="" />
+							<p class="fyi">Provide a URI for the location where the data was downloaded from.</p>
+						</div>
+						<div>
+							<div class="flabel">Date downloaded</div>
+							<input type="text" id="provRetrievedOn" />
+							<p class="fyi">Enter the date when the data was downloaded.</p>
+						</div>
+						<div>
+							<div class="flabel">Downloaded by</div>
+							<input type="text" id="provRetrievedBy" />
+							<p class="fyi">Enter an identifier for the person or organisation who downloaded the data.</p>
+						</div>
+					</div>
+					<div id="provImportedPane">
+						<div>
+							<div class="flabel">Downloaded from</div>
+							<input type="text" size="25" id="provImportedFrom" value="" />
+							<p class="fyi">Provide a URI for the location where the data was downloaded from.</p>
+						</div>
+						<div>
+							<div class="flabel">Date converted</div>
+							<input type="text" id="provImportedOn" />
+							<p class="fyi">Enter the date when the data was converted.</p>
+						</div>
+						<div>
+							<div class="flabel">Converted by</div>
+							<input type="text" id="provImportedBy" />
+							<p class="fyi">Enter an identifier for the person or organisation who converted the data.</p>
+						</div>
+					</div>
+					<div id="provDerivedPane">
+						<div>
+							<div class="flabel">Original data location</div>
+							<input type="text" size="25" id="provDerivedFrom" value="" />
+							<p class="fyi">Provide a URI for the location where the original data is located.</p>
+						</div>
+						<div>
+							<div class="flabel">Date of derivation</div>
+							<input type="text" id="provDerivedOn" />
+							<p class="fyi">Enter the date of the derivation.</p>
+						</div>
+						<div>
+							<div class="flabel">Derived by</div>
+							<input type="text" id="provDerivedBy" />
+							<p class="fyi">Enter an identifier for the person or organisation who performed the derivation.</p>
+						</div>
+					</div>
+<!-- 					<div>
+						<div class="flabel">Date</div>
+						<input type="text" id="provOn" />
+						<p class="fyi">Enter the date when the data was accessed/retrieved.</p>
 					</div>
 					<div>
-						<div class="flabel">Source</div>
-						<input type="text" size="40" id="dsSourceURI" value="" />
-						<p class="fyi">The source is the URI of the original data source, such as an XML document, a database, a Web service, etc. (like: http://example.org/source.xml).</p>
+						<div class="flabel">Person</div>
+						<input type="text" size="25" id="provBy" value="" />
+						<p class="fyi">Provide a URI for the person who retrieve the data.</p>
 					</div>
 					<div>
 						<div class="flabel">Dataset Version</div>
-						<input type="text" size="10" id="dsVersion" />
-						<p class="fyi">If appropriate, provide the version number for the dataset.</p>
+						<input type="text" size="10" id="pavVersion" />
+						<p class="fyi">If appropriate, provide the version number for the original dataset, 
+						e.g. for ChEMBl this could be '13'.</p>
 					</div>
-				</div>
+ --> 				</div>
 			</div>
 			<div>
 				<h3><a class="nav" href="#">Select topics</a></h3>

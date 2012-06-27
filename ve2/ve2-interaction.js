@@ -25,6 +25,7 @@ function initUI(){
 	$("a[href='ref7']").attr("href", voidSpecBase + voidSpecREFVoID_Metadata);	
 	
 	$("#voidCreatedOn").datepicker("setDate", new Date());
+	$("#provAccessedOn").datepicker("setDate", new Date());
 	
 	createSkeletonVoiD();
 }
@@ -61,7 +62,43 @@ $(function(){
 	$("#voidCreatedOn").datepicker({
 		dateFormat: "yy-mm-dd",
 		onSelect: function( selectedDate ) { createVoiD(); },
-	});	
+	});
+	$("#provAccessedOn").datepicker({
+		changeMonth: true,
+		changeYear: true,
+		dateFormat: "yy-mm-dd",
+		onSelect: function( selectedDate ) { createVoiD(); },
+	});
+	$("#provPublishedOn").datepicker({
+		changeMonth: true,
+		changeYear: true,
+		dateFormat: "yy-mm-dd",
+		onSelect: function( selectedDate ) { createVoiD(); },
+	});
+	$("#provModifiedOn").datepicker({
+		changeMonth: true,
+		changeYear: true,
+		dateFormat: "yy-mm-dd",
+		onSelect: function( selectedDate ) { createVoiD(); },
+	});
+	$("#provRetrievedOn").datepicker({
+		changeMonth: true,
+		changeYear: true,
+		dateFormat: "yy-mm-dd",
+		onSelect: function( selectedDate ) { createVoiD(); },
+	});
+	$("#provImportedOn").datepicker({
+		changeMonth: true,
+		changeYear: true,
+		dateFormat: "yy-mm-dd",
+		onSelect: function( selectedDate ) { createVoiD(); },
+	});
+	$("#provDerivedOn").datepicker({
+		changeMonth: true,
+		changeYear: true,
+		dateFormat: "yy-mm-dd",
+		onSelect: function( selectedDate ) { createVoiD(); },
+	});
 
 	initUI(); // reset all values to defaults
 	
@@ -69,6 +106,7 @@ $(function(){
 	$("#dsItemSelection").accordion({ 
 		header: "h3",
 		autoHeight: false,
+		//Validate on section change
 		change: function(event, ui) {
 			createVoiD(ui.newHeader[0].id);
 		}
@@ -106,6 +144,7 @@ $(function(){
 		
 	// auto-update on focus change
 	$("input").change(function () {
+		alert($("input").val());
 		autocompletes();
 		createVoiD();
 	});
@@ -166,6 +205,34 @@ $(function(){
 			$("div:contains('Provided Dataset Topics')").css("color", "white");
 		}
 	});	
+	
+	$('#doProvOriginalSelect').change(function () {
+		$("#provOriginalPane").show("normal");
+		$("#provRetrievedPane").hide("normal");
+		$("#provImportedPane").hide("normal");
+		$("#provDerivedPane").hide("normal");
+	});
+	
+	$('#doProvRetrievedSelect').change(function () {
+		$("#provOriginalPane").hide("normal");
+		$("#provRetrievedPane").show("normal");
+		$("#provImportedPane").hide("normal");
+		$("#provDerivedPane").hide("normal");
+	});
+	
+	$('#doProvImportedSelect').change(function () {
+		$("#provOriginalPane").hide("normal");
+		$("#provRetrievedPane").hide("normal");
+		$("#provImportedPane").show("normal");
+		$("#provDerivedPane").hide("normal");
+	});
+	
+	$('#doProvDerivedSelect').change(function () {
+		$("#provOriginalPane").hide("normal");
+		$("#provRetrievedPane").hide("normal");
+		$("#provImportedPane").hide("normal");
+		$("#provDerivedPane").show("normal");
+	});
 	
 	/////////////////////////////////////
 	// handle dataset target interlinking
