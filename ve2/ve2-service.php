@@ -162,10 +162,10 @@ function createVoiDTTL($dsParams){
 	$dsUriNs = $dsParams["dsUriNs"];
 	//Provenance and licensing
 	$dsOrigin = $dsParams["origin"];
+	$pavVersion = $dsParams["pavVersion"];
 	switch ($dsOrigin) {
 		case "original":
 			$provAccessedFrom = $dsParams["provAccessedFrom"];
-			$pavVersion = $dsParams["pavVersion"];
 			$provAccessedOn = $dsParams["provAccessedOn"];
 			$provPublishedOn = $dsParams["provPublishedOn"];
 			$provModifiedOn = $dsParams["provModifiedOn"];
@@ -244,9 +244,12 @@ function createVoiDTTL($dsParams){
 			}
 			break;
 		case "retrieved":
-			$provRetrievedFrom = $dsParams("provRetrievedFrom");
-			$provRetrievedOn = $dsParams("provRetrievedOn");
-			$provRetrievedBy = $dsParams("provRetrievedBy");
+			$retVal .= writeURI("pav:retrievedFrom", $provRetrievedFrom);
+			$retVal .= writeDate("pav:retrievedOn", $provRetrievedOn);
+			$retVal .= writeURI("pav:retrievedBy", $provRetrievedBy);
+			if($pavVersion){
+				$retVal .= writeString("pav:version", $pavVersion);
+			}
 			break;
 		case "imported":
 			$provImportedFrom = $dsParams("provImportedFrom");

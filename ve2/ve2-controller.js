@@ -37,10 +37,10 @@ function extractData(){
 	data.dsUriNs = $("#dsUriNs").val();
 	//Provenance
 	data.origin = $("input[name=data-origin]:checked").val();
+	data.pavVersion = $("#pavVersion").val();
 	switch (data.origin) {
 	case "original":
 		data.provAccessedFrom = $("#provAccessedFrom").val();
-		data.pavVersion = $("#pavVersion").val();
 		data.provAccessedOn = $("#provAccessedOn").val();
 		data.provPublishedOn = $("#provPublishedOn").val();
 		data.provModifiedOn = $("#provModifiedOn").val();

@@ -243,7 +243,7 @@
 					<div id="provOriginalPane">
 						<div>
 							<div class="flabel">Published at</div>
-							<input type="text" size="50" id="provAccessedFrom" value="" />
+							<input type="text" size="45" id="provAccessedFrom" value="" />
 							<p class="fyi">Provide a URI for the location where the data originate.</p>
 						</div>
 						<div>
@@ -269,15 +269,21 @@
 						</div>
 						<div>
 							<div class="flabel">Accessed by</div>
-							<input type="text" size="50" id="provAccessedBy" />
+							<input type="text" size="45" id="provAccessedBy" />
 							<p class="fyi">Enter an identifier for the person or organisation who accessed the data.</p>
 						</div>
 					</div>
 					<div id="provRetrievedPane">
 						<div>
 							<div class="flabel">Downloaded from</div>
-							<input type="text" size="25" id="provRetrievedFrom" value="" />
+							<input type="text" size="45" id="provRetrievedFrom" value="" />
 							<p class="fyi">Provide a URI for the location where the data was downloaded from.</p>
+						</div>
+						<div>
+							<div class="flabel">Dataset Version</div>
+							<input type="text" size="10" id="pavVersion" />
+							<p class="fyi">If appropriate, provide the version number for the original dataset, 
+							e.g. for ChEMBl this could be '13'.</p>
 						</div>
 						<div>
 							<div class="flabel">Date downloaded</div>
@@ -286,7 +292,7 @@
 						</div>
 						<div>
 							<div class="flabel">Downloaded by</div>
-							<input type="text" id="provRetrievedBy" />
+							<input type="text" size="45" id="provRetrievedBy" />
 							<p class="fyi">Enter an identifier for the person or organisation who downloaded the data.</p>
 						</div>
 					</div>
