@@ -248,7 +248,7 @@
 						</div>
 						<div>
 							<div class="flabel">Dataset Version</div>
-							<input type="text" size="10" id="pavVersion" />
+							<input type="text" size="10" id="pavAccessedVersion" />
 							<p class="fyi">If appropriate, provide the version number for the original dataset, 
 							e.g. for ChEMBl this could be '13'.</p>
 						</div>
@@ -281,7 +281,7 @@
 						</div>
 						<div>
 							<div class="flabel">Dataset Version</div>
-							<input type="text" size="10" id="pavVersion" />
+							<input type="text" size="10" id="pavRetrievedVersion" />
 							<p class="fyi">If appropriate, provide the version number for the original dataset, 
 							e.g. for ChEMBl this could be '13'.</p>
 						</div>
@@ -299,8 +299,14 @@
 					<div id="provImportedPane">
 						<div>
 							<div class="flabel">Downloaded from</div>
-							<input type="text" size="25" id="provImportedFrom" value="" />
+							<input type="text" size="45" id="provImportedFrom" value="" />
 							<p class="fyi">Provide a URI for the location where the data was downloaded from.</p>
+						</div>
+						<div>
+							<div class="flabel">Dataset Version</div>
+							<input type="text" size="10" id="pavImportedVersion" />
+							<p class="fyi">If appropriate, provide the version number for the original dataset, 
+							e.g. for ChEMBl this could be '13'.</p>
 						</div>
 						<div>
 							<div class="flabel">Date converted</div>
@@ -309,15 +315,21 @@
 						</div>
 						<div>
 							<div class="flabel">Converted by</div>
-							<input type="text" id="provImportedBy" />
+							<input type="text" size="45" id="provImportedBy" />
 							<p class="fyi">Enter an identifier for the person or organisation who converted the data.</p>
 						</div>
 					</div>
 					<div id="provDerivedPane">
 						<div>
 							<div class="flabel">Original data location</div>
-							<input type="text" size="25" id="provDerivedFrom" value="" />
+							<input type="text" size="45" id="provDerivedFrom" value="" />
 							<p class="fyi">Provide a URI for the location where the original data is located.</p>
+						</div>
+						<div>
+							<div class="flabel">Dataset Version</div>
+							<input type="text" size="10" id="pavDerivedVersion" />
+							<p class="fyi">If appropriate, provide the version number for the original dataset, 
+							e.g. for ChEMBl this could be '13'.</p>
 						</div>
 						<div>
 							<div class="flabel">Date of derivation</div>
@@ -326,27 +338,11 @@
 						</div>
 						<div>
 							<div class="flabel">Derived by</div>
-							<input type="text" id="provDerivedBy" />
+							<input type="text" size="45" id="provDerivedBy" />
 							<p class="fyi">Enter an identifier for the person or organisation who performed the derivation.</p>
 						</div>
 					</div>
-<!-- 					<div>
-						<div class="flabel">Date</div>
-						<input type="text" id="provOn" />
-						<p class="fyi">Enter the date when the data was accessed/retrieved.</p>
-					</div>
-					<div>
-						<div class="flabel">Person</div>
-						<input type="text" size="25" id="provBy" value="" />
-						<p class="fyi">Provide a URI for the person who retrieve the data.</p>
-					</div>
-					<div>
-						<div class="flabel">Dataset Version</div>
-						<input type="text" size="10" id="pavVersion" />
-						<p class="fyi">If appropriate, provide the version number for the original dataset, 
-						e.g. for ChEMBl this could be '13'.</p>
-					</div>
- --> 				</div>
+ 				</div>
 			</div>
 			<div>
 				<h3><a class="nav" href="#">Select topics</a></h3>

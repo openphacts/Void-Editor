@@ -149,6 +149,7 @@ function createVoiDTTL($dsParams){
 	global $LICENSE_URI;
 	global $TAB_INDENT;
 	$retVal = $BASE_TTL;
+	$otherStatments = "\n";
 	//VoID metadata
 	$voidTitle = $dsParams["voidTitle"];
 	$voidDescription = $dsParams["voidDescription"];
@@ -252,24 +253,26 @@ function createVoiDTTL($dsParams){
 			}
 			break;
 		case "imported":
-			$provImportedFrom = $dsParams("provImportedFrom");
-			$provImportedOn = $dsParams("provImportedOn");
-			$provImportedBy = $dsParams("provImportedBy");
+			$retVal .= writeURI("pav:importedFrom", $provImportedFrom);
+			$retVal .= writeDate("pav:importedOn", $provImportedOn);
+			$retVal .= writeURI("pav:importedBy", $provImportedBy);
+			if($pavVersion) {
+				//Version applies to the original data source
+				$otherStatments .= $provImportedFrom . writeString("pav:version", $pavVersion) . ".";
+			}
 			break;
 		case "derived":
-			$provDerivedFrom = $dsParams("provDerivedFrom");
-			$provDerivedOn = $dsParams("provDerivedOn");
-			$provDerivedBy = $dsParams("provDerivedBy");
+			$retVal .= writeURI("pav:derivedFrom", $provDerivedFrom);
+			$retVal .= writeDate("pav:derivedDate", $provDerivedOn);
+			$retVal .= writeURI("pav:derivedBy", $provDerivedBy);
+			if($pavVersion) {
+				//Version applies to the original data source
+				$otherStatments .= $provDerivedFrom . writeString("pav:version", $pavVersion) . ".";
+			}
 			break;
 		default:
 			break;
 	}	
-	if($dsPublisherURI){
-		$retVal .= "$TAB_INDENT pav:authoredBy <$dsPublisherURI> ;\n";
-	}
-	if($dsSourceURI){
-		$retVal .= "$TAB_INDENT dcterms:source <$dsSourceURI> ;\n";
-	}
 	if($dsSPARQLEndpointURI){
 		$retVal .= "$TAB_INDENT void:sparqlEndpoint <$dsSPARQLEndpointURI> ;\n";
 	}
@@ -355,6 +358,7 @@ function createVoiDTTL($dsParams){
 		}
 	}
 
+	$retVal .= $otherStatments;
 	return $retVal;
 }
 

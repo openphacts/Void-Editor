@@ -37,10 +37,10 @@ function extractData(){
 	data.dsUriNs = $("#dsUriNs").val();
 	//Provenance
 	data.origin = $("input[name=data-origin]:checked").val();
-	data.pavVersion = $("#pavVersion").val();
 	switch (data.origin) {
 	case "original":
 		data.provAccessedFrom = $("#provAccessedFrom").val();
+		data.pavVersion = $("#pavAccessedVersion").val();
 		data.provAccessedOn = $("#provAccessedOn").val();
 		data.provPublishedOn = $("#provPublishedOn").val();
 		data.provModifiedOn = $("#provModifiedOn").val();
@@ -48,16 +48,19 @@ function extractData(){
 		break;
 	case "retrieved":
 		data.provRetrievedFrom = $("#provRetrievedFrom").val();
+		data.pavVersion = $("#pavRetrievedVersion").val();
 		data.provRetrievedOn = $("#provRetrievedOn").val();
 		data.provRetrievedBy = $("#provRetrievedBy").val();	
 		break;
 	case "imported":
 		data.provImportedFrom = $("#provImportedFrom").val();
+		data.pavVersion = $("#pavImportedVersion").val();
 		data.provImportedOn = $("#provImportedOn").val();
 		data.provImportedBy = $("#provImportedBy").val();	
 		break;
 	case "derived":
 		data.provDerivedFrom = $("#provDerivedFrom").val();
+		data.pavVersion = $("#pavDerievedVersion").val();
 		data.provDerivedOn = $("#provDerivedOn").val();
 		data.provDerivedBy = $("#provDerivedBy").val();	
 		break;
