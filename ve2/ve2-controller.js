@@ -40,10 +40,11 @@ function extractData(){
 	switch (data.origin) {
 	case "original":
 		data.provAccessedFrom = $("#provAccessedFrom").val();
+		data.pavVersion = $("#pavVersion").val();
 		data.provAccessedOn = $("#provAccessedOn").val();
 		data.provPublishedOn = $("#provPublishedOn").val();
 		data.provModifiedOn = $("#provModifiedOn").val();
-		data.provAccessedBy = $("#provAccessedBy").val();	
+		data.provAccessedBy = $("#provAccessedBy").val();
 		break;
 	case "retrieved":
 		data.provRetrievedFrom = $("#provRetrievedFrom").val();

@@ -39,7 +39,7 @@ $NAMESPACES = array(
 
 $TAB_INDENT = "    ";
 $SELF_DS = ":myDS";
-$LICENSE_URI = "<http://creativecommons.org/licenses/by-sa/3.0/>";
+$LICENSE_URI = "http://creativecommons.org/licenses/by-sa/3.0/";
 
 $BASE_TTL = "
 @prefix dcterms: <http://purl.org/dc/terms/> .
@@ -161,6 +161,34 @@ function createVoiDTTL($dsParams){
 	$dsDescription = $dsParams["dsDescription"];
 	$dsUriNs = $dsParams["dsUriNs"];
 	//Provenance and licensing
+	$dsOrigin = $dsParams["origin"];
+	switch ($dsOrigin) {
+		case "original":
+			$provAccessedFrom = $dsParams["provAccessedFrom"];
+			$pavVersion = $dsParams["pavVersion"];
+			$provAccessedOn = $dsParams["provAccessedOn"];
+			$provPublishedOn = $dsParams["provPublishedOn"];
+			$provModifiedOn = $dsParams["provModifiedOn"];
+			$provAccessedBy = $dsParams["provAccessedBy"];
+			break;		
+		case "retrieved":
+			$provRetrievedFrom = $dsParams["provRetrievedFrom"];
+			$provRetrievedOn = $dsParams["provRetrievedOn"];
+			$provRetrievedBy = $dsParams["provRetrievedBy"];
+			break;
+		case "imported":
+			$provImportedFrom = $dsParams["provImportedFrom"];
+			$provImportedOn = $dsParams["provImportedOn"];
+			$provImportedBy = $dsParams["provImportedBy"];
+			break;
+		case "derived":
+			$provDerivedFrom = $dsParams["provDerivedFrom"];
+			$provDerivedOn = $dsParams["provDerivedOn"];
+			$provDerivedBy = $dsParams["provDerivedBy"];
+			break;
+		default:
+			break;
+	}
 	$dsPublisherURI = $dsParams["dsPublisherURI"];
 	$dsSourceURI = $dsParams["dsSourceURI"];
 	$dsLicenseURI = $dsParams["dsLicenseURI"];
@@ -182,27 +210,57 @@ function createVoiDTTL($dsParams){
 	
 	//VoID description
 	$retVal .= "<> rdf:type void:DatasetDescription ;\n";
-	$retVal .= "$TAB_INDENT dcterms:title \"$voidTitle\"^^xsd:string ;\n";
-	$retVal .= "$TAB_INDENT dcterms:description \"\"\"$voidDescription\"\"\"^^xsd:string ;\n";
-	$retVal .= "$TAB_INDENT pav:createdBy <$voidCreatedBy> ;\n";
-	$retVal .= "$TAB_INDENT pav:createdOn \"$voidCreatedOn\"^^xsd:date ;\n";
+	$retVal .= writeString("dcterms:title", $voidTitle);
+	$retVal .= writeLongString("dcterms:description", $voidDescription);
+	$retVal .= writeURI("pav:createdBy", $voidCreatedBy);
+	$retVal .= writeDate("pav:createdOn", $voidCreatedOn);
 	$retVal .= "$TAB_INDENT foaf:primaryTopic $dsURI .\n\n";
 	// the dataset
-	$retVal .= "## your VoID description \n";
+	$retVal .= "## your dataset description \n";
 	$retVal .= "$dsURI rdf:type void:Dataset ;\n";
-	$retVal .= "$TAB_INDENT foaf:homepage <$dsHomeURI> ;\n";
-	$retVal .= "$TAB_INDENT dcterms:title \"$dsName\"^^xsd:string ;\n";
-	$retVal .= "$TAB_INDENT dcterms:description \"\"\"$dsDescription\"\"\"^^xsd:string ;\n";
+	$retVal .= writeURI("foaf:homepage", $dsHomeURI);
+	$retVal .= writeString("dcterms:title", $dsName);
+	$retVal .= writeLongString("dcterms:description", $dsDescription);
 	if($dsLicenseURI){
-		$retVal .= "$TAB_INDENT pav:license <$dsLicenseURI> ;\n";
+		$retVal .= writeURI("pav:license", $dsLicenseURI);
 	} else {
-		$retVal .= "$TAB_INDENT pav:license $LICENSE_URI ;\n";
+		$retVal .= writeURI("pav:license", $LICENSE_URI);
 	}
-	$retVal .= "$TAB_INDENT void:uriSpace \"$dsUriNs\"^^xsd:string ;\n";
+	$retVal .= writeString("void:uriSpace", $dsUriNs);
 	//Provenance and versions
-	if($dsVersion){
-		$retVal .= "$TAB_INDENT pav:version \"$dsVersion\" ;\n";
-	}
+	switch ($dsOrigin) {
+		case "original":
+			$retVal .= writeURI("dcterms:publisher", $provAccessedFrom);
+			$retVal .= writeDate("pav:accessedOn", $provAccessedOn);
+			if ($provPublishedOn) {
+				$retVal .= writeDate("dcterms:created", $provPublishedOn);
+			}
+			if ($provModifiedOn) {
+				$retVal .= writeDate("dcterms:modified", $provModifiedOn);
+			}
+			$retVal .= writeURI("pav:accessedBy", $provAccessedBy);
+			if($pavVersion){
+				$retVal .= writeString("pav:version", $pavVersion);
+			}
+			break;
+		case "retrieved":
+			$provRetrievedFrom = $dsParams("provRetrievedFrom");
+			$provRetrievedOn = $dsParams("provRetrievedOn");
+			$provRetrievedBy = $dsParams("provRetrievedBy");
+			break;
+		case "imported":
+			$provImportedFrom = $dsParams("provImportedFrom");
+			$provImportedOn = $dsParams("provImportedOn");
+			$provImportedBy = $dsParams("provImportedBy");
+			break;
+		case "derived":
+			$provDerivedFrom = $dsParams("provDerivedFrom");
+			$provDerivedOn = $dsParams("provDerivedOn");
+			$provDerivedBy = $dsParams("provDerivedBy");
+			break;
+		default:
+			break;
+	}	
 	if($dsPublisherURI){
 		$retVal .= "$TAB_INDENT pav:authoredBy <$dsPublisherURI> ;\n";
 	}
@@ -295,6 +353,26 @@ function createVoiDTTL($dsParams){
 	}
 
 	return $retVal;
+}
+
+function writeURI($predicate, $object){
+	global $TAB_INDENT;
+	return "$TAB_INDENT $predicate <$object> ;\n";
+}
+
+function writeString($predicate, $object){
+	global $TAB_INDENT;
+	return "$TAB_INDENT $predicate \"$object\"^^xsd:string ;\n";
+}
+
+function writeLongString($predicate, $object){
+	global $TAB_INDENT;
+	return "$TAB_INDENT $predicate \"\"\"$object\"\"\"^^xsd:string ;\n";
+}
+
+function writeDate($predicate, $object){
+	global $TAB_INDENT;
+	return "$TAB_INDENT $predicate \"$object\"^^xsd:date ;\n";
 }
 
 function validateHTTPURI($URI){
