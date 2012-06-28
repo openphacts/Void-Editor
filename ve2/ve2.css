@@ -127,6 +127,11 @@ li {
 #vdForm {
 	float: left;
 	padding: 2px;
+	width: 50%;	
+}
+
+#vdOutput {
+	font-family: courier new;
 }
 
 #vdAnnounce{

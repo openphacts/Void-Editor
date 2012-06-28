@@ -26,15 +26,13 @@ function initUI(){
 	
 	$("#voidCreatedOn").datepicker("setDate", new Date());
 	$("#provAccessedOn").datepicker("setDate", new Date());
-	
-	createSkeletonVoiD();
+	createVoID();
 }
 
 function clearTopics(){
 	$("#dsTopicOut").hide("fast");
 	$("#dsTopicOut").html("");
 	$("#dsTopic").val("");
-	createVoiD();
 }
 
 function resetTargetPane(){
@@ -48,7 +46,6 @@ function resetTargetPane(){
 	$("#tdsExampleURI").val("http://dbpedia.org/resource/Ludwig_van_Beethoven");
 	$("#tdsMoreTargetDatasetStuff").hide("normal");
 	$("#doShowMoreTargetDatasetStuff").show("normal");
-	createVoiD();
 }
 
 function setStatus(status){
@@ -61,43 +58,36 @@ $(function(){
 
 	$("#voidCreatedOn").datepicker({
 		dateFormat: "yy-mm-dd",
-		onSelect: function( selectedDate ) { createVoiD(); },
 	});
 	$("#provAccessedOn").datepicker({
 		changeMonth: true,
 		changeYear: true,
 		dateFormat: "yy-mm-dd",
-		onSelect: function( selectedDate ) { createVoiD(); },
 	});
 	$("#provPublishedOn").datepicker({
 		changeMonth: true,
 		changeYear: true,
 		dateFormat: "yy-mm-dd",
-		onSelect: function( selectedDate ) { createVoiD(); },
 	});
 	$("#provModifiedOn").datepicker({
 		changeMonth: true,
 		changeYear: true,
 		dateFormat: "yy-mm-dd",
-		onSelect: function( selectedDate ) { createVoiD(); },
 	});
 	$("#provRetrievedOn").datepicker({
 		changeMonth: true,
 		changeYear: true,
 		dateFormat: "yy-mm-dd",
-		onSelect: function( selectedDate ) { createVoiD(); },
 	});
 	$("#provImportedOn").datepicker({
 		changeMonth: true,
 		changeYear: true,
 		dateFormat: "yy-mm-dd",
-		onSelect: function( selectedDate ) { createVoiD(); },
 	});
 	$("#provDerivedOn").datepicker({
 		changeMonth: true,
 		changeYear: true,
 		dateFormat: "yy-mm-dd",
-		onSelect: function( selectedDate ) { createVoiD(); },
 	});
 
 	initUI(); // reset all values to defaults
@@ -108,7 +98,8 @@ $(function(){
 		autoHeight: false,
 		//Validate on section change
 		change: function(event, ui) {
-			createVoiD(ui.newHeader[0].id);
+			validateSection(ui.oldHeader[0].id);
+			createVoID();
 		}
 	 });
 	
@@ -122,6 +113,7 @@ $(function(){
 	});
 	
 	$("#doCreate").click(function () {
+		validateData();
 		createVoiD();
 	});
 	
@@ -141,14 +133,7 @@ $(function(){
 	$("#doAnnounceURI").click(function () {
 		announceVoiDURI();
 	});
-		
-	// auto-update on focus change
-	$("input").change(function () {
-		alert($("input").val());
-		autocompletes();
-		createVoiD();
-	});
-		
+				
 	//////////////////////
 	// handle example URIs
 	$(".dsExampleURI .btn").live("click", function() {
@@ -159,13 +144,11 @@ $(function(){
 	$("#doAddDSExampleURI").click(function () {
 		$("#dsExampleURIs").append("<div class='dsExampleURI' id='dsExampleURI"+ dsExampleURICounter +"'><input type='text' size='35' value='http://example.org/resource/ex' class='dsExampleURIVal' /> <span class='ibtn' title='Remove this example resource'>-</span> <span class='btn'>validate</span></div>");
 		dsExampleURICounter++;
-		createVoiD();
 	});
 	
 	$(".dsExampleURI .ibtn").live("click", function() {
 		var exURI = $(this).parent().attr('id');
 		$("#"+exURI).remove();
-		createVoiD();
 	});
 	
 	/////////////////////////////////
@@ -187,7 +170,6 @@ $(function(){
 	$("#dsSelectedTopics span.ibtn").live("click", function() {
 		var selectedURI = $(this).attr("resource");
 		$("#dsSelectedTopics div span[resource='"+selectedURI+"']").parent().remove();
-		createVoiD();
 	});
 	
 	// reset topics
@@ -291,7 +273,6 @@ $(function(){
 	$("#tdsAddedTargets span.ibtn").live("click", function() {
 		var selectedURI = $(this).attr("resource");
 		$("#tdsAddedTargets div span[resource='"+selectedURI+"']").parent().remove();
-		createVoiD();
 	});
 	
 	// reset current interlinking
@@ -313,7 +294,6 @@ $(function(){
 	$("#tdsLinkType").keyup(function(e) {
 		if(e.keyCode == 13) {
 			autocompletes();
-			createVoiD();
 		}
 	});
 	
@@ -343,13 +323,11 @@ $(function(){
 	$("#doAddDSVocURI").click(function () {
 		$("#dsVocURIs").append("<div class='dsVocURI' id='dsVocURI"+ dsVocURICounter +"'><input type='text' size='35' value='http://purl.org/dc/terms/' class='dsVocURIVal' /> <span class='ibtn' title='Remove this vocabulary'>-</span> <span class='btn'>lookup</span></div>");
 		dsVocURICounter++;
-		createVoiD();
 	});
 	
 	$(".dsVocURI .ibtn").live("click", function() {
 		var vocURI = $(this).parent().attr('id');
 		$("#"+vocURI).remove();
-		createVoiD();
 	});
 	
 	////////

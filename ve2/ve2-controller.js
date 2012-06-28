@@ -2,8 +2,8 @@
 /* ve2 data-controller and service conmmunicate code  */
 /******************************************************/
 
-function createSkeletonVoiD() {
-	var data = extractData(); 
+function createVoID(){
+	var data = extractData();
 	setStatus("Submitting data ...");
 	$.ajax({
 		type: "POST",
@@ -18,27 +18,7 @@ function createSkeletonVoiD() {
 			setStatus("Error creating voiD description.");
 		} 
 	});	
-}
 
-function createVoiD(section){
-
-	var data = extractData(); 
-	if (validateData(data, section)) {
-		setStatus("Submitting data ...");
-		$.ajax({
-			type: "POST",
-			url: ve2ServiceURI,
-			data: "dsParams="+ $.toJSON(data),
-			success: function(data){
-				$("#vdOutput").val(data);
-				setStatus("Ready");
-			},
-			error:  function(msg){
-				alert(data);
-				setStatus("Error creating voiD description.");
-			} 
-		});
-	}
 }
 
 function extractData(){
@@ -94,7 +74,15 @@ function extractData(){
 	return data;
 }
 
-function validateData(data, section) {
+function validateData(data) {
+	if (!validateVoidMetadata(data)) return false;
+	if (!validateDSMetadata(data)) return false;
+	if (!validateProvMetadata(data)) return false;
+	return true;
+}
+
+function validateSection(section) {
+	var data = extractData();
 	switch (section)
 	{
 		case "void-metadata":
@@ -107,9 +95,6 @@ function validateData(data, section) {
 			return validateProvMetadata(data);
 			break;
 		default:
-			if (!validateVoidMetadata(data)) return false;
-			if (!validateDSMetadata(data)) return false;
-			if (!validateProvMetadata(data)) return false;
 			return true;
 			break;
 	}
