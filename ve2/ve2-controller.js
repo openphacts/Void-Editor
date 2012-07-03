@@ -2,6 +2,8 @@
 /* ve2 data-controller and service conmmunicate code  */
 /******************************************************/
 
+var validURIs = new Array();
+
 function createVoID(){
 	var data = extractData();
 	setStatus("Submitting data ...");
@@ -73,7 +75,15 @@ function extractData(){
 		dsTopicURIList.push($(this).attr("resource"));
 	});
 	data.dsTopicURIList = dsTopicURIList;
-//	// access methods
+	// Example resources
+	var dsExampleURIList = new Array();
+	$(".dsExampleURI input").each(function (i) {
+		var exampleURI = ($(this).val());
+		if ($.inArray(exampleURI, validURIs) >= 0) {
+			dsExampleURIList.push(exampleURI);
+		}
+	});
+	data.dsExampleURIList = dsExampleURIList;//	// access methods
 //	if (!$("#doMinimal").is(':checked')) { // don't take into account for minimal voiD file
 //		data.dsSPARQLEndpointURI = dsSPARQLEndpointURI;
 //		data.dsLookupURI = dsLookupURI;
@@ -89,7 +99,8 @@ function extractData(){
 	return data;
 }
 
-function validateData(data) {
+function validateData() {
+	var data = extractData();
 	if (!validateVoidMetadata(data)) return false;
 	if (!validateDSMetadata(data)) return false;
 	if (!validateProvMetadata(data)) return false;
@@ -108,6 +119,8 @@ function validateSection(section) {
 			break;
 		case "ds-provenance":
 			return validateProvMetadata(data);
+			break;
+		case "topicAndExample":
 			break;
 		default:
 			return true;
@@ -266,15 +279,23 @@ function validateProvMetadata(data) {
 	return true;
 }
 
-function validateURI(URI){
+function validateExampleResourceURI(URI, positionId){
 	setStatus("Validating " + URI);
 	$.ajax({
 		type: "GET",
 		url: ve2ServiceURI,
 		data: "validate="+ URI,
 		success: function(data){
-			alert(URI + " is " + data);
-			setStatus(URI + " is " + data);
+			if(data == "true") {
+				setStatus("Ready");
+				validURIs.push(URI);
+				createVoID();
+			} else {
+				setStatus("Invalid URI: " +  URI);
+				alert(URI + " is not a resolvable URI.");
+				$("#dsItemSelection").accordion('activate', 3);
+				$(positionId).focus();
+			}
 		}
 	});
 }
@@ -313,7 +334,7 @@ function lookupVoc(inputID){
 			data: "lookupPrefix="+ vocPrefix,
 			success: function(data){
 				$("#"+inputID+" input").val(data);
-				createVoiD();
+				createVoID();
 			}		
 		});
 	}

@@ -15,7 +15,7 @@ var  maxNumOfTopicsProposed = 10;
 var dsExampleURICounter = 0;
 var dsTopicCounter = 0;
 var dsVocURICounter = 0;
-var voiDURIsList = new Array();
+//var voiDURIsList = new Array();
 var today = new Date();
 
 // UI helper methods
@@ -113,7 +113,7 @@ $(function(){
 	
 	$("#doCreate").click(function () {
 		validateData();
-		createVoiD();
+		createVoID();
 	});
 
 	////////////////////////////////////////////////
@@ -146,23 +146,6 @@ $(function(){
 		$("#provDerivedPane").show("normal");
 	});
 	
-	//////////////////////
-	// handle example URIs
-	$(".dsExampleURI .btn").live("click", function() {
-		var exURI = $(this).parent().attr('id');
-		validateURI($("#"+exURI+" input").val());
-	});
-	
-	$("#doAddDSExampleURI").click(function () {
-		$("#dsExampleURIs").append("<div class='dsExampleURI' id='dsExampleURI"+ dsExampleURICounter +"'><input type='text' size='35' value='http://example.org/resource/ex' class='dsExampleURIVal' /> <span class='ibtn' title='Remove this example resource'>-</span> <span class='btn'>validate</span></div>");
-		dsExampleURICounter++;
-	});
-	
-	$(".dsExampleURI .ibtn").live("click", function() {
-		var exURI = $(this).parent().attr('id');
-		$("#"+exURI).remove();
-	});
-	
 	/////////////////////////////////
 	// handle dataset topic selection
 		
@@ -188,6 +171,7 @@ $(function(){
 		dsTopicCounter--;
 		if(dsTopicCounter <= 0) {
 			$("#dsSelectedTopics").hide("normal");
+			$("div:contains('Provided Dataset Topics')").css("color", "#3f3f3f");
 		}
 	});
 	
@@ -205,6 +189,24 @@ $(function(){
 			lookupSubject(topic);
 			$("div:contains('Provided Dataset Topics')").css("color", "white");
 		}
+	});
+	
+	//////////////////////
+	// handle example URIs
+	$(".dsExampleURI .btn").live("click", function() {
+		var exURI = $(this).parent().attr('id');
+		validateExampleResourceURI($("#"+exURI+" input").val(), exURI);
+	});
+	
+	$("#doAddDSExampleURI").click(function () {
+		$("#dsExampleURI").append("<div class='dsExampleURI' id='dsExampleURI"+ dsExampleURICounter +"'><input type='text' size='35' class='dsExampleURIVal' /> <span class='ibtn' title='Remove this example resource'>-</span> <span class='btn'>Validate</span></div>");
+		dsExampleURICounter++;
+	});
+	
+	$(".dsExampleURI .ibtn").live("click", function() {
+		var exURI = $(this).parent().attr('id');
+		$("#"+exURI).remove();
+		createVoID();
 	});
 
 	//////////////////////

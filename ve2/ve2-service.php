@@ -134,6 +134,8 @@ function createVoiDTTL($dsParams){
 	}
 	//Topic List
 	$dsTopicURIList = $dsParams["dsTopicURIList"];
+	//Example List
+	$dsExampleURIList = $dsParams["dsExampleURIList"];
 	//Vocabulary List
 	$dsVocURIList = $dsParams["dsVocURIList"];
 	//Access Methods
@@ -228,15 +230,15 @@ function createVoiDTTL($dsParams){
 		}
 	}	
 	if($dsTopicURIList){
-		$i = 1;
 		foreach ($dsTopicURIList as $dsTopicURI) {
 			$retVal .= writeURI("dcterms:subject", $dsTopicURI);
-			if(count($tdsList) == 0) {
-				if($i < count($dsTopicURIList)) $retVal .= " ;\n";
-				else $retVal .= " .\n";
+		}
+	}
+	if($dsExampleURIList){
+		foreach ($dsExampleURIList as $dsExampleURI) {
+			if($dsExampleURI != "") {
+				$retVal .= writeURI("void:exampleResource", $dsExampleURI);
 			}
-			else $retVal .= " ;\n";
-			$i++;
 		}
 	}
 // 	if($tdsList){
@@ -319,11 +321,11 @@ function validateHTTPURI($URI){
 	curl_exec($c);
 	if(!curl_errno($c)) {
 		$info = curl_getinfo($c);
-		if($info['http_code'] == "200") $ret = "valid";
-		else $ret = "non-valid";
+		if($info['http_code'] == "200") $ret = "true";
+		else $ret = "false";
 	}
 	else {
-		 $ret = "error";
+		 $ret = "false";
 	}
 	curl_close($c);
 	return $ret;
@@ -371,94 +373,6 @@ function lookupSubjectInDBPedia($keyword){
 		}
 	}
 	return json_encode($matches);
-}
-
-function lookupVoiD($lookupURI, $browseURI, $homepageURI){
-	global $DEBUG;
-	global $BASE_RKB_LOOKUP_URI;
-	
-	//NOTE: this should be the same for all store, but due to http://void.rkbexplorer.com/known-limitations/ we have to make a case distinction
-	if($lookupURI == $BASE_RKB_LOOKUP_URI ){ // treat RKB special, ie exact match
-		$query = "SELECT DISTINCT ?ds WHERE { ?ds a <http://rdfs.org/ns/void#Dataset> ; <http://xmlns.com/foaf/0.1/homepage> <$homepageURI> . }";
-	}
-	else { // do partial match
-		$query = "SELECT DISTINCT ?ds WHERE { ?ds a <http://rdfs.org/ns/void#Dataset> ; <http://xmlns.com/foaf/0.1/homepage> ?hp . FILTER regex(str(?hp), \"$homepageURI\") . }";	
-	}
-	
-	if($DEBUG) echo $query . "<br />\n";
-	
-	$jsondata = file_get_contents($lookupURI . urlencode($query));
-	if($DEBUG) var_dump($jsondata);
-	
-	$data = json_decode($jsondata, true); 
-	
-	if($DEBUG) var_dump($data["results"]["bindings"][0]["ds"]["value"]);
-	
-	$val = $data["results"]["bindings"][0]["ds"]["value"];
-	$type = $data["results"]["bindings"][0]["ds"]["type"];
-	
-	if($type == "uri") $val = urlencode($val);
-	
-	$browseParams = "type=$type&uri=$val";
-	
-	return $browseURI . $browseParams;
-}
-
-function listVoiD($lookupURI){
-	global $DEBUG;
-	
-	$voiDInfoList = array();
-	
-	$query = "SELECT DISTINCT ?ds ?title ?hp WHERE { ?ds a <http://rdfs.org/ns/void#Dataset> ;  <http://purl.org/dc/terms/title> ?title ; <http://xmlns.com/foaf/0.1/homepage> ?hp . } ORDER BY ?title ";
-	if($DEBUG) echo $query . "<br />\n";
-	
-	$jsondata = file_get_contents($lookupURI . urlencode($query));
-	if($DEBUG) var_dump($jsondata);
-	
-	$data = json_decode($jsondata, true); 
-	
-	foreach($data["results"]["bindings"] as $binding){
-		$voiDInfo = array();
-		$id = $binding["ds"]["value"];		
-		$title = $binding["title"]["value"];
-		$homepage = $binding["hp"]["value"];
-		if($DEBUG) echo "<a href='$homepage' target='_new' title='$homepage'>$title</a> (in dataset $id)<br />\n";
-		$voiDInfo['id'] = $id;
-		$voiDInfo['title'] = $title;
-		$voiDInfo['homepage'] = $homepage;
-		array_push($voiDInfoList, $voiDInfo);
-	}
-	
-	return json_encode($voiDInfoList);
-}
-
-function inspectVoiDLive($voiDInTTL){
-	$webInspectorServiceURI = "http://apps.sindice.net:8080/rdfextractor/rdfextract";
-	$fields = array(
-	        'content'=>urlencode($voiDInTTL),
-	        'format'=> "turtle"
-	);
-
-	foreach($fields as $key=>$value) {
-		$fields_string .= $key.'='.$value.'&';
-	}
-	rtrim($fields_string,'&');
-	
-	$ch = curl_init();
-	curl_setopt($ch,CURLOPT_URL,$webInspectorServiceURI);
-	curl_setopt($ch,CURLOPT_POST,count($fields));
-	curl_setopt($ch,CURLOPT_POSTFIELDS,$fields_string);
-	//execute post
-	$result = curl_exec($ch);
-	//close connection
-	curl_close($ch);
-	return $result;
-}
-
-function inspectVoiD($voiDInTTL){
-	$webInspectorServiceURI = "http://sindice.com/developers/inspector?url=";
-	$tmpVoiDURI = dumpVoid($voiDInTTL);
-	return $webInspectorServiceURI . urlencode($tmpVoiDURI );
 }
 
 function dumpVoid($voiDInTTL){
