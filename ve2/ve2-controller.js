@@ -67,10 +67,21 @@ function extractData(){
 	default:
 		break;
 	}
+	// topics
+	var dsTopicURIList = new Array();
+	$("#dsSelectedTopics div span").each(function (i) {
+		dsTopicURIList.push($(this).attr("resource"));
+	});
+	data.dsTopicURIList = dsTopicURIList;
+//	// access methods
+//	if (!$("#doMinimal").is(':checked')) { // don't take into account for minimal voiD file
+//		data.dsSPARQLEndpointURI = dsSPARQLEndpointURI;
+//		data.dsLookupURI = dsLookupURI;
+//		data.dsDumpURI = dsDumpURI;
+//		return true;
+//	}
+
 //	//Other stuff
-//	var dsExampleURIList = new Array();
-//	var dsTopicURIList = new Array();
-//	var tdsList = new Array();
 //	var dsVocURIList = new Array();
 //	var dsSPARQLEndpointURI = $("#dsSPARQLEndpointURI").val();
 //	var dsLookupURI = $("#dsLookupURI").val();
@@ -120,7 +131,6 @@ function validateVoidMetadata(data) {
 		return false;
 	}
 	if (data.voidCreatedBy == "" || (data.voidCreatedBy.substring(0,7) != "http://")) {
-//		alert($("#dsItemsSelection").accordion( "option", "active" ));
 		alert("Please provide a URI for your identity.");
 		$("#dsItemSelection").accordion('activate', 0 );
 		$("#voidCreatedBy").focus();
@@ -173,7 +183,7 @@ function validateDSMetadata(data) {
 	}
 	return true;
 }
-//
+
 function validateProvMetadata(data) {
 	switch (data.origin) {
 	case "original":
@@ -255,69 +265,6 @@ function validateProvMetadata(data) {
 	}
 	return true;
 }
-//	data.dsVersion = dsVersion;
-//	
-//	// provenance and licensing
-//	if (!$("#doMinimal").is(':checked')) { // don't take into account for minimal voiD file
-//		data.dsPublisherURI = dsPublisherURI;
-//		data.dsSourceURI = dsSourceURI;
-////		data.dsLicenseURI = dsLicenseURI;
-//	}
-//	
-//	$(".dsExampleURI input").each(function (i) {
-//		dsExampleURIList.push($(this).val());
-//	});
-//	data.dsExampleURIList = dsExampleURIList;
-//	
-//	// topics
-//	$("#dsSelectedTopics div span").each(function (i) {
-//		dsTopicURIList.push($(this).attr("resource"));
-//	});
-//	data.dsTopicURIList = dsTopicURIList;
-//	
-//	// interlinking
-//	$("#tdsAddedTargets > div").each(function (i) {
-//		var target = {
-//			tdsHomeURI : $(this).find("a").attr("href"),
-//			tdsLinkType : $(this).find("div span.tlinktype").text(),
-//			tdsName : $(this).find("a").text(),
-//			tdsDescription : $(this).find("a").attr("title"),
-//			tdsExampleURI : $(this).find("div span.texample").text()
-//		}
-//		tdsList.push(target);
-//	});
-//	data.tdsList = tdsList;
-//	// vocabularies
-//	$(".dsVocURI input").each(function (i) {
-//		dsVocURIList.push($(this).val());
-//	});
-//	data.dsVocURIList = dsVocURIList;
-//	
-//	// access methods
-//	if (!$("#doMinimal").is(':checked')) { // don't take into account for minimal voiD file
-//		data.dsSPARQLEndpointURI = dsSPARQLEndpointURI;
-//		data.dsLookupURI = dsLookupURI;
-//		data.dsDumpURI = dsDumpURI;
-//		return true;
-//	}
-//	
-//function validateValue(value, errorString){
-//	if(value == "") {
-//		alert("You have to provide a " + errorString + ".");
-//		return false;
-//	} else {
-//		return true;
-//	}
-//}
-//
-//function validateUriValue(URI, errorString){
-//	if(URI == "" || (URI.substring(0,7) != "http://")) {
-//		alert("You have to provide a " + errorString + ". This must be a URI starting with 'http://'.");
-//		return false;
-//	} else {
-//		return true;
-//	}
-//}
 
 function validateURI(URI){
 	setStatus("Validating " + URI);
@@ -357,57 +304,6 @@ function lookupSubject(topic){
 	});
 }
 
-function getDatasetList(store){
-	setStatus("Retrieving list of datasets from voiD stores.");
-
-	$.ajax({
-		type: "GET",
-		url: ve2ServiceURI,
-		data: "listVoiD",
-		dataType : "json",
-		success: function(data){
-			if(data && data.length > 0) {
-				$("#tdsPreview").append("<div style='border: 1px solid #1d1d1d'>Store: <strong>"+ store +"</strong></div>");
-				for(i in data) {
-					var id = data[i].id;
-					var title = data[i].title;
-					var homepage = data[i].homepage;
-					$("#tdsPreview").append("<span style='font-size: 90%; padding-left: 5px;' title='"+ id + "'>"+ title + "</span><br />");
-				}
-				setStatus("Ready");
-			}		
-		}
-	});
-}
-
-function peekTargetDataset(store){
-	setStatus("Looking up dataset description");
-	var tdsHomeURI = $("#tdsHomeURI").val();
-
-	$.ajax({
-		type: "GET",
-		url: ve2ServiceURI,
-		data: "store=" + store + "&lookupVoiDViaHompage="+ tdsHomeURI,
-		success: function(data){
-			$("#tdsPreview").append("<div>Dataset with homepage " + tdsHomeURI + ": <a href='" + data + "' title='Preview dataset in RKB explorer' target='_new'>preview URI</a> (via " + store + ")</div>");
-		}
-	});
-}
-
-function lookupPrefix(){
-	var tdsLinkType = $("#tdsLinkType").val();
-	if(tdsLinkType.substring(0,7) != "http://") {
-		$.ajax({
-			type: "GET",
-			url: ve2ServiceURI,
-			data: "lookupPrefix="+ tdsLinkType,
-			success: function(data){
-				$("#tdsLinkType").val(data);
-			}		
-		});
-	}
-}
-
 function lookupVoc(inputID){
 	var vocPrefix = $("#"+inputID+" input").val();
 	if(vocPrefix.substring(0,7) != "http://") {
@@ -423,20 +319,20 @@ function lookupVoc(inputID){
 	}
 }
 
-function autocompletes(){
-	var tdsLinkType = $("#tdsLinkType").val();
-	if(tdsLinkType.substring(0,7) != "http://") { // we have presumably a prefix to resolve
-		var separatorPosition = tdsLinkType.indexOf(":"); // abc:def -> will return 3
-		var prefix = tdsLinkType.substring(0, separatorPosition);
-		var localname = tdsLinkType.substring(separatorPosition + 1);
-		
-		$.ajax({
-			type: "GET",
-			url: ve2ServiceURI,
-			data: "lookupPrefix="+ prefix,
-			success: function(data){
-				$("#tdsLinkType").val(data + localname);
-			}		
-		});		
-	}
-}
+//function autocompletes(){
+//	var tdsLinkType = $("#tdsLinkType").val();
+//	if(tdsLinkType.substring(0,7) != "http://") { // we have presumably a prefix to resolve
+//		var separatorPosition = tdsLinkType.indexOf(":"); // abc:def -> will return 3
+//		var prefix = tdsLinkType.substring(0, separatorPosition);
+//		var localname = tdsLinkType.substring(separatorPosition + 1);
+//		
+//		$.ajax({
+//			type: "GET",
+//			url: ve2ServiceURI,
+//			data: "lookupPrefix="+ prefix,
+//			success: function(data){
+//				$("#tdsLinkType").val(data + localname);
+//			}		
+//		});		
+//	}
+//}

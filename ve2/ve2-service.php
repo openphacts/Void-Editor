@@ -5,17 +5,7 @@ require_once('xmlrpc/lib/xmlrpc.inc');
 $DEBUG = false;
 
 // DBPedia lookup interface
-$BASE_DBPEDIA_LOOKUP_URI = "http://lookup.dbpedia.org/api/search.asmx/KeywordSearch?QueryClass=string&MaxHits=5&QueryString=";
-
-// Talis store interface
-$BASE_TALIS_LOOKUP_URI ="http://api.talis.com/stores/kwijibo-dev3/services/sparql?output=json&query=";
-$BASE_TALIS_BROWSE_URI = "http://kwijibo.talis.com/voiD/dataset?";
-
-// RKB store interface
-$BASE_RKB_LOOKUP_URI = "http://void.rkbexplorer.com/sparql/?format=json&query=";
-$BASE_RKB_BROWSE_URI =  "http://void.rkbexplorer.com/browse/?";
-
-
+$BASE_DBPEDIA_LOOKUP_URI = "http://lookup.dbpedia.org/api/search.asmx/PrefixSearch?QueryClass=&MaxHits=5&QueryString=";
 
 $NAMESPACES = array(
   	'dcterms' => 'http://purl.org/dc/terms/',
@@ -71,20 +61,6 @@ if(isset($_POST['dsParams'])){ // generate voiD in Turtle
 	echo createVoiDTTL($dsParams);
 }
 
-// if(isset($_POST['inspect'])){ // inspect voiD in Turtle
-// 	echo inspectVoiD($_POST['inspect']); // saves voiD in tmp/ and calls then Web inspector via GET
-// 	//echo inspectVoiDLive($_POST['inspect']); // direct POST of voiD content to Web inspector
-// }
-
-// if(isset($_POST['announce'])){ // announce a voiD URI
-// 	$result = "<p>Result of announce process:</p>";
-// 	$result .= pingback("Sindice", "http://sindice.com/xmlrpc/api", "voiD file", $_POST['announce']);
-// 	$result .= ping("RKB voiD store", "http://void.rkbexplorer.com/submit/?action=uri", "uri", $_POST['announce']);
-// 	$result .= ping("Talis voiD store", "http://kwijibo.talis.com/voiD/submit", "url", $_POST['announce']);
-// 	$result .= ping("PingtheSemanticWeb.com", "http://pingthesemanticweb.com/rest/", "url", $_POST['announce']);
-// 	echo $result;
-// }
-
 //// GET interface
 
 if(isset($_GET['validate'])){ 	
@@ -93,40 +69,6 @@ if(isset($_GET['validate'])){
 
 if(isset($_GET['lookupSubject'])){ 	
 	echo lookupSubjectInDBPedia($_GET['lookupSubject']);
-}
-
-if(isset($_GET['lookupVoiDViaHompage'])){
-	// use Talis store as default
-	$lookupURI = $BASE_TALIS_LOOKUP_URI;
-	$browseURI = $BASE_TALIS_BROWSE_URI;
-	
-	if(isset($_GET['store'])){ // store specified, choose store
-		if($_GET['store'] == "RKB"){
-			$lookupURI = $BASE_RKB_LOOKUP_URI;
-			$browseURI = $BASE_RKB_BROWSE_URI;
-		}
-		else {
-			$lookupURI = $BASE_TALIS_LOOKUP_URI;
-			$browseURI = $BASE_TALIS_BROWSE_URI;
-		}
-	}
-
-	echo lookupVoiD($lookupURI, $browseURI, $_GET['lookupVoiDViaHompage']);
-}
-
-if(isset($_GET['listVoiD'])){
-	// use Talis store as default
-	$lookupURI = $BASE_TALIS_LOOKUP_URI;
-	
-	if(isset($_GET['store'])){ // store specified, choose store
-		if($_GET['store'] == "RKB"){
-			$lookupURI = $BASE_RKB_LOOKUP_URI;
-		}
-		else {
-			$lookupURI = $BASE_TALIS_LOOKUP_URI;
-		}
-	}
-	echo listVoiD($lookupURI);
 }
 
 if(isset($_GET['lookupPrefix'])){
@@ -190,15 +132,11 @@ function createVoiDTTL($dsParams){
 		default:
 			break;
 	}
-	$dsPublisherURI = $dsParams["dsPublisherURI"];
-	$dsSourceURI = $dsParams["dsSourceURI"];
-	$dsLicenseURI = $dsParams["dsLicenseURI"];
-	$dsVersion = $dsParams["dsVersion"];
-	//
-	$dsExampleURIList = $dsParams["dsExampleURIList"];
+	//Topic List
 	$dsTopicURIList = $dsParams["dsTopicURIList"];
-	$tdsList = $dsParams["tdsList"];
+	//Vocabulary List
 	$dsVocURIList = $dsParams["dsVocURIList"];
+	//Access Methods
 	$dsSPARQLEndpointURI = $dsParams["dsSPARQLEndpointURI"];
 	$dsLookupURI = $dsParams["dsLookupURI"];
 	$dsDumpURI = $dsParams["dsDumpURI"];
@@ -274,37 +212,25 @@ function createVoiDTTL($dsParams){
 			break;
 	}	
 	if($dsSPARQLEndpointURI){
-		$retVal .= "$TAB_INDENT void:sparqlEndpoint <$dsSPARQLEndpointURI> ;\n";
+		$retVal .= writeURI("void:sparqlEndpoint", $dsSPARQLEndpointURI);
 	}
 	if($dsLookupURI){
-		$retVal .= "$TAB_INDENT void:uriLookupEndpoint <$dsLookupURI> ;\n";
+		$retVal .= writeURI("void:uriLookupEndpoint", $dsLookupURI);
 	}
 	if($dsDumpURI){
-		$retVal .= "$TAB_INDENT void:dataDump <$dsDumpURI> ;\n";
+		$retVal .= writeURI("void:dataDump", $dsDumpURI);
 	}
 	if($dsVocURIList){
 		$i = 1;
 		foreach ($dsVocURIList as $dsVocURI) {
-			$retVal .= "$TAB_INDENT void:vocabulary <$dsVocURI> ;\n";
+			$retVal .= writeURI("void:vocabulary", $dsVocURI);
 			$i++;
 		}
 	}	
-	if($dsExampleURIList){
-		$i = 1;
-		foreach ($dsExampleURIList as $dsExampleURI) {
-			$retVal .= "$TAB_INDENT void:exampleResource <$dsExampleURI>";
-			if(count($dsTopicURIList) == 0 && count($tdsList) == 0) {
-				if($i < count($dsExampleURIList)) $retVal .= " ;\n";
-				else $retVal .= " .\n";
-			}
-			else $retVal .= " ;\n";
-			$i++;
-		}
-	}
 	if($dsTopicURIList){
 		$i = 1;
 		foreach ($dsTopicURIList as $dsTopicURI) {
-			$retVal .= "$TAB_INDENT dcterms:subject <$dsTopicURI>";
+			$retVal .= writeURI("dcterms:subject", $dsTopicURI);
 			if(count($tdsList) == 0) {
 				if($i < count($dsTopicURIList)) $retVal .= " ;\n";
 				else $retVal .= " .\n";
@@ -313,50 +239,50 @@ function createVoiDTTL($dsParams){
 			$i++;
 		}
 	}
-	if($tdsList){
-		$i = 1;
-		foreach ($tdsList as $tdsListItem) {
-			$retVal .= "$TAB_INDENT void:subset " . $SELF_DS ."-DS$i";
-			if($i < count($tdsList)) $retVal .= " ;\n";
-			else $retVal .= " .\n";
-			$i++;
-		}
-	}
+// 	if($tdsList){
+// 		$i = 1;
+// 		foreach ($tdsList as $tdsListItem) {
+// 			$retVal .= "$TAB_INDENT void:subset " . $SELF_DS ."-DS$i";
+// 			if($i < count($tdsList)) $retVal .= " ;\n";
+// 			else $retVal .= " .\n";
+// 			$i++;
+// 		}
+// 	}
 	$retVal .= ".";
 
-	// linksets 
-	if($tdsList){
-		$i = 1;
-		$retVal .= "\n## datasets you link to\n";
-		foreach ($tdsList as $tdsListItem) {
-			$tdsListURI = $tdsListItem["tdsHomeURI"];
-			$tdsLinkType = $tdsListItem["tdsLinkType"];
-			$tdsName = $tdsListItem["tdsName"];
-			$tdsDescription = $tdsListItem["tdsDescription"];
-			$tdsExampleURI = $tdsListItem["tdsExampleURI"];
+// 	// linksets 
+// 	if($tdsList){
+// 		$i = 1;
+// 		$retVal .= "\n## datasets you link to\n";
+// 		foreach ($tdsList as $tdsListItem) {
+// 			$tdsListURI = $tdsListItem["tdsHomeURI"];
+// 			$tdsLinkType = $tdsListItem["tdsLinkType"];
+// 			$tdsName = $tdsListItem["tdsName"];
+// 			$tdsDescription = $tdsListItem["tdsDescription"];
+// 			$tdsExampleURI = $tdsListItem["tdsExampleURI"];
 			
-			$retVal .= "\n# interlinking to :DS$i\n";
-			$retVal .= ":DS$i rdf:type void:Dataset ;\n";
-			$retVal .= " foaf:homepage <$tdsListURI> ;\n";
-			$retVal .= " dcterms:title \"$tdsName\" ;\n";
-			$retVal .= " dcterms:description \"$tdsDescription\"";
-			if($tdsListItem["tdsExampleURI"]) {
-				$retVal .= " ; \n";
-				$retVal .= " void:exampleResource <$tdsExampleURI> .\n\n";
-			}
-			else 	$retVal .= " . \n\n";
-			$retVal .= $SELF_DS ."-DS$i rdf:type void:Linkset ;\n";
-			$retVal .= " void:linkPredicate <$tdsLinkType> ;\n";
-			if($dsURI){
-				$retVal .= " void:target <$dsURI> ;\n";
-			}
-			else {
-				$retVal .= " void:target $SELF_DS ;\n";
-			}
-			$retVal .= " void:target :DS$i .\n";
-			$i++;
-		}
-	}
+// 			$retVal .= "\n# interlinking to :DS$i\n";
+// 			$retVal .= ":DS$i rdf:type void:Dataset ;\n";
+// 			$retVal .= " foaf:homepage <$tdsListURI> ;\n";
+// 			$retVal .= " dcterms:title \"$tdsName\" ;\n";
+// 			$retVal .= " dcterms:description \"$tdsDescription\"";
+// 			if($tdsListItem["tdsExampleURI"]) {
+// 				$retVal .= " ; \n";
+// 				$retVal .= " void:exampleResource <$tdsExampleURI> .\n\n";
+// 			}
+// 			else 	$retVal .= " . \n\n";
+// 			$retVal .= $SELF_DS ."-DS$i rdf:type void:Linkset ;\n";
+// 			$retVal .= " void:linkPredicate <$tdsLinkType> ;\n";
+// 			if($dsURI){
+// 				$retVal .= " void:target <$dsURI> ;\n";
+// 			}
+// 			else {
+// 				$retVal .= " void:target $SELF_DS ;\n";
+// 			}
+// 			$retVal .= " void:target :DS$i .\n";
+// 			$i++;
+// 		}
+// 	}
 
 	$retVal .= $otherStatments;
 	return $retVal;

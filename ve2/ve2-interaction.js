@@ -1,17 +1,22 @@
 /********************************************************/
 /* ve2 user interface and client-side interaction code  */
 /********************************************************/
-
+//////////////////////////////
 // config
-var  ve2ServiceURI = "ve2-service.php"; // the ve2 service 
-var  topicLookUpMinLength = 2; // min. length for a keyword to trigger live look-up in DBPedia
-var  maxNumOfTopicsProposed = 4; // max. numbers of topics shown in the result of the live look-up in DBPedia
+
+// the ve2 service 
+var  ve2ServiceURI = "ve2-service.php"; 
+//min. length for a keyword to trigger live look-up in DBPedia
+var  topicLookUpMinLength = 3; 
+//max. numbers of topics shown in the result of the live look-up in DBPedia
+var  maxNumOfTopicsProposed = 10; 
 
 // working vars - don't touch
 var dsExampleURICounter = 0;
+var dsTopicCounter = 0;
 var dsVocURICounter = 0;
 var voiDURIsList = new Array();
-
+var today = new Date();
 
 // UI helper methods
 
@@ -24,8 +29,8 @@ function initUI(){
 	$("a[href='ref6']").attr("href", vgBase + vgREFSPARQL_endpoint_and_Examp);
 	$("a[href='ref7']").attr("href", voidSpecBase + voidSpecREFVoID_Metadata);	
 	
-	$("#voidCreatedOn").datepicker("setDate", new Date());
-	$("#provAccessedOn").datepicker("setDate", new Date());
+	$("#voidCreatedOn").datepicker("setDate", today);
+	$("#provAccessedOn").datepicker("setDate", today);
 	createVoID();
 }
 
@@ -33,19 +38,6 @@ function clearTopics(){
 	$("#dsTopicOut").hide("fast");
 	$("#dsTopicOut").html("");
 	$("#dsTopic").val("");
-}
-
-function resetTargetPane(){
-	$("#tdsPane").hide("normal");
-	$("#tdsPreview").hide("normal");
-	$("#tdsPreview").html("");
-	$("#tdsHomeURI").val("http://dbpedia.org/");
-	$("#tdsLinkType").val("http://www.w3.org/2002/07/owl#sameAs");
-	$("#tdsName").val("DBPedia");
-	$("#tdsDescription").val("Linked Data version of Wikipedia.");
-	$("#tdsExampleURI").val("http://dbpedia.org/resource/Ludwig_van_Beethoven");
-	$("#tdsMoreTargetDatasetStuff").hide("normal");
-	$("#doShowMoreTargetDatasetStuff").show("normal");
 }
 
 function setStatus(status){
@@ -58,36 +50,43 @@ $(function(){
 
 	$("#voidCreatedOn").datepicker({
 		dateFormat: "yy-mm-dd",
+		maxDate: today
 	});
 	$("#provAccessedOn").datepicker({
 		changeMonth: true,
 		changeYear: true,
 		dateFormat: "yy-mm-dd",
+		maxDate: today
 	});
 	$("#provPublishedOn").datepicker({
 		changeMonth: true,
 		changeYear: true,
 		dateFormat: "yy-mm-dd",
+		maxDate: today
 	});
 	$("#provModifiedOn").datepicker({
 		changeMonth: true,
 		changeYear: true,
 		dateFormat: "yy-mm-dd",
+		maxDate: today
 	});
 	$("#provRetrievedOn").datepicker({
 		changeMonth: true,
 		changeYear: true,
 		dateFormat: "yy-mm-dd",
+		maxDate: today
 	});
 	$("#provImportedOn").datepicker({
 		changeMonth: true,
 		changeYear: true,
 		dateFormat: "yy-mm-dd",
+		maxDate: today
 	});
 	$("#provDerivedOn").datepicker({
 		changeMonth: true,
 		changeYear: true,
 		dateFormat: "yy-mm-dd",
+		maxDate: today
 	});
 
 	initUI(); // reset all values to defaults
@@ -116,78 +115,9 @@ $(function(){
 		validateData();
 		createVoiD();
 	});
-	
-	$("#doInspectVoiD").click(function () {
-		inspectVoiD();
-	});
-	
-	$("#doAnnounce").click(function () {
-		$("#vdAnnounce").slideDown("normal");
-	});
-	
-	$("#doCloseAnnounce").click(function () {
-		$("#vdAnnounce").slideUp("normal");
-		$("#vdAnnounceResult").hide("normal");
-	});
 
-	$("#doAnnounceURI").click(function () {
-		announceVoiDURI();
-	});
-				
-	//////////////////////
-	// handle example URIs
-	$(".dsExampleURI .btn").live("click", function() {
-		var exURI = $(this).parent().attr('id');
-		validateURI($("#"+exURI+" input").val());
-	});
-	
-	$("#doAddDSExampleURI").click(function () {
-		$("#dsExampleURIs").append("<div class='dsExampleURI' id='dsExampleURI"+ dsExampleURICounter +"'><input type='text' size='35' value='http://example.org/resource/ex' class='dsExampleURIVal' /> <span class='ibtn' title='Remove this example resource'>-</span> <span class='btn'>validate</span></div>");
-		dsExampleURICounter++;
-	});
-	
-	$(".dsExampleURI .ibtn").live("click", function() {
-		var exURI = $(this).parent().attr('id');
-		$("#"+exURI).remove();
-	});
-	
-	/////////////////////////////////
-	// handle dataset topic selection
-		
-	// add a topic
-	$(".topicopt span").live("click", function() {
-		var selectedURI = $(this).attr("resource");
-		var label = $(this).attr("content");
-		$("#dsSelectedTopics").append(
-			"<div style='margin: 3px'><a href='"+ selectedURI +"'>" + label + "</a> " +
-			" <span resource='"+ selectedURI + "' class='ibtn' title='Remove this topic'>-</span>" + 
-			"</div>");
-		$("#dsSelectedTopics").show("normal");
-		clearTopics();
-	});
-	
-	// remove a topic
-	$("#dsSelectedTopics span.ibtn").live("click", function() {
-		var selectedURI = $(this).attr("resource");
-		$("#dsSelectedTopics div span[resource='"+selectedURI+"']").parent().remove();
-	});
-	
-	// reset topics
-	$("#doClearTopics").live("click", function() {
-		clearTopics();
-	});
-	
-	// look-up a topic
-	$("#dsTopic").keyup(function () {
-		var topic = $("#dsTopic").val();
-		$("#dsTopicOut").html("");
-		$("#dsTopicOut").hide("normal");
-		if (topic.length >= topicLookUpMinLength) {
-			lookupSubject(topic);
-			$("div:contains('Provided Dataset Topics')").css("color", "white");
-		}
-	});	
-	
+	////////////////////////////////////////////////
+	// Provenace interactions
 	$('#doProvOriginalSelect').change(function () {
 		$("#provOriginalPane").show("normal");
 		$("#provRetrievedPane").hide("normal");
@@ -216,102 +146,67 @@ $(function(){
 		$("#provDerivedPane").show("normal");
 	});
 	
-	/////////////////////////////////////
-	// handle dataset target interlinking
-	
-	// show interlink editing pane
-	$("#doAddInterlinking").click(function () {
-		$("#tdsPane").show("normal");
+	//////////////////////
+	// handle example URIs
+	$(".dsExampleURI .btn").live("click", function() {
+		var exURI = $(this).parent().attr('id');
+		validateURI($("#"+exURI+" input").val());
 	});
 	
-	// add an interlinking
-	$("#doAddTargetDS").click(function () {
-		var tdsHomeURI = $("#tdsHomeURI").val();
-		var tdsLinkType = $("#tdsLinkType").val();
-		var tdsName = $("#tdsName").val();
-		var tdsDescription = $("#tdsDescription").val();
-		var tdsExampleURI = $("#tdsExampleURI").val();
-		var textExampleURI = "";
-		var textLinkType = "";
-				
-		$("div:contains('Provided Interlinking Target')").css("color", "white");
-		
-		if(tdsHomeURI == "" || (tdsHomeURI.substring(0,7) != "http://")) {
-			alert("You have to provide the target dataset homepage. This must be a URI starting with 'http://'.");
-			return false;
-		}
-		
-		if(tdsLinkType == "" || (tdsLinkType.substring(0,7) != "http://")) {
-			alert("You have to provide the link type. This must be a URI starting with 'http://'.");
-			return false;
-		}
-		else {
-			textLinkType = " <div style='color: #0B93D5; font-size: 90%'>link type: <span class='tlinktype'>" + tdsLinkType +"</span></div>";
-		}
-		
-		if(tdsName == "") tdsName = tdsHomeURI;
-		if(tdsDescription == "") tdsDescription = "No description available.";
-		if(tdsExampleURI == "") {
-			textExampleURI = "";
-		}
-		else {
-			textExampleURI = " <div style='color:#6f6f6f; font-size: 90%'>(example resource: <span class='texample'>" + tdsExampleURI +"</span>)</div>";
-		}
-			
-		$("#tdsAddedTargets").append(
-			"<div style='margin: 3px; margin-bottom: 5px'><a href='"+ tdsHomeURI +"' title='"+ tdsDescription +"'>" + tdsName + "</a> " + 
-			" <span resource='"+ tdsHomeURI + "' class='ibtn' title='Remove this interlink target'>-</span> " + 
-			textLinkType +
-			textExampleURI +
-			"</div>");
-		$("#tdsAddedTargets").show("normal");
-
-		resetTargetPane();		
+	$("#doAddDSExampleURI").click(function () {
+		$("#dsExampleURIs").append("<div class='dsExampleURI' id='dsExampleURI"+ dsExampleURICounter +"'><input type='text' size='35' value='http://example.org/resource/ex' class='dsExampleURIVal' /> <span class='ibtn' title='Remove this example resource'>-</span> <span class='btn'>validate</span></div>");
+		dsExampleURICounter++;
 	});
 	
-	// remove an interlinking
-	$("#tdsAddedTargets span.ibtn").live("click", function() {
+	$(".dsExampleURI .ibtn").live("click", function() {
+		var exURI = $(this).parent().attr('id');
+		$("#"+exURI).remove();
+	});
+	
+	/////////////////////////////////
+	// handle dataset topic selection
+		
+	// add a topic
+	$(".topicopt span").live("click", function() {
 		var selectedURI = $(this).attr("resource");
-		$("#tdsAddedTargets div span[resource='"+selectedURI+"']").parent().remove();
+		var label = $(this).attr("content");
+		$("#dsSelectedTopics").append(
+			"<div style='margin: 3px'><a href='"+ selectedURI +"' target=\"_blank\">" + label + "</a> " +
+			" <span resource='"+ selectedURI + "' class='ibtn' title='Remove this topic'>-</span>" + 
+			"</div>");
+		$("#dsSelectedTopics").show("normal");		
+		clearTopics();
+		dsTopicCounter++;
+		createVoID();
 	});
 	
-	// reset current interlinking
-	$("#doForgetTargetDS").click(function () {
-		resetTargetPane();
-	});
-	
-	$("#doShowMoreTargetDatasetStuff").click(function () {
-		$("#tdsMoreTargetDatasetStuff").show("normal");
-		$("#doShowMoreTargetDatasetStuff").hide("normal");
-	});	
-	
-	// lookup prefix
-	$("#doLookupPrefix").click(function () {
-		lookupPrefix();
-	});
-	
-	// autocomplete prefix:localname
-	$("#tdsLinkType").keyup(function(e) {
-		if(e.keyCode == 13) {
-			autocompletes();
+	// remove a topic
+	$("#dsSelectedTopics span.ibtn").live("click", function() {
+		var selectedURI = $(this).attr("resource");
+		$("#dsSelectedTopics div span[resource='"+selectedURI+"']").parent().remove();
+		createVoID();
+		dsTopicCounter--;
+		if(dsTopicCounter <= 0) {
+			$("#dsSelectedTopics").hide("normal");
 		}
 	});
 	
-	// look-up target
-	$("#doPeekTargetDataset").click(function () {
-		$("#tdsPreview").html("");
-		peekTargetDataset("Talis");
-		peekTargetDataset("RKB");
-		$("#tdsPreview").show("normal");
+	// reset topics
+	$("#doClearTopics").live("click", function() {
+		clearTopics();
 	});
 	
-	// reset look-up
-	$("#doClearTDSPreview").click(function () {
-		$("#tdsPreview").hide("normal");
-		$("#tdsPreview").html("");
-		$("#tdsHomeURI").val("http://dbpedia.org/");
+	// look-up a topic
+	$("#dsTopic").keyup(function () {
+		var topic = $("#dsTopic").val();
+		$("#dsTopicOut").html("");
+		$("#dsTopicOut").hide("normal");
+		if (topic.length >= topicLookUpMinLength) {
+			lookupSubject(topic);
+			$("div:contains('Provided Dataset Topics')").css("color", "white");
+		}
 	});
-	
+
 	//////////////////////
 	// handle vocabularies
 	
@@ -329,7 +224,7 @@ $(function(){
 		var vocURI = $(this).parent().attr('id');
 		$("#"+vocURI).remove();
 	});
-	
+			
 	////////
 	// notes
 	$(".ui-icon-help").click(function () {
