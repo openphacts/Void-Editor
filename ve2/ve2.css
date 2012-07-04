@@ -4,19 +4,19 @@ body {
 	margin-right: 20px;
 	margin-left: 20px;
 	margin-top: 10px;
-	background: black;
+	background: white;
 }
 
 a:link, a:visited, a:active  {
 	text-decoration: none; 
 	border-bottom: 1px dotted white;
-	color: white;
+	color: orange;
 }
 
 a:hover {
 	text-decoration: none; 
 	border-bottom: 1px dotted #0B93D5;
-	color: #0B93D5;
+	color: #eb6602;
 }
 
 a.nav {
@@ -25,7 +25,7 @@ a.nav {
 }
  
 h1 {
-	color: white;
+	color: #676767;
 	padding: 0px;
 	margin: 5px;	
 	text-align: center;
@@ -56,13 +56,13 @@ li {
 #top {
 	margin: 0px;
 	margin-bottom: 5px;
-	background: #0972A5 url(jquery-ui/css/dark-hive/images/ui-bg_highlight-hard_20_0972a5_1x100.png) repeat-x scroll 10% 10%;
-	border: 1px solid #0B93D5;
+	background: #666;// url(jquery-ui/css/dark-hive/images/ui-bg_highlight-hard_20_0972a5_1x100.png) repeat-x scroll 10% 10%;
+	border: 1px solid #666;
 }
 
 #topnav {
 	text-align: right;
-	color: white;
+	color: #666;
 	cursor: pointer;
 	margin: 0px;
 	margin-bottom: 5px;
@@ -74,14 +74,14 @@ li {
 	font-family: Lucida Console;
 	display: none;
 	border: 1px solid #0B93D5;
-	color: white;
+	color: #666;
 	padding: 10px;
 	padding-left: 50px;	
 	padding-right: 10px;		
 }
 
 #intro {
-	background: black;
+	background: #666;
 	color: white;
 	position: absolute;
 	left: 0px;
@@ -89,7 +89,7 @@ li {
 	margin: 0px;
 	width: 100%;
 	height: 100%;
-	opacity: 0.9;
+	opacity: 1.0;
 	filter:alpha(opacity=90);
 	z-index: 100;
 }
@@ -169,7 +169,7 @@ li {
 
 #dsTopicOut {
 	display: none;
-	background: black;
+	background: #666;
 	border: 1px solid #2d2d2d;
 	padding: 5px;
 }
@@ -180,7 +180,7 @@ li {
 
 #dsSelectedTopics, #tdsPreview, #tdsAddedTargets {
 	display: none;
-	background: black;
+	background: #666;
 	border: 1px solid #2d2d2d;
 	padding: 5px;
 	margin: 0px;
@@ -215,13 +215,13 @@ li {
 	border: 1px solid #303030;
 	padding: 2px;
 	margin-top: 10px;
-	color: #0B93D5;
+	color: #666;
 	text-align: center;
 	font-size: 80%;
 }
 
 .secHead {
-	color: white;
+	color: #666;
 	font-weight: normal;
 	font-size: 120%;
 	padding-top: 5px; 
@@ -254,7 +254,7 @@ li {
 	text-align: center;
 	font-weight: normal;
 	border: 1px solid #3f3f3f;
-	background: black;
+	background: #666;
 	color: white;
 	padding: 0px;
 	padding-left: 3px;
@@ -294,7 +294,7 @@ li {
 	display: none;
 	font-size: 12px;
 	color: #e0e0e0;
-	background: #1d1d1d;
+	background: #666;
 	padding: 10px;
 	margin-top: 0px;
 	margin-right: 0px;

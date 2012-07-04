@@ -14,7 +14,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>OPS VoID Editor</title>
-	<link type="text/css" href="jquery-ui/css/dark-hive/jquery-ui-1.7.2.custom.css" rel="stylesheet" />
+	<link type="text/css" href="jquery-ui/css/custom-theme/jquery-ui-1.7.3.custom.css" rel="stylesheet" />
 	<link rel="stylesheet" type="text/css" href="ve2.css" />
 	<script type="text/javascript" src="jquery-ui/js/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" src="jquery-ui/js/jquery-ui-1.7.2.custom.min.js"></script>
@@ -24,90 +24,112 @@
 	<script type="text/javascript" src="ve2-interaction.js"></script>
 </head>
 <body about="" typeof="am:WebApplication">
-	<div id="topnav"><a rel="rdfs:seeAlso" href="http://rdfs.org/ns/void">VoID Specification</a> | <a rel="rdfs:seeAlso"  href="http://rdfs.org/ns/void-guide">VoID Guide</a> | <span id="doAbout">About</span></div>
+	<div id="topnav">
+		<a rel="rdfs:seeAlso" 
+			href="http://www.cs.manchester.ac.uk/~graya/ops/mappingspec/" 
+			target="_blank">OPS VoID Specification</a> | 
+		<a rel="rdfs:seeAlso"  href="http://www.w3.org/TR/void/" 
+			target="_blank">W3C VoID Specification</a> | 
+		<a href="#"><span id="doAbout">About</span></a>
+	</div>
 	
-	<div id="about">
+	<div id="about" title="About the Open PHACTS VoID Editor">
 			<div>
 				<div class="logobar">
-					<a href="http://linkeddata.deri.ie/" class="nav" target="_new"><img src="img/lidrc-logo.png" width="200px" alt="LiDRC logo" /></a> <br /><br />
-					<a href="http://www.nuigalway.ie/" class="nav" target="_new"> <img src="img/nuig-logo.png" width="200px"  alt="NUIG logo"/></a>
+					<a href="http://www.openphacts.com/" class="nav" target="_new">
+					<img src="img/ops.png" width="200px" alt="Open PHACTS logo" /></a> 
 				</div>
-				<p><strong>ve2</strong> - the voiD editor is developed and maintained by <a href="http://sw-app.org/mic.xhtml#i" rel="dcterms:creator doap:maintainer">Michael Hausenblas</a> at the <a rel="dcterms:publisher" href="http://linkeddata.deri.ie/">Linked Data Research Centre</a>, DERI, NUI Galway. It is written with jQuery on the browser-side and PHP on the server and depends on the following (external) services:</p>
-			<ul>
-				<li>The <a href="http://lookup.dbpedia.org/">DBpedia look-up</a> service</li>
-				<li>The <a href="http://kwijibo.talis.com/voiD/">Talis voiD store</a></li>
-				<li>The <a href="http://void.rkbexplorer.com/">RKB voiD store</a></li>
-				<li>The namespace lookup <a href="http://prefix.cc/">prefix.cc</a> for RDF developers</li>
-				<li>The <a href="http://pingthesemanticweb.com/">PingtheSemanticWeb.com</a> repository</li>
-				<li>The semantic indexer <a href="http://sindice.com/">Sindice</a></li>
-			</ul>
-			<p>
-				The ve2 Web application is powered by the 
-				<a rel="am:uses" resource="http://code.google.com/p/void-impl/#ve2">ve2 voiD editor</a> reference implementation 
-				as described below, last updated on  <span property="dcterms:modified" datatype="xsd:date">2010-01-08</span>.
-			</p>
-			<p about="http://code.google.com/p/void-impl/#ve2" typeof="doap:Project">	
-					<span property="doap:name">ve2</span> is maintained at
-					<a rel="doap:homepage" href="http://code.google.com/p/void-impl/">http://code.google.com/p/void-impl/</a>, release version
-					<span rel="doap:release">
-						<span typeof="doap:Version">
-							<span property="doap:revision">0.0</span> (<span property="doap:created">2010-01-08</span>),
-						</span>
-					</span>
-					The source code is available via the 
-					<span rel="doap:repository">
-						<span typeof="doap:SVNRepository">
-		 					<a rel="doap:browse" href="http://code.google.com/p/void-impl/source/browse/#svn/trunk/ve2">voiD implementation Google code</a>.
-						</span>
-					</span>
-			</p>	
-			<p>	 
-				In case you have a feature request or want to file a bug, please visit the <a href="http://code.google.com/p/void-impl/issues/list?q=label%3AProduct-ve">issue tracker</a>. If you want to discuss general usefulness or other, VoID-related stuff, please post it to the <a href="http://lists.w3.org/Archives/Public/public-lod/">public-lod@w3.org</a> mailing list (and mention <strong>ve</strong> or <strong>ve2</strong> there ;)
-			</p>
-			<p about="http://sw-app.org/mic.xhtml#i">
-				Kudos to <a href="http://richard.cyganiak.de/foaf.rdf#cygri" rel="ov:kudosTo">Richard Cyganiak</a>, <a href="http://www.deri.ie/about/team/member/Lin_Clark#me" rel="ov:kudosTo">Lin Clark</a>, and <a href="http://www.jenitennison.com/#me" rel="ov:kudosTo">Jeni Tennison</a> for early feedback and lots of good suggestions how to improve the usability! Further I'd like to thank <a href="http://keithalexander.co.uk/id/me" rel="ov:kudosTo">Keith Alexander</a> for his support re the Talis VoID store and <a href="http://id.ecs.soton.ac.uk/person/21" rel="ov:kudosTo">Hugh Glaser</a> as well as <a href="http://id.ecs.soton.ac.uk/person/4860" rel="ov:kudosTo">Ian Millard</a> for their support re the RKB VoID store.
-			</p>
+				<p>The Open PHACTS VoID editor is developed and maintained by 
+				<a href="http://www.cs.man.ac.uk/~graya" 
+				rel="dcterms:creator doap:maintainer">Alasdair Gray</a> at the 
+				<a rel="dcterms:publisher" href="http://img.cs.man.ac.uk/">
+				Information Management Group</a>, University of Manchester, UK.
+				It has been developed within the context of the 
+				<a href="http://www.openphacts.com/">Open PHACTS</a> project and
+				aims to help dataset publishers to create a valid, according to the
+				<a href="http://www.cs.man.ac.uk/~graya/ops/mappingspec/">Open PHACTS 
+				specification</a>, VoID description for deployment with their dataset.
+				Note that it does not enable all aspects of the specification to be
+				captured.</p>
+				
+				<p>The Open PHACTS VoID editor has been developed by adapting the 
+				<a href="http://lab.linkeddata.deri.ie/ve2/">ve2</a> editor developed
+				by <a href="http://sw-app.org/mic.xhtml#i" 
+				rel="dcterms:creator doap:maintainer">Michael Hausenblas</a> at the
+				<a rel="dcterms:publisher" href="http://linkeddata.deri.ie/">Linked 
+				Data Research Centre</a>, DERI, NUI Galway.</p>
+				
+				<p>It is written with jQuery on the browser-side and PHP on the 
+				server. It relies on the DBPedia look-up service for suggesting
+				topics.</p>
+				
+				<p>The code was last updated on <span property="dcterms:modified" 
+				datatype="xsd:date">2012-07-04</span>.
+				The code for the Open PHACTS editor is available from
+				<a href="https://github.com/openphacts/Void-Editor">
+				https://github.com/openphacts/Void-Editor</a>. It was cloned
+				from <a href="http://code.google.com/p/void-impl/#ve2">ve2 voiD 
+				editor</a>
+				on <span property="pav:derivedOn" datatype="xsd:date">
+				2012-06-19</span>.
+				</p>
+				<p>	 
+				In case you have a feature request or want to file a bug, please 
+				create a <a href="https://openphacts2011.atlassian.net/">Jira 
+				Issue</a> or  <a href="mailto:bugs@openphacts.com">email</a>.
+				</p>
 			</div>
-			<div about="" rel="dcterms:conformsTo" resource="http://www.w3.org/TR/rdfa-syntax" class="validrdfa">
-				<a href="http://validator.w3.org/check?uri=referer">
-					<img src="http://www.w3.org/Icons/valid-xhtml-rdfa" alt="Valid XHTML + RDFa" />
-				</a>
+			<div>
+			<h3>Acknowledgement</h3>
+			<p>The research leading to these results has received support from the 
+			Innovative Medicines Initiative (IMI) Joint Undertaking under grant 
+			agreement n° 115191, resources of which are composed of financial 
+			contribution from the European Union's Seventh Framework Programme 
+			(FP7/2007-2013) and EFPIA companies’ in kind contribution.</p>
+			<img src="img/imi.jpg" height="80px" alt="IMI logo" />
+			<img src="img/eu.jpg" height="80px" alt="EU logo" />
+			<img src="img/efpia.jpg" height="80px" alt="EFPIA logo" />
 			</div>
 	</div>
 	
 	<div id="top">
-		<h1 property="dcterms:title" content="OPS VoID Editor"><a href="">The Open PHACTS VoID Editor</a></h1>
+		<h1 property="dcterms:title" content="OPS VoID Editor">
+		<a href="">The Open PHACTS VoID Editor</a></h1>
 	
 		<div id="fcmd">
-			<span id="doCreate" class="btn">Create</span><!-- <span id="doAnnounce" class="btn">Announce</span> -->
+			<span id="doCreate" class="btn">Create</span>
 		</div>
 	</div>
-	<!--
-	<div id="vdAnnounce" class="ui-widget ui-widget-content ui-corner-all">
-		<div style="text-align: right; margin-top: 5px; margin-right: 5px"> <span id="doCloseAnnounce" class="btn">close</span></div>
-		<div class="flabel">URI of the VoID file</div>
-		<input type="text" size="50" id="vdAnnounceURI" value="" /> <span id="doAnnounceURI" class="btn" title="Announce my VoID file now">announce</span>
-		<p class="fyi">The URI of the VoID file you enter will be submitted to the following services:  <a href="http://sindice.com/main/submit">Sindice</a>, the  <a href="http://void.rkbexplorer.com/">RKB VoID store</a>, the <a href="http://kwijibo.talis.com/voiD/submit">Talis VoID store</a>, and to <a href="http://pingthesemanticweb.com/">PingtheSemanticWeb.com</a>.</p>
-		<div id="vdAnnounceResult"><img src="img/ajax-loader.gif" id="busy" width="16px" alt="busy" /><div id="vdAnnounceResultOut"></div></div>
-	</div>
-	-->
 	<div id="intro">
 		<div id="introContent">
 			<p>
-				This is the Open PHACTS VoID editor. It allows you to generate VoID descriptors for datasets and linksets that conform with the Open PHACTS specification for dataset metadata.
+				This is the Open PHACTS VoID editor. It allows you to generate 
+				a skelleton VoID description for a dataset. The resulting dataset
+				can be copied and extended to fully conform with the 
+				<a href="http://www.cs.man.ac.uk/~graya/ops/mappingspec/"
+				target="_blank">Open PHACTS specification</a> for dataset metadata.
 			</p>
 			<p>
-				The VoID editor allows you to generate a VoID file in RDF Turtle format. On the left you'll find a collection of forms where you can define the characteristics of your linked dataset, such as categories, interlinking, technical features, licensing and the like. On the right hand, the respective VoID file is generated on-the-fly (or manually, hitting the 'Create' button).
+				The VoID editor allows you to generate a VoID file in RDF Turtle 
+				format. On the left you'll find a collection of forms where you 
+				can define the characteristics of your dataset, such as categories, 
+				technical features, licensing and provenance. On the right hand side, 
+				the respective VoID file is generated when you move to a new section
+				(or manually, hitting the 'Create' button).
 			</p>
 			<p>
-				The Open PHACTS VoID editor has been adapted from the ve2 editor developed at DERI, Ireland.
+				The Open PHACTS VoID editor has been adapted from the 
+				<a href="http://lab.linkeddata.deri.ie/ve2/" target="_blank">ve2 
+				editor</a> developed at DERI, Ireland.
 			</p>
-			<div style="text-align: center; margin-top: 30px; margin-bottom: 30px;"> <span id="doStart" class="ui-state-active ui-corner-all" style="padding: 2px 15px 2px 15px;"> Start ... </span> </div>
+			<div style="text-align: center; margin-top: 30px; margin-bottom: 30px;"> 
+			<span id="doStart" class="ui-state-active ui-corner-all" 
+			style="padding: 2px 15px 2px 15px;"> Start ... </span> 
+			</div>
 		</div>
 	</div>
 	
 	<div id="main">	
-	<div id="status">Ready</div>
 	<div id="dsForm">
 		<div class="secHead">Input: dataset characteristics</div>
 		<div id="dsItemSelection">
@@ -115,15 +137,16 @@
 				<h3 id="void-metadata"><a class="nav" href="#">VoID Metadata</a></h3>
 				<div>
 					<div class="notebtn"><span class="ui-icon ui-icon-help" 
-					title="Explain to me what I can do here ..." id="help1"></span></div>
+					title="Explain to me what I can do here ..." id="help0"></span></div>
 					<p class="note" id="help0content">
 						Define metadata about the VoID description itself. For more 
-						information see the VoID guide, section 
-						'<a href="ref7" target="_new">VoID Description Metadata</a>'.
+						information see the Open PHACTS VoID guide, section 
+						'<a href="ref1" target="_new">Exchanging Mapping Documents</a>'.
 					</p>
 					<div>
 						<div class="flabel">VoID Title</div>
-						<input type="text" size="50" id="voidTitle" value="Example VoID Document" />
+						<input type="text" size="50" id="voidTitle" 
+							value="Example VoID Document" />
 					</div>
 					<div>
 						<div class="flabel">VoID Description</div>
@@ -152,9 +175,8 @@
 					title="Explain to me what I can do here ..." id="help1"></span></div>
 					<p class="note" id="help1content">
 						Define general metadata about the dataset. For more information see the 
-						VoID guide, section '<a href="ref1" target="_new">General Dataset 
-						Metadata</a>' and '<a href="ref4" target="_new">Announcing the license of 
-						a dataset</a>'.
+						Open PHACTS VoID guide, section '<a href="ref2" target="_new">Dataset 
+						Metadata</a>'.
 					</p>
 					<div>
 						<div class="flabel">Dataset URI</div>
@@ -177,15 +199,9 @@
 					</div>
 					<div>
 						<div class="flabel">Dataset Description</div>
-						<textarea rows="3" cols="50" id="dsDescription">A simple dataset in RDF.</textarea>
+						<textarea rows="3" cols="50" 
+						id="dsDescription">A simple dataset in RDF.</textarea>
 					</div>
-<!-- 					<div>						
-						<div class="flabel"><span id="doAddDSExampleURI" class="ibtn" title="Add another example resource">+</span> Example Resource</div>
-						<div id="dsExampleURIs">
-							<div class="dsExampleURI" id="dsExampleURI0"><input type="text" size="35" value="http://example.org/resource/ex" /> <span class="btn">validate</span></div>
-						</div>
-					</div>
- -->
 					<div>
 						<div class="flabel">Dataset License</div>
 						<select id="dsLicenseURI">
@@ -220,7 +236,7 @@
 					<p class="note" id="help5content">
 						Please provide details of how the RDF version of the dataset was generated and 
 						published, section 
-						'<a href="ref1" target="_new">General Dataset Metadata</a>'.
+						'<a href="ref2" target="_new">Dataset Metadata</a>'.
 					</p>
 					<div class="flabel">Please select the origin of the data from the following options
 					and then complete the resulting form.</div>
@@ -345,10 +361,17 @@
  				</div>
 			</div>
 			<div>
-				<h3 id="topicAndExample"><a class="nav" href="#">Topics and Example Resources <span style="font-style: italic;">(Optional</span>)</a></h3>
+				<h3 id="topicAndExample"><a class="nav" href="#">Topics and Example Resources 
+				<span style="font-style: italic;">(Optional</span>)</a></h3>
 				<div>
 					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain me what I can do here ..." id="help2"></span></div>
-					<p class="note" id="help2content">Select one or more topics your dataset talks about. In general, we use DBpedia resources in VoID to unambiguously represent the topic. For more information see the VoID guide, section '<a href="ref2" target="_new">Categorise Datasets</a>'.</p>
+					<p class="note" id="help2content">Select one or more topics your dataset talks 
+					about. In general, we use DBpedia resources in VoID to unambiguously represent 
+					the topic. For more information see the VoID guide, section 
+					'<a href="ref3" target="_new">Categorise Datasets</a>'. </br>
+					You can also specify the URIs of some example resources in the dataset. For more
+					information see the VoID guide, section 
+					'<a href="ref4" target="_new">Example resources</a>.</p>
 					<div style="float:left; margin-right: 10px">
 						<div class="flabel">Dataset Topic</div>
 						<input type="text" size="15" id="dsTopic" value="" /> <span id="doClearTopics" class="btn" title="Clear selection">x</span>
@@ -360,17 +383,22 @@
 						<div id="dsSelectedTopics"></div>
 					</div>
 					<div>						
-						<div class="flabel"><span id="doAddDSExampleURI" class="ibtn" title="Add example resource">+</span> Example Resource</div>
+						<div class="flabel"><span id="doAddDSExampleURI" class="ibtn" 
+						title="Add example resource">+</span> Example Resource</div>
 						<div id="dsExampleURI"></div>
 					</div>				
 				</div>
 			</div>
 			<div>
-				<h3 id="subsets"><a class="nav" href="#">Subsets within the Dataset</a></h3>
+				<h3 id="subsets"><a class="nav" href="#">Subsets within the Dataset <span style="font-style: italic;">(Optional</span>)</a></h3>
 				<div>
-					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain to me what I can do here ..." id="help3"></span></div>
-					<p class="note" id="help3content">Define one or more subsets of the datasets For more information see the VoID guide, section '<a href="ref3" target="_new">Describing Subsets of a Dataset</a>'.</p>
-					<div class="flabel"><span id="doShowSubsetPane" class="ibtn" title="Add subset description">+</span>  Subset Description</div>
+					<div class="notebtn"><span class="ui-icon ui-icon-help" 
+					title="Explain to me what I can do here ..." id="help3"></span></div>
+					<p class="note" id="help3content">Define one or more subsets of the datasets. 
+					For more information see the Open PHACTS VoID guide, section 
+					'<a href="ref2" target="_new">Dataset Metadata</a>'.</p>
+					<div class="flabel"><span id="doShowSubsetPane" class="ibtn" 
+					title="Add subset description">+</span>  Subset Description</div>
 					
 					<div id="subsetPane">
 						<div style="text-align: right;"><span id="doAddSubset" class="ibtn" title="Add a subset of the dataset">add</span> <span id="doForgetSubset" class="ibtn" title="Cancel editing">cancel</span></div>
@@ -398,24 +426,35 @@
 			</div>
  -->
  			<div>
-				<h3 id="accessMethods"><a class="nav" href="#">Specify access methods (SPARQL endpoint, etc.)</a></h3>
+				<h3 id="accessMethods"><a class="nav" href="#">Specify access methods 
+				(SPARQL endpoint, etc.)</a></h3>
 				<div>
-					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain me what I can do here ..." id="help6"></span></div>
-					<p class="note" id="help6content">Specify (alternative) access methods for the dataset. If you don't want to provide any of this information, just leave it empty - it's optional, but it is advised to provide it. For more information see the VoID guide, section '<a href="ref6" target="_new">SPARQL endpoints, URI lookup, and RDF data dumps</a>'.</p>
+					<div class="notebtn"><span class="ui-icon ui-icon-help" 
+					title="Explain to me what I can do here ..." id="help6"></span></div>
+					<p class="note" id="help6content">Specify (alternative) access methods for the 
+					dataset. If you don't want to provide any of this information, just leave it 
+					empty - it's optional, but it is advised to provide it. For more information 
+					see the VoID guide, section '<a href="ref5" target="_new">SPARQL endpoints, 
+					URI lookup, and RDF data dumps</a>'.</p>
 					<div>
 						<div class="flabel">SPARQL endpoint</div>
 						<input type="text" size="25" id="dsSPARQLEndpointURI" value="" />
-						<p class="fyi">The URI of the SPARQL endpoint for the dataset, for example <a href="http://dbpedia.org/sparql" target="_new">http://dbpedia.org/sparql</a>.</p>
+						<p class="fyi">The URI of the SPARQL endpoint for the dataset, 
+						for example <a href="http://dbpedia.org/sparql" target="_new">
+						http://dbpedia.org/sparql</a>.</p>
 					</div>
 					<div>
 						<div class="flabel">URI look-up endpoint</div>
 						<input type="text" size="25" id="dsLookupURI" value="" />
-						<p class="fyi">The URI of the look-up service for the dataset, such as <a href="http://lookup.dbpedia.org/" target="_new">http://lookup.dbpedia.org/</a>.</p>
+						<p class="fyi">The URI of the look-up service for the dataset, 
+						such as <a href="http://lookup.dbpedia.org/" target="_new">
+						http://lookup.dbpedia.org/</a>.</p>
 					</div>
 					<div>
 						<div class="flabel">RDF data dump</div>
 						<input type="text" size="30" id="dsDumpURI" value="" />
-						<p class="fyi">The URI of the data dump for the dataset, e.g., http://example.org/dump.rdf.</p>
+						<p class="fyi">The URI of the data dump for the dataset, e.g., 
+						http://example.org/dump.rdf.</p>
 					</div>
 				</div>
 			</div>
@@ -423,13 +462,14 @@
 	</div>
 	
 	<div id="vdForm">
+		<div id="status">Ready</div>
 		<h3  class="secHead">Output: VoID Dataset Description</h3>
-		<textarea id="vdOutput" cols="80" rows="40" readonly="readonly"/>
+		<textarea id="vdOutput" cols="80" rows="40" readonly="readonly"></textarea>
 	</div>
 
 	</div>
 	
-	<div id="footer">(c) <a href="http://openphacts.com/">Open PHACTS</a>, 2012.<br/> Based on <a href="http://lab.linkeddata.deri.ie/ve2/">ve2 editor</a> from <a href="http://linkeddata.deri.ie/">Linked Data Research Centre</a>, DERI, NUI Galway.</div>
+	<div id="footer">(c) <a href="http://www.openphacts.com/" target="_blank">Open PHACTS</a>, 2012.</div>
 	</body>
 </html>
 

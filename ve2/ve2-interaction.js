@@ -22,13 +22,11 @@ var currentSection = "void-metadata";
 // UI helper methods
 
 function initUI(){
-	$("a[href='ref1']").attr("href", vgBase + vgREFGeneral_Dataset_Metadata);
-	$("a[href='ref2']").attr("href", vgBase + vgREFCategorize_Datasets);
-	$("a[href='ref3']").attr("href", vgBase + vgREFDescribing_Dataset_Interlink);
-	$("a[href='ref4']").attr("href", vgBase + vgREFAnnouncing_the_license_of);
-	$("a[href='ref5']").attr("href", vgBase + vgREFVocabularies_used);
-	$("a[href='ref6']").attr("href", vgBase + vgREFSPARQL_endpoint_and_Examp);
-	$("a[href='ref7']").attr("href", voidSpecBase + voidSpecREFVoID_Metadata);	
+	$("a[href='ref1']").attr("href", opsvgREFVoIDDescription);
+	$("a[href='ref2']").attr("href", opsvgREFDataset_Metadata);
+	$("a[href='ref3']").attr("href", voidREFTargets);
+	$("a[href='ref4']").attr("href", voidREFExamples);
+	$("a[href='ref5']").attr("href", voidREFAccess);
 	
 	$("#voidCreatedOn").datepicker("setDate", today);
 	$("#provAccessedOn").datepicker("setDate", today);
@@ -115,8 +113,14 @@ $(function(){
 		$("#intro").fadeOut("slow");
 	});
 	
+	$("#about").dialog({
+		autoOpen: false,
+		width: 800,
+		modal: true
+	});
+	
 	$("#doAbout").click(function () {
-		$("#about").slideToggle("normal");
+		$("#about").dialog("open");
 	});
 	
 	$("#doCreate").click(function () {
@@ -197,7 +201,7 @@ $(function(){
 		$("#dsTopicOut").hide("normal");
 		if (topic.length >= topicLookUpMinLength) {
 			lookupSubject(topic);
-			$("div:contains('Provided Dataset Topics')").css("color", "white");
+			$("div:contains('Provided Dataset Topics')").css("color", "#666");
 		}
 	});
 	
@@ -259,7 +263,7 @@ $(function(){
 			$("#subsetNSURI").focus();
 			return;
 		}
-		$("div:contains('Provided Subsets')").css("color", "white");
+		$("div:contains('Provided Subsets')").css("color", "#666");
 		$("#existingSubsets").append(
                 "<div style='margin: 3px; margin-bottom: 5px'>" +
                 "<div><span resource='"+ subsetURI + "' class='ibtn' title='Remove this subset'>-</span></div> " + 
