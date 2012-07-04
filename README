@@ -1,0 +1,9 @@
+<p>The Open PHACTS VoID editor is developed and maintained by <a href="http://www.cs.man.ac.uk/~graya" rel="dcterms:creator doap:maintainer">Alasdair Gray</a> at the <a rel="dcterms:publisher" href="http://img.cs.man.ac.uk/">Information Management Group</a>, University of Manchester, UK. It has been developed within the context of the  <a href="http://www.openphacts.com/">Open PHACTS</a> project and aims to help dataset publishers to create a valid, according to the <a href="http://www.cs.man.ac.uk/~graya/ops/mappingspec/">Open PHACTS specification</a>, VoID description for deployment with their dataset. Note that it does not enable all aspects of the specification to be captured.</p>
+
+<p>The Open PHACTS VoID editor has been developed by adapting the <a href="http://lab.linkeddata.deri.ie/ve2/">ve2</a> editor developed by <a href="http://sw-app.org/mic.xhtml#i" rel="dcterms:creator doap:maintainer">Michael Hausenblas</a> at the <a rel="dcterms:publisher" href="http://linkeddata.deri.ie/">Linked Data Research Centre</a>, DERI, NUI Galway.</p>
+
+<p>It is written with jQuery on the browser-side and PHP on the server. It relies on the DBPedia look-up service for suggesting topics.</p>
+
+<p>The code was last updated on <span property="dcterms:modified" datatype="xsd:date">2012-07-04</span>. The code for the Open PHACTS editor is available from <a href="https://github.com/openphacts/Void-Editor"> https://github.com/openphacts/Void-Editor</a>. It was cloned from <a href="http://code.google.com/p/void-impl/#ve2">ve2 voiD editor</a> on <span property="pav:derivedOn" datatype="xsd:date">2012-06-19</span>.</p>
+
+<p>In case you have a feature request or want to file a bug, please create a <a href="https://openphacts2011.atlassian.net/">Jira Issue</a> or  <a href="mailto:bugs@openphacts.com">email</a>.</p>
