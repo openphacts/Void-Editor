@@ -17,6 +17,7 @@ var dsTopicCounter = 0;
 var dsVocURICounter = 0;
 var today = new Date();
 var subsetIds = new Array();
+var currentSection = "void-metadata";
 
 // UI helper methods
 
@@ -101,8 +102,11 @@ $(function(){
 		autoHeight: false,
 		//Validate on section change
 		change: function(event, ui) {
-			validateSection(ui.oldHeader[0].id);
-			createVoID();
+			if(validateSection(currentSection)) {				
+				createVoID();
+				var newSection = ui.newHeader[0].id;
+				currentSection = newSection;
+			}		
 		}
 	 });
 	

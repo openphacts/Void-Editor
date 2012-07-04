@@ -16,8 +16,8 @@ function createVoID(){
 			setStatus("Ready");
 		},
 		error:  function(msg){
-			alert(data);
-			setStatus("Error creating voiD description.");
+			alert("Error processing data: " + data);
+			setStatus("Error creating VoID description.");
 		} 
 	});	
 
@@ -97,19 +97,10 @@ function extractData(){
 	if (subsetList.length > 0) {
 		data.dsSubsets = subsetList;
 	}
-	//FIXME: Pass across access methods information
-//	if (!$("#doMinimal").is(':checked')) { // don't take into account for minimal voiD file
-//		data.dsSPARQLEndpointURI = dsSPARQLEndpointURI;
-//		data.dsLookupURI = dsLookupURI;
-//		data.dsDumpURI = dsDumpURI;
-//		return true;
-//	}
-
-//	//Other stuff
-//	var dsVocURIList = new Array();
-//	var dsSPARQLEndpointURI = $("#dsSPARQLEndpointURI").val();
-//	var dsLookupURI = $("#dsLookupURI").val();
-//	var dsDumpURI = $("#dsDumpURI").val();
+	//Access methods information
+	data.dsSPARQLEndpointURI = $("#dsSPARQLEndpointURI").val();
+	data.dsLookupURI = $("#dsLookupURI").val();
+	data.dsDumpURI = $("#dsDumpURI").val();
 	return data;
 }
 
@@ -118,6 +109,7 @@ function validateData() {
 	if (!validateVoidMetadata(data)) return false;
 	if (!validateDSMetadata(data)) return false;
 	if (!validateProvMetadata(data)) return false;
+	if (!validateAccessMethods(data)) return false;
 	return true;
 }
 
@@ -135,6 +127,9 @@ function validateSection(section) {
 			return validateProvMetadata(data);
 			break;
 		case "topicAndExample":
+			break;
+		case "accessMethods":
+			return validateAccessMethods(data);
 			break;
 		default:
 			return true;
@@ -289,6 +284,30 @@ function validateProvMetadata(data) {
 		break;
 	default:
 		break;
+	}
+	return true;
+}
+
+function validateAccessMethods(data) {
+	if(data.dsSPARQLEndpointURI != "" && (data.dsSPARQLEndpointURI.substring(0,7) != "http://")) {
+		alert("Please provide a URL for the SPARQL endpoint, or leave it blank.");
+		$("#dsItemSelection").accordion('activate', 5);
+		$("#dsSPARQLEndpointURI").focus();
+		return false;
+	}
+	if(data.dsLookupURI != "" && (data.dsLookupURI.substring(0,7) != "http://")) {
+		alert("Please provide a URL for the lookup endpoint, or leave it blank.");
+		$("#dsItemSelection").accordion('activate', 5);
+		$("#dsLookupURI").focus();
+		return false;
+	}
+	if(data.dsDumpURI != "" && 
+			((data.dsDumpURI.substring(0,7) != "http://") &&
+			(data.dsDumpURI.substring(0,6) != "ftp://"))) {
+		alert("Please provide a URL or FTP location for the RDF data dump, or leave it blank.");
+		$("#dsItemSelection").accordion('activate', 5);
+		$("#dsDumpURI").focus();
+		return false;
 	}
 	return true;
 }
