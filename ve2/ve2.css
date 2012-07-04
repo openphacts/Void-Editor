@@ -191,7 +191,7 @@ li {
 	display: none;
 }
 
-#tdsPane, #provOriginalPane, #provRetrievedPane, #provImportedPane, #provDerivedPane {
+#subsetPane, #provOriginalPane, #provRetrievedPane, #provImportedPane, #provDerivedPane {
 	display: none;
 	border: 1px solid #2d2d2d;
 	padding: 5px;

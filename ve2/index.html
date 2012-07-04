@@ -366,35 +366,26 @@
 				</div>
 			</div>
 			<div>
-				<h3><a class="nav" href="#">Interlink to other datasets</a></h3>
+				<h3 id="subsets"><a class="nav" href="#">Subsets within the Dataset</a></h3>
 				<div>
-					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain me what I can do here ..." id="help3"></span></div>
-					<p class="note" id="help3content">Define one or more datasets, so called <em>target dataset(s)</em>, you link to. For more information see the VoID guide, section '<a href="ref3" target="_new">Describing Dataset Interlinking</a>'.</p>
-					<div class="flabel"><span id="doAddInterlinking" class="ibtn" title="Add interlinking description">+</span>  Interlinking Target Description</div>
+					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain to me what I can do here ..." id="help3"></span></div>
+					<p class="note" id="help3content">Define one or more subsets of the datasets For more information see the VoID guide, section '<a href="ref3" target="_new">Describing Subsets of a Dataset</a>'.</p>
+					<div class="flabel"><span id="doShowSubsetPane" class="ibtn" title="Add subset description">+</span>  Subset Description</div>
 					
-					<div id="tdsPane">
-						<div style="text-align: right;"><span id="doAddTargetDS" class="ibtn" title="Add the target dataset">add</span> <span id="doForgetTargetDS" class="ibtn" title="Cancel editing">cancel</span></div>
-						<div class="flabel">Target Dataset Homepage</div>
-						<input type="text" size="30" id="tdsHomeURI" value="http://dbpedia.org/" /> <span id="doClearTDSPreview" class="btn" title="Clear preview">x</span> <span id="doPeekTargetDataset" class="btn">preview</span>
-						<p class="fyi">Define the target dataset by specifying its homepage. The <em>homepage of the dataset</em> is a dedicated document that talks about the dataset. Use the 'preview' button to preview known datasets from VoID stores (currently Talis and RKB).</p>
-						<div id="tdsPreview"></div>
-						<div class="flabel">Interlinking Type</div>
-						<input type="text" size="50" id="tdsLinkType" value="http://www.w3.org/2002/07/owl#sameAs" /> <span id="doLookupPrefix" class="btn" title="Lookup prefix and replace with namespace URI">lookup</span>
-						<p class="fyi">State how you link to the target, that is, provide an RDF property such as <code>http://www.w3.org/2002/07/owl#sameAs</code>. You can also just type prefixes such as <code>owl</code> and then use the 'lookup' button to replace it with the fully qualified namespace URI. It's also o.k. to use the 'short form', for the interlinking type, such as <code>owl:sameAs</code>, which will be replaced automatically.</p>
-						<div style="margin-top: 10px"><span id="doShowMoreTargetDatasetStuff" class="paction">more &gt;&gt;  </span></div>
-						<div id="tdsMoreTargetDatasetStuff">
-							<div class="flabel">Target Dataset Name</div>
-							<input type="text" size="20" id="tdsName" value="DBpedia" />
-							<div class="flabel">Target Dataset Description</div>
-							<input type="text" size="30" id="tdsDescription" value="Linked Data version of Wikipedia." />
-							<div class="flabel">Example Resource</div>
-							<input id="tdsExampleURI" type="text" size="45" value="http://dbpedia.org/resource/Ludwig_van_Beethoven" />
-						</div>	
+					<div id="subsetPane">
+						<div style="text-align: right;"><span id="doAddSubset" class="ibtn" title="Add a subset of the dataset">add</span> <span id="doForgetSubset" class="ibtn" title="Cancel editing">cancel</span></div>
+						<div class="flabel">Subset name</div>
+						<input type="text" size="30" id="subsetName" /> 
+						<p class="fyi">Define the name for the subset. This must be unique and will be used to generate a URI for the subset.</p>
+						<div class="flabel">Subset Namespace URI</div>
+						<input type="text" size="45" id="subsetNSURI" />
+						<p class="fyi">State the URI namespace for the subset.</p>
 					</div>
-					<div class="flabel inactive">Provided Interlinking Targets</div>
-					<div id="tdsAddedTargets"></div>
+					<div class="flabel inactive">Provided Subsets</div>
+					<div id="existingSubsets"></div>
 				</div>
 			</div>
+<!-- 
 			<div>
 				<h3><a class="nav" href="#">List used vocabularies</a></h3>
 				<div>
@@ -405,7 +396,8 @@
 					<div id="dsVocURIs"></div>
 				</div>
 			</div>
-			<div>
+ -->
+ 			<div>
 				<h3><a class="nav" href="#">Specify access methods (SPARQL endpoint, etc.)</a></h3>
 				<div>
 					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain me what I can do here ..." id="help6"></span></div>

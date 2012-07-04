@@ -83,7 +83,21 @@ function extractData(){
 			dsExampleURIList.push(exampleURI);
 		}
 	});
-	data.dsExampleURIList = dsExampleURIList;//	// access methods
+	data.dsExampleURIList = dsExampleURIList;
+	//Subsets
+	var subsetList = new Array();
+	$("#existingSubsets > div").each(function (i) {
+		var subset = {
+				subsetURI : $(this).find("div span.ibtn").attr("resource"),
+				subsetName : $(this).find("div span.subsetName").text(),
+				subsetNSURI : $(this).find("div span.subsetNSURI").text()
+		};
+		subsetList.push(subset);
+	});
+	if (subsetList.length > 0) {
+		data.dsSubsets = subsetList;
+	}
+	//FIXME: Pass across access methods information
 //	if (!$("#doMinimal").is(':checked')) { // don't take into account for minimal voiD file
 //		data.dsSPARQLEndpointURI = dsSPARQLEndpointURI;
 //		data.dsLookupURI = dsLookupURI;

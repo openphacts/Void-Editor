@@ -91,7 +91,7 @@ function createVoiDTTL($dsParams){
 	global $LICENSE_URI;
 	global $TAB_INDENT;
 	$retVal = $BASE_TTL;
-	$otherStatments = "\n";
+	$otherStatements = "\n";
 	//VoID metadata
 	$voidTitle = $dsParams["voidTitle"];
 	$voidDescription = $dsParams["voidDescription"];
@@ -138,6 +138,8 @@ function createVoiDTTL($dsParams){
 	$dsExampleURIList = $dsParams["dsExampleURIList"];
 	//Vocabulary List
 	$dsVocURIList = $dsParams["dsVocURIList"];
+	//Subset List
+	$dsSubsets = $dsParams["dsSubsets"];
 	//Access Methods
 	$dsSPARQLEndpointURI = $dsParams["dsSPARQLEndpointURI"];
 	$dsLookupURI = $dsParams["dsLookupURI"];
@@ -241,52 +243,21 @@ function createVoiDTTL($dsParams){
 			}
 		}
 	}
-// 	if($tdsList){
-// 		$i = 1;
-// 		foreach ($tdsList as $tdsListItem) {
-// 			$retVal .= "$TAB_INDENT void:subset " . $SELF_DS ."-DS$i";
-// 			if($i < count($tdsList)) $retVal .= " ;\n";
-// 			else $retVal .= " .\n";
-// 			$i++;
-// 		}
-// 	}
-	$retVal .= ".";
-
-// 	// linksets 
-// 	if($tdsList){
-// 		$i = 1;
-// 		$retVal .= "\n## datasets you link to\n";
-// 		foreach ($tdsList as $tdsListItem) {
-// 			$tdsListURI = $tdsListItem["tdsHomeURI"];
-// 			$tdsLinkType = $tdsListItem["tdsLinkType"];
-// 			$tdsName = $tdsListItem["tdsName"];
-// 			$tdsDescription = $tdsListItem["tdsDescription"];
-// 			$tdsExampleURI = $tdsListItem["tdsExampleURI"];
-			
-// 			$retVal .= "\n# interlinking to :DS$i\n";
-// 			$retVal .= ":DS$i rdf:type void:Dataset ;\n";
-// 			$retVal .= " foaf:homepage <$tdsListURI> ;\n";
-// 			$retVal .= " dcterms:title \"$tdsName\" ;\n";
-// 			$retVal .= " dcterms:description \"$tdsDescription\"";
-// 			if($tdsListItem["tdsExampleURI"]) {
-// 				$retVal .= " ; \n";
-// 				$retVal .= " void:exampleResource <$tdsExampleURI> .\n\n";
-// 			}
-// 			else 	$retVal .= " . \n\n";
-// 			$retVal .= $SELF_DS ."-DS$i rdf:type void:Linkset ;\n";
-// 			$retVal .= " void:linkPredicate <$tdsLinkType> ;\n";
-// 			if($dsURI){
-// 				$retVal .= " void:target <$dsURI> ;\n";
-// 			}
-// 			else {
-// 				$retVal .= " void:target $SELF_DS ;\n";
-// 			}
-// 			$retVal .= " void:target :DS$i .\n";
-// 			$i++;
-// 		}
-// 	}
-
-	$retVal .= $otherStatments;
+	if($dsSubsets){
+		foreach ($dsSubsets as $subset) {
+			$subsetURI = $subset["subsetURI"];
+			$subsetName = $subset["subsetName"];
+			$subsetNSURI = $subset["subsetNSURI"];
+			$retVal .= "$TAB_INDENT void:subset :$subsetURI ;\n";
+			$otherStatements .= "$subsetURI rdf:type void:Dataset ;\n";
+			$otherStatements .= writeString("dcterms:title", $subsetName);
+			$otherStatements .= writeString("void:uriSpace", $subsetNSURI);
+			$otherStatements .= ".\n"; 
+		}
+	}
+	//Finish off dataset and write out any other statements
+	$retVal .= ".\n";
+	$retVal .= $otherStatements;
 	return $retVal;
 }
 

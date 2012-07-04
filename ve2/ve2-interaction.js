@@ -15,8 +15,8 @@ var  maxNumOfTopicsProposed = 10;
 var dsExampleURICounter = 0;
 var dsTopicCounter = 0;
 var dsVocURICounter = 0;
-//var voiDURIsList = new Array();
 var today = new Date();
+var subsetIds = new Array();
 
 // UI helper methods
 
@@ -38,6 +38,10 @@ function clearTopics(){
 	$("#dsTopicOut").hide("fast");
 	$("#dsTopicOut").html("");
 	$("#dsTopic").val("");
+}
+
+function replaceSpaces(string, char) {
+	return string.split(' ').join(char);
 }
 
 function setStatus(status){
@@ -154,9 +158,11 @@ $(function(){
 		var selectedURI = $(this).attr("resource");
 		var label = $(this).attr("content");
 		$("#dsSelectedTopics").append(
-			"<div style='margin: 3px'><a href='"+ selectedURI +"' target=\"_blank\">" + label + "</a> " +
-			" <span resource='"+ selectedURI + "' class='ibtn' title='Remove this topic'>-</span>" + 
-			"</div>");
+			"<div style='margin: 3px'><a href='"+ selectedURI +
+				"' target=\"_blank\">" + label + "</a> " +
+				" <span resource='"+ selectedURI + "' class='ibtn' " +
+						"title='Remove this topic'>-</span>" + 
+				"</div>");
 		$("#dsSelectedTopics").show("normal");		
 		clearTopics();
 		dsTopicCounter++;
@@ -199,7 +205,11 @@ $(function(){
 	});
 	
 	$("#doAddDSExampleURI").click(function () {
-		$("#dsExampleURI").append("<div class='dsExampleURI' id='dsExampleURI"+ dsExampleURICounter +"'><input type='text' size='35' class='dsExampleURIVal' /> <span class='ibtn' title='Remove this example resource'>-</span> <span class='btn'>Validate</span></div>");
+		$("#dsExampleURI").append("<div class='dsExampleURI' id='dsExampleURI" + 
+				dsExampleURICounter +"'><input type='text' size='35' " +
+						"class='dsExampleURIVal' /> <span class='ibtn' " +
+						"title='Remove this example resource'>-</span> " +
+						"<span class='btn'>Validate</span></div>");
 		dsExampleURICounter++;
 	});
 	
@@ -210,6 +220,68 @@ $(function(){
 	});
 
 	//////////////////////
+	// handle subset generation
+	
+	// show subset editing pane
+	$("#doShowSubsetPane").click(function() {
+		$("#subsetPane").show("normal");
+	});
+	
+	// hide subset editing pane
+	$("#doForgetSubset").click(function() {
+		$("#subsetName").val("");
+		$("#subsetNSURI").val("");
+		$("#subsetPane").hide("normal");
+	});
+	
+	// Add subset details
+	$("#doAddSubset").click(function() {
+		var subsetName = $("#subsetName").val();
+		var subsetNSURI = $("#subsetNSURI").val();
+		if(subsetName == "") {
+			alert("You need to provide a unique name for the subset.");
+			$("#subsetName").focus();
+			return;
+		}
+		subsetURI = replaceSpaces(subsetName, '_');
+		if($.inArray(subsetURI, subsetIds) >= 0) {
+			alert("The name for the dataset must be unique. " + 
+					subsetName + " already used.");
+			$("#subsetName").focus();
+			return;
+		} 
+		if(subsetNSURI == "" || (subsetNSURI.substring(0,7) != "http://")) {
+			alert("You need to provide the URI namespace for the subset.");
+			$("#subsetNSURI").focus();
+			return;
+		}
+		$("div:contains('Provided Subsets')").css("color", "white");
+		$("#existingSubsets").append(
+                "<div style='margin: 3px; margin-bottom: 5px'>" +
+                "<div><span resource='"+ subsetURI + "' class='ibtn' title='Remove this subset'>-</span></div> " + 
+                "<div><span class='subsetName'>" + subsetName + "</span></div> " + 
+                "<div><span class='subsetNSURI'>" + subsetNSURI + "</span></div>" +
+                "</div>");
+        $("#existingSubsets").show("normal");
+        subsetIds.push(subsetURI);
+        //Hide the subset editing pane
+        $("#doForgetSubset").trigger('click');
+        createVoID();
+	});
+	
+	// Remove subset details
+	$("#existingSubsets span.ibtn").live("click", function() {
+		var selectedURI = $(this).attr("resource");
+		$("#existingSubsets div span[resource='"+selectedURI+"']").parent().parent().remove();
+		subsetIds.splice( $.inArray(selectedURI, subsetIds), 1);
+		if (subsetIds.length == 0) {
+			$("#existingSubsets").hide("normal");
+			$("div:contains('Provided Subsets')").css("color", "#3f3f3f");
+		}
+		createVoID();
+	});
+	
+	//////////////////////
 	// handle vocabularies
 	
 	$(".dsVocURI .btn").live("click", function() {
@@ -218,7 +290,11 @@ $(function(){
 	});
 	
 	$("#doAddDSVocURI").click(function () {
-		$("#dsVocURIs").append("<div class='dsVocURI' id='dsVocURI"+ dsVocURICounter +"'><input type='text' size='35' value='http://purl.org/dc/terms/' class='dsVocURIVal' /> <span class='ibtn' title='Remove this vocabulary'>-</span> <span class='btn'>lookup</span></div>");
+		$("#dsVocURIs").append("<div class='dsVocURI' id='dsVocURI"+ 
+				dsVocURICounter +"'><input type='text' size='35' " +
+						"value='http://purl.org/dc/terms/' class='dsVocURIVal' /> " +
+						"<span class='ibtn' title='Remove this vocabulary'>-</span> " +
+						"<span class='btn'>lookup</span></div>");
 		dsVocURICounter++;
 	});
 	
