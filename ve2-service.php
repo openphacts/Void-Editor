@@ -102,8 +102,9 @@ function createVoiDTTL($dsParams){
 	$dsHomeURI = $dsParams["dsHomeURI"];
 	$dsName = $dsParams["dsName"];
 	$dsDescription = $dsParams["dsDescription"];
+	$dsLicenseURI = $dsParams["dsLicenseURI"];
 	$dsUriNs = $dsParams["dsUriNs"];
-	//Provenance and licensing
+	//Provenance 
 	$dsOrigin = $dsParams["origin"];
 	$pavVersion = $dsParams["pavVersion"];
 	switch ($dsOrigin) {

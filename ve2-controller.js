@@ -36,6 +36,9 @@ function extractData(){
 	data.dsName = $("#dsName").val();
 	data.dsDescription = $("#dsDescription").val();
 	data.dsLicenseURI = $("#dsLicenseURI").val();
+	if (data.dsLicenseURI == "other") {
+		data.dsLicenseURI = $("#dsLicenseURIOther").val();
+	}
 	data.dsUriNs = $("#dsUriNs").val();
 	//Provenance
 	data.origin = $("input[name=data-origin]:checked").val();
@@ -188,14 +191,11 @@ function validateDSMetadata(data) {
 		$("#dsDescription").focus();
 		return false;
 	}
-	if (data.dsLicenseURI == "other") {
-		data.dsLicenseURI = $("#dsLicenseURIOther").val();
-		if (data.dsLicenseURI == "" || (data.dsUriNs.substring(0,7) != "http://")) {
-			alert("You have chosen to supply your own license. Please provide the URI for the license.");
-			$("#dsItemSelection").accordion('activate', 1 );
-			$("#dsLicenseURIOther").focus();
-			return false;
-		}
+	if (data.dsLicenseURI == "" || (data.dsUriNs.substring(0,7) != "http://")) {
+		alert("You have chosen to supply your own license. Please provide the URI for the license.");
+		$("#dsItemSelection").accordion('activate', 1 );
+		$("#dsLicenseURIOther").focus();
+		return false;
 	}
 	if(data.dsUriNs == "" || (data.dsUriNs.substring(0,7) != "http://")){
 		alert("Please provide the URI namespace for the dataset.");
