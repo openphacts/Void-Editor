@@ -6,6 +6,8 @@ var validURIs = new Array();
 
 function createVoID(){
 	var data = extractData();
+	setStatus("Validating input ...");
+	validateData(data);
 	setStatus("Submitting data ...");
 	$.ajax({
 		type: "POST",
@@ -107,8 +109,7 @@ function extractData(){
 	return data;
 }
 
-function validateData() {
-	var data = extractData();
+function validateData(data) {
 	if (!validateVoidMetadata(data)) return false;
 	if (!validateDSMetadata(data)) return false;
 	if (!validateProvMetadata(data)) return false;
@@ -283,6 +284,9 @@ function validateProvMetadata(data) {
 		}
 		break;
 	default:
+		alert("Please provide the provenance of the dataset.");
+		$("#dsItemSelection").accordion('activate', 2);
+		return false;
 		break;
 	}
 	return true;

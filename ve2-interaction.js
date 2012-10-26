@@ -28,9 +28,6 @@ function initUI(){
 	$("a[href='ref4']").attr("href", voidREFExamples);
 	$("a[href='ref5']").attr("href", voidREFAccess);
 	
-	$("#voidCreatedOn").datepicker("setDate", today);
-	$("#provAccessedOn").datepicker("setDate", today);
-	createVoID();
 }
 
 function clearTopics(){
@@ -98,14 +95,6 @@ $(function(){
 	$("#dsItemSelection").accordion({ 
 		header: "h3",
 		autoHeight: false,
-		//Validate on section change
-		change: function(event, ui) {
-			if(validateSection(currentSection)) {				
-				createVoID();
-				var newSection = ui.newHeader[0].id;
-				currentSection = newSection;
-			}		
-		}
 	 });
 	
 	// general buttons
@@ -124,7 +113,6 @@ $(function(){
 	});
 	
 	$("#doCreate").click(function () {
-		validateData();
 		createVoID();
 	});
 
