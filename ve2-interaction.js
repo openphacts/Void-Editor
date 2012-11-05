@@ -22,12 +22,12 @@ var currentSection = "void-metadata";
 // UI helper methods
 
 function initUI(){
-	$("a[href='ref1']").attr("href", opsvgREFVoIDDescription);
-	$("a[href='ref2']").attr("href", opsvgREFDataset_Metadata);
-	$("a[href='ref3']").attr("href", voidREFTargets);
-	$("a[href='ref4']").attr("href", voidREFExamples);
-	$("a[href='ref5']").attr("href", voidREFAccess);
-	
+	$("a[href='voidDesc']").attr("href", opsvgREFVoIDDescription);
+	$("a[href='datasetMD']").attr("href", opsvgREFDataset_Metadata);
+	$("a[href='datasetProv']").attr("href", opsvgREFDataset_Provenance);
+	$("a[href='datasetTopSubRes']").attr("href", opsvgREFDataset_TopSubRes);
+	$("a[href='datasetSubset']").attr("href", opsvgREFDataset_Subset);
+	$("a[href='datasetAccessMethods']").attr("href", opsvgREFDataset_Access);
 }
 
 function clearTopics(){

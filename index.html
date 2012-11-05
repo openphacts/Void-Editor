@@ -106,7 +106,7 @@
 				This is the Open PHACTS VoID editor. It allows you to generate 
 				a skeleton VoID description for a dataset. The resulting dataset
 				can be copied and extended to fully conform with the 
-				<a href="http://www.cs.man.ac.uk/~graya/ops/mappingspec/"
+				<a href="http://www.openphacts.org/specs/2012/WD-datadesc-20121019/"
 				target="_blank">Open PHACTS specification</a> for dataset metadata.
 			</p>
 			<p>
@@ -141,7 +141,7 @@
 					<p class="note" id="help0content">
 						Define metadata about the VoID description itself. For more 
 						information see the Open PHACTS VoID guide, section 
-						'<a href="ref1" target="_new">Exchanging Mapping Documents</a>'.
+						'<a href="voidDesc" target="_new">VoID Document Metadata</a>'.
 					</p>
 					<div>
 						<div class="flabel">VoID Title</div>
@@ -155,7 +155,7 @@
 					</div>
 					<div>
 						<div class="flabel">VoID Creator</div>
-						<input type="text" size="50" id="voidCreatedBy" value="" />
+						<input type="text" size="50" id="voidCreatedBy" />
 						<p class="fyi">Provide a URI 
 						(<a href="http://esw.w3.org/topic/WebID" target="_new">Web ID</a>) 
 						identifying the person or organisation that actually provides the 
@@ -163,14 +163,14 @@
 					</div>
 				</div>
 			</div>
-			<div>
+			<div id="dataset-metadata">
 				<h3 id="ds-metadata"><a class="nav" href="#">General dataset metadata</a></h3>
 				<div>
 					<div class="notebtn"><span class="ui-icon ui-icon-help" 
 					title="Explain to me what I can do here ..." id="help1"></span></div>
 					<p class="note" id="help1content">
 						Define general metadata about the dataset. For more information see the 
-						Open PHACTS VoID guide, section '<a href="ref2" target="_new">Dataset 
+						Open PHACTS VoID guide, section '<a href="datasetMD" target="_new">Dataset 
 						Metadata</a>'.
 					</p>
 					<div>
@@ -183,19 +183,18 @@
 					</div>
 					<div>
 						<div class="flabel">Dataset Homepage URI</div>
-						<input type="text" size="50" id="dsHomeURI" value="http://example.org/" />
+						<input type="text" size="50" id="dsHomeURI" value="" />
 						<p class="fyi">Define your dataset by specifying its homepage. 
 						The <em>homepage of the dataset</em> is a dedicated document that 
 						talks about the dataset.</p>
 					</div>
 					<div>
 						<div class="flabel">Dataset Name</div>
-						<input type="text" size="50" id="dsName" value="Example Dataset" />
+						<input type="text" size="50" id="dsName" value="" />
 					</div>
 					<div>
 						<div class="flabel">Dataset Description</div>
-						<textarea rows="3" cols="50" 
-						id="dsDescription">A simple dataset in RDF.</textarea>
+						<textarea rows="3" cols="50" id="dsDescription"></textarea>
 					</div>
 					<div>
 						<div class="flabel">Dataset License</div>
@@ -219,19 +218,19 @@
 					</div>
  					<div>
  						<div class="flabel">Dataset URI Namespace</div>
- 						<input type="text" size="50" id="dsUriNs" value="http://example.org/" />
+ 						<input type="text" size="50" id="dsUriNs" value="" />
  						<p class="fyi">The URI namespace of the data items in the the dataset.</p>
  					</div>
  				</div>
 			</div>
-			<div>
+			<div id="dataset-provenance">
 				<h3 id="ds-provenance"><a class="nav" href="#">Provenance</a></h3>
 				<div>
 					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain to me what I can do here ..." id="help5"></span></div>
 					<p class="note" id="help5content">
 						Please provide details of how the RDF version of the dataset was generated and 
 						published, section 
-						'<a href="ref2" target="_new">Dataset Metadata</a>'.
+						'<a href="datasetProv" target="_new">Provenance and Version</a>'.
 					</p>
 					<div class="flabel">Please select the origin of the data from the following options
 					and then complete the resulting form.</div>
@@ -355,18 +354,18 @@
 					</div>
  				</div>
 			</div>
-			<div>
+			<div id="dataset-topic">
 				<h3 id="topicAndExample"><a class="nav" href="#">Topics and Example Resources 
 				<span style="font-style: italic;">(Optional</span>)</a></h3>
 				<div>
 					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain me what I can do here ..." id="help2"></span></div>
 					<p class="note" id="help2content">Select one or more topics your dataset talks 
 					about. In general, we use DBpedia resources in VoID to unambiguously represent 
-					the topic. For more information see the VoID guide, section 
-					'<a href="ref3" target="_new">Categorise Datasets</a>'. </br>
+					the topic. For more information see the Open PHACTD VoID specification, section 
+					'<a href="datasetTopSubRes" target="_new">Vocabularies, Topics, and Example Resources</a>'. </br>
 					You can also specify the URIs of some example resources in the dataset. For more
 					information see the VoID guide, section 
-					'<a href="ref4" target="_new">Example resources</a>.</p>
+					'<a href="datasetTopSubRes" target="_new">Vocabularies, Topics, and Example Resources</a>.</p>
 					<div style="float:left; margin-right: 10px">
 						<div class="flabel">Dataset Topic</div>
 						<input type="text" size="15" id="dsTopic" value="" /> <span id="doClearTopics" class="btn" title="Clear selection">x</span>
@@ -384,14 +383,14 @@
 					</div>				
 				</div>
 			</div>
-			<div>
+			<div id="dataset-subset">
 				<h3 id="subsets"><a class="nav" href="#">Subsets within the Dataset <span style="font-style: italic;">(Optional</span>)</a></h3>
 				<div>
 					<div class="notebtn"><span class="ui-icon ui-icon-help" 
 					title="Explain to me what I can do here ..." id="help3"></span></div>
 					<p class="note" id="help3content">Define one or more subsets of the datasets. 
 					For more information see the Open PHACTS VoID guide, section 
-					'<a href="ref2" target="_new">Dataset Metadata</a>'.</p>
+					'<a href="datasetSubset" target="_new">Distinguishing Subsets</a>'.</p>
 					<div class="flabel"><span id="doShowSubsetPane" class="ibtn" 
 					title="Add subset description">+</span>  Subset Description</div>
 					
@@ -420,17 +419,15 @@
 				</div>
 			</div>
  -->
- 			<div>
+ 			<div id="dataset-accessMethods">
 				<h3 id="accessMethods"><a class="nav" href="#">Specify access methods 
 				(SPARQL endpoint, etc.)</a></h3>
 				<div>
 					<div class="notebtn"><span class="ui-icon ui-icon-help" 
 					title="Explain to me what I can do here ..." id="help6"></span></div>
 					<p class="note" id="help6content">Specify (alternative) access methods for the 
-					dataset. If you don't want to provide any of this information, just leave it 
-					empty - it's optional, but it is advised to provide it. For more information 
-					see the VoID guide, section '<a href="ref5" target="_new">SPARQL endpoints, 
-					URI lookup, and RDF data dumps</a>'.</p>
+					dataset. For more information 
+					see the Open PHACTS VoID guide, section '<a href="datasetAccessMethods" target="_new">Dataset Access</a>'.</p>
 					<div>
 						<div class="flabel">SPARQL endpoint</div>
 						<input type="text" size="25" id="dsSPARQLEndpointURI" value="" />
