@@ -355,17 +355,14 @@
  				</div>
 			</div>
 			<div id="dataset-topic">
-				<h3 id="topicAndExample"><a class="nav" href="#">Topics and Example Resources 
+				<h3 id="ds-topic"><a class="nav" href="#">Topics 
 				<span style="font-style: italic;">(Optional</span>)</a></h3>
 				<div>
 					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain me what I can do here ..." id="help2"></span></div>
 					<p class="note" id="help2content">Select one or more topics your dataset talks 
 					about. In general, we use DBpedia resources in VoID to unambiguously represent 
 					the topic. For more information see the Open PHACTD VoID specification, section 
-					'<a href="datasetTopSubRes" target="_new">Vocabularies, Topics, and Example Resources</a>'. </br>
-					You can also specify the URIs of some example resources in the dataset. For more
-					information see the VoID guide, section 
-					'<a href="datasetTopSubRes" target="_new">Vocabularies, Topics, and Example Resources</a>.</p>
+					'<a href="datasetTopSubRes" target="_new">Vocabularies, Topics, and Example Resources</a>'.</p>
 					<div style="float:left; margin-right: 10px">
 						<div class="flabel">Dataset Topic</div>
 						<input type="text" size="15" id="dsTopic" value="" /> <span id="doClearTopics" class="btn" title="Clear selection">x</span>
@@ -376,6 +373,17 @@
 						<div class="flabel inactive">Provided Dataset Topics</div>
 						<div id="dsSelectedTopics"></div>
 					</div>
+				</div>
+			</div>
+			<div id="dataset-resource">
+				<h3 id="ds-example"><a class="nav" href="#">Example Resources 
+				<span style="font-style: italic;">(Optional</span>)</a></h3>
+				<div>
+					<div class="notebtn"><span class="ui-icon ui-icon-help" title="Explain me what I can do here ..." id="help2"></span></div>
+					<p class="note" id="help2content">
+					Specify the URIs of some example resources in the dataset. For more
+					information see the VoID guide, section 
+					'<a href="datasetTopSubRes" target="_new">Vocabularies, Topics, and Example Resources</a>.</p>
 					<div>						
 						<div class="flabel"><span id="doAddDSExampleURI" class="ibtn" 
 						title="Add example resource">+</span> Example Resource</div>
