@@ -48,10 +48,6 @@ function setStatus(status){
 // jQuery main interaction code
 $(function(){
 
-	$("#voidCreatedOn").datepicker({
-		dateFormat: "yy-mm-dd",
-		maxDate: today
-	});
 	$("#provAccessedOn").datepicker({
 		changeMonth: true,
 		changeYear: true,

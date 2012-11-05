@@ -3,6 +3,7 @@
 require_once('xmlrpc/lib/xmlrpc.inc');
 
 $DEBUG = false;
+date_default_timezone_set('UTC');
 
 // DBPedia lookup interface
 $BASE_DBPEDIA_LOOKUP_URI = "http://lookup.dbpedia.org/api/search.asmx/PrefixSearch?QueryClass=&MaxHits=5&QueryString=";
@@ -30,6 +31,7 @@ $NAMESPACES = array(
 $TAB_INDENT = "    ";
 $SELF_DS = ":myDS";
 $LICENSE_URI = "http://creativecommons.org/licenses/by-sa/3.0/";
+$VOID_EDITOR_URI = "https://github.com/openphacts/Void-Editor/";
 
 $BASE_TTL = "
 @prefix dcterms: <http://purl.org/dc/terms/> .
@@ -90,13 +92,14 @@ function createVoiDTTL($dsParams){
 	global $BASE_TTL;
 	global $LICENSE_URI;
 	global $TAB_INDENT;
+	global $VOID_EDITOR_URI;
+	$callTime = date('c');
 	$retVal = $BASE_TTL;
 	$otherStatements = "\n";
 	//VoID metadata
 	$voidTitle = $dsParams["voidTitle"];
 	$voidDescription = $dsParams["voidDescription"];
 	$voidCreatedBy = $dsParams["voidCreatedBy"];
-	$voidCreatedOn = $dsParams["voidCreatedOn"];
 	//Basic metadata
 	$dsURI = $dsParams["dsURI"];
 	$dsHomeURI = $dsParams["dsHomeURI"];
@@ -157,7 +160,9 @@ function createVoiDTTL($dsParams){
 	$retVal .= writeString("dcterms:title", $voidTitle);
 	$retVal .= writeLongString("dcterms:description", $voidDescription);
 	$retVal .= writeURI("pav:createdBy", $voidCreatedBy);
-	$retVal .= writeDate("pav:createdOn", $voidCreatedOn);
+	$retVal .= writeDatetime("pav:createdOn", $callTime);
+	$retVal .= writeDatetime("pav:lastUpdateOn", $callTime);
+	$retVal .= writeURI("pav:createdWith", $VOID_EDITOR_URI);
 	$retVal .= "$TAB_INDENT foaf:primaryTopic $dsURI .\n\n";
 	// the dataset
 	$retVal .= "## your dataset description \n";
@@ -175,12 +180,12 @@ function createVoiDTTL($dsParams){
 	switch ($dsOrigin) {
 		case "original":
 			$retVal .= writeURI("dcterms:publisher", $provAccessedFrom);
-			$retVal .= writeDate("pav:accessedOn", $provAccessedOn);
+			$retVal .= writeDatetime("pav:accessedOn", $provAccessedOn);
 			if ($provPublishedOn) {
-				$retVal .= writeDate("dcterms:created", $provPublishedOn);
+				$retVal .= writeDatetime("dcterms:created", $provPublishedOn);
 			}
 			if ($provModifiedOn) {
-				$retVal .= writeDate("dcterms:modified", $provModifiedOn);
+				$retVal .= writeDatetime("dcterms:modified", $provModifiedOn);
 			}
 			$retVal .= writeURI("pav:accessedBy", $provAccessedBy);
 			if($pavVersion){
@@ -189,7 +194,7 @@ function createVoiDTTL($dsParams){
 			break;
 		case "retrieved":
 			$retVal .= writeURI("pav:retrievedFrom", $provRetrievedFrom);
-			$retVal .= writeDate("pav:retrievedOn", $provRetrievedOn);
+			$retVal .= writeDatetime("pav:retrievedOn", $provRetrievedOn);
 			$retVal .= writeURI("pav:retrievedBy", $provRetrievedBy);
 			if($pavVersion){
 				$retVal .= writeString("pav:version", $pavVersion);
@@ -197,7 +202,7 @@ function createVoiDTTL($dsParams){
 			break;
 		case "imported":
 			$retVal .= writeURI("pav:importedFrom", $provImportedFrom);
-			$retVal .= writeDate("pav:importedOn", $provImportedOn);
+			$retVal .= writeDatetime("pav:importedOn", $provImportedOn);
 			$retVal .= writeURI("pav:importedBy", $provImportedBy);
 			if($pavVersion) {
 				//Version applies to the original data source
@@ -206,7 +211,7 @@ function createVoiDTTL($dsParams){
 			break;
 		case "derived":
 			$retVal .= writeURI("pav:derivedFrom", $provDerivedFrom);
-			$retVal .= writeDate("pav:derivedDate", $provDerivedOn);
+			$retVal .= writeDatetime("pav:derivedDate", $provDerivedOn);
 			$retVal .= writeURI("pav:derivedBy", $provDerivedBy);
 			if($pavVersion) {
 				//Version applies to the original data source
@@ -277,9 +282,9 @@ function writeLongString($predicate, $object){
 	return "$TAB_INDENT $predicate \"\"\"$object\"\"\"^^xsd:string ;\n";
 }
 
-function writeDate($predicate, $object){
+function writeDatetime($predicate, $object){
 	global $TAB_INDENT;
-	return "$TAB_INDENT $predicate \"$object\"^^xsd:date ;\n";
+	return "$TAB_INDENT $predicate \"$object\"^^xsd:datetime ;\n";
 }
 
 function validateHTTPURI($URI){
