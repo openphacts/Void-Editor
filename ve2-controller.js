@@ -33,7 +33,6 @@ function extractData(){
 	data.voidTitle = $("#voidTitle").val();
 	data.voidDescription = $("#voidDescription").val();
 	data.voidCreatedBy = $("#voidCreatedBy").val();
-	data.voidCreatedOn = $("#voidCreatedOn").val();
 	//General metadata
 	data.dsURI = $("#dsURI").val();	
 	data.dsHomeURI = $("#dsHomeURI").val();
@@ -191,12 +190,12 @@ function validateDSMetadata(data) {
 		return false;
 	}	
 	if(data.dsDescription == "") {
-		alert("Please provide a name for your dataset.");
+		alert("Please provide a description for your dataset.");
 		$("#dsItemSelection").accordion('activate', 1 );
 		$("#dsDescription").focus();
 		return false;
 	}
-	if (data.dsLicenseURI == "" || (data.dsUriNs.substring(0,7) != "http://")) {
+	if (data.dsLicenseURI == "" || (data.dsLicenseURI.substring(0,7) != "http://")) {
 		alert("You have chosen to supply your own license. Please provide the URI for the license.");
 		$("#dsItemSelection").accordion('activate', 1 );
 		$("#dsLicenseURIOther").focus();
