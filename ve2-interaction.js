@@ -48,42 +48,55 @@ function setStatus(status){
 // jQuery main interaction code
 $(function(){
 
-	$('#provAccessedOn').datetimepicker();
-//	$("#provAccessedOn").datepicker({
-//		changeMonth: true,
-//		changeYear: true,
-//		dateFormat: "yy-mm-dd",
-//		maxDate: today
-//	});
-	$("#provPublishedOn").datepicker({
-		changeMonth: true,
-		changeYear: true,
+	$('#provPublishedOn').datetimepicker({
 		dateFormat: "yy-mm-dd",
-		maxDate: today
+		separator: 'T',
+		timeFormat: 'HH:mm:ssz',
+		useLocalTimezone: true,
+		defaultTimezone: '+00:00',
+		showSecond: true,
+		showTimezone: true,
+		maxDateTime: today
 	});
-	$("#provModifiedOn").datepicker({
-		changeMonth: true,
-		changeYear: true,
+	$("#provModifiedOn").datetimepicker({
 		dateFormat: "yy-mm-dd",
-		maxDate: today
+		separator: 'T',
+		timeFormat: 'HH:mm:ssz',
+		useLocalTimezone: true,
+		defaultTimezone: '+00:00',
+		showSecond: true,
+		showTimezone: true,
+		maxDateTime: today
 	});
-	$("#provRetrievedOn").datepicker({
-		changeMonth: true,
-		changeYear: true,
+	$("#provRetrievedOn").datetimepicker({
 		dateFormat: "yy-mm-dd",
-		maxDate: today
+		separator: 'T',
+		timeFormat: 'HH:mm:ssz',
+		useLocalTimezone: true,
+		defaultTimezone: '+00:00',
+		showSecond: true,
+		showTimezone: true,
+		maxDateTime: today
 	});
-	$("#provImportedOn").datepicker({
-		changeMonth: true,
-		changeYear: true,
+	$("#provImportedOn").datetimepicker({
 		dateFormat: "yy-mm-dd",
-		maxDate: today
+		separator: 'T',
+		timeFormat: 'HH:mm:ssz',
+		useLocalTimezone: true,
+		defaultTimezone: '+00:00',
+		showSecond: true,
+		showTimezone: true,
+		maxDateTime: today
 	});
-	$("#provDerivedOn").datepicker({
-		changeMonth: true,
-		changeYear: true,
+	$("#provDerivedOn").datetimepicker({
 		dateFormat: "yy-mm-dd",
-		maxDate: today
+		separator: 'T',
+		timeFormat: 'HH:mm:ssz',
+		useLocalTimezone: true,
+		defaultTimezone: '+00:00',
+		showSecond: true,
+		showTimezone: true,
+		maxDateTime: today
 	});
 
 	initUI(); // reset all values to defaults
