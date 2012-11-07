@@ -49,10 +49,8 @@ function extractData(){
 	case "original":
 		data.provAccessedFrom = $("#provAccessedFrom").val();
 		data.pavVersion = $("#pavAccessedVersion").val();
-		data.provAccessedOn = $("#provAccessedOn").val();
 		data.provPublishedOn = $("#provPublishedOn").val();
 		data.provModifiedOn = $("#provModifiedOn").val();
-		data.provAccessedBy = $("#provAccessedBy").val();
 		break;
 	case "retrieved":
 		data.provRetrievedFrom = $("#provRetrievedFrom").val();
@@ -217,12 +215,6 @@ function validateProvMetadata(data) {
 			alert("Please provide the URI for the dataset on the web.");
 			$("#dsItemSelection").accordion('activate', 2);
 			$("#provAccessedFrom").focus();
-			return false;
-		}
-		if(data.provAccessedBy == "" || (data.provAccessedBy.substring(0,7) != "http://")) {
-			alert("Please provide a URI for the person/organisation who accessed the dataset.");
-			$("#dsItemSelection").accordion('activate', 2);
-			$("#provAccessedBy").focus();
 			return false;
 		}
 		break;
