@@ -48,12 +48,13 @@ function setStatus(status){
 // jQuery main interaction code
 $(function(){
 
-	$("#provAccessedOn").datepicker({
-		changeMonth: true,
-		changeYear: true,
-		dateFormat: "yy-mm-dd",
-		maxDate: today
-	});
+	$('#provAccessedOn').datetimepicker();
+//	$("#provAccessedOn").datepicker({
+//		changeMonth: true,
+//		changeYear: true,
+//		dateFormat: "yy-mm-dd",
+//		maxDate: today
+//	});
 	$("#provPublishedOn").datepicker({
 		changeMonth: true,
 		changeYear: true,
