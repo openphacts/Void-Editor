@@ -178,14 +178,14 @@ function createVoiDTTL($dsParams){
 	switch ($dsOrigin) {
 		case "original":
 			$retVal .= writeURI("dcterms:publisher", $provAccessedFrom);
-			$retVal .= writeDatetime("pav:accessedOn", $provAccessedOn);
+			$retVal .= writeDatetime("pav:sourceAccessedOn", $provAccessedOn);
 			if ($provPublishedOn) {
 				$retVal .= writeDatetime("dcterms:created", $provPublishedOn);
 			}
 			if ($provModifiedOn) {
 				$retVal .= writeDatetime("dcterms:modified", $provModifiedOn);
 			}
-			$retVal .= writeURI("pav:accessedBy", $provAccessedBy);
+			$retVal .= writeURI("pav:sourceAccessedBy", $provAccessedBy);
 			if($pavVersion){
 				$retVal .= writeString("pav:version", $pavVersion);
 			}
@@ -209,8 +209,8 @@ function createVoiDTTL($dsParams){
 			break;
 		case "derived":
 			$retVal .= writeURI("pav:derivedFrom", $provDerivedFrom);
-			$retVal .= writeDatetime("pav:derivedDate", $provDerivedOn);
-			$retVal .= writeURI("pav:derivedBy", $provDerivedBy);
+			$retVal .= writeDatetime("pav:contributedOn", $provDerivedOn);
+			$retVal .= writeURI("pav:contributedBy", $provDerivedBy);
 			if($pavVersion) {
 				//Version applies to the original data source
 				$otherStatments .= $provDerivedFrom . writeString("pav:version", $pavVersion) . ".";
