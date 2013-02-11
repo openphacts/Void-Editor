@@ -12,7 +12,7 @@ $NAMESPACES = array(
   	'dcterms' => 'http://purl.org/dc/terms/',
   	'foaf' => 'http://xmlns.com/foaf/0.1/',
 	'owl' => 'http://www.w3.org/2002/07/owl#',
-	'pav' => 'http://purl.org/pav/2.0/',
+	'pav' => 'http://purl.org/pav/',
   	'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
   	'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
   	'skos' => 'http://www.w3.org/2004/02/skos/core#',
@@ -178,14 +178,14 @@ function createVoiDTTL($dsParams){
 	switch ($dsOrigin) {
 		case "original":
 			$retVal .= writeURI("dcterms:publisher", $provAccessedFrom);
-			$retVal .= writeDatetime("pav:accessedOn", $provAccessedOn);
+			$retVal .= writeDatetime("pav:sourceAccessedOn", $provAccessedOn);
 			if ($provPublishedOn) {
 				$retVal .= writeDatetime("dcterms:created", $provPublishedOn);
 			}
 			if ($provModifiedOn) {
 				$retVal .= writeDatetime("dcterms:modified", $provModifiedOn);
 			}
-			$retVal .= writeURI("pav:accessedBy", $provAccessedBy);
+			$retVal .= writeURI("pav:sourceAccessedBy", $provAccessedBy);
 			if($pavVersion){
 				$retVal .= writeString("pav:version", $pavVersion);
 			}
@@ -209,8 +209,8 @@ function createVoiDTTL($dsParams){
 			break;
 		case "derived":
 			$retVal .= writeURI("pav:derivedFrom", $provDerivedFrom);
-			$retVal .= writeDatetime("pav:derivedDate", $provDerivedOn);
-			$retVal .= writeURI("pav:derivedBy", $provDerivedBy);
+			$retVal .= writeDatetime("pav:contributedOn", $provDerivedOn);
+			$retVal .= writeURI("pav:contributedBy", $provDerivedBy);
 			if($pavVersion) {
 				//Version applies to the original data source
 				$otherStatments .= $provDerivedFrom . writeString("pav:version", $pavVersion) . ".";
